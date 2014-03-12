@@ -1,8 +1,7 @@
 package com.vn.foodapp.data;
 
-import java.util.Date;
-
 import com.vn.foodapp.R;
+import com.vn.foodapp.dummyserver.AppServer;
 
 public class FeedManager {
 	
@@ -11,6 +10,8 @@ public class FeedManager {
 	private int[] images = {R.drawable.anh1, R.drawable.anh2, R.drawable.anh3, R.drawable.anh4
 			, R.drawable.anh5, R.drawable.anh6, R.drawable.anh7, R.drawable.anh8
 			, R.drawable.anh9, R.drawable.anh10};
+	
+	private Feed[] feeds;
 	
 	public static void initialize() {
 		instance = new FeedManager();
@@ -21,12 +22,9 @@ public class FeedManager {
 	}
 	
 	public Feed getFeed(int pos) {
-		//return images[pos];
-		Post p = new Post();
-		p.date = new Date().toString();
-		p.decription = "Oscar không chỉ là nơi tôn vinh các tài năng điện ảnh mà còn là nơi thể hiện tính cách, văn hóa của các ngôi sao qua những bài phát biểu nhận giải.";
-		p.title = "Người đàn bà cuồng dâm' bị cấm chiếu ở Thổ Nhĩ Kỳ";
-		p.image = (Integer) images[pos];
-		return p;
+		if (feeds == null) {
+			feeds = AppServer.getFeeds(0, 50);
+		}
+		return feeds[pos];
 	}
 }
