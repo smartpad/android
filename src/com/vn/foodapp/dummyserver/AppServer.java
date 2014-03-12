@@ -22,9 +22,9 @@ public class AppServer {
 	
 	private static Feed newFeed(int i) {
 		Post p = new Post();
-		p.date = new Date().toString();
-		p.decription = "Oscar khÃ´ng chá»‰ lÃ  nÆ¡i tÃ´n vinh cÃ¡c tÃ i nÄƒng Ä‘iá»‡n áº£nh mÃ  cÃ²n lÃ  nÆ¡i thá»ƒ hiá»‡n tÃ­nh cÃ¡ch, vÄƒn hÃ³a cá»§a cÃ¡c ngÃ´i sao qua nhá»¯ng bÃ i phÃ¡t biá»ƒu nháº­n giáº£i.";
-		p.title = "NgÆ°á»�i Ä‘Ã n bÃ  cuá»“ng dÃ¢m' bá»‹ cáº¥m chiáº¿u á»Ÿ Thá»• NhÄ© Ká»³";
+		p.date = new Date().toString();		
+		p.decription = "Oscar không chỉ là nơi tôn vinh các tài năng điện ảnh mà còn là nơi thể hiện tính cách, văn hóa của các ngôi sao qua những bài phát biểu nhận giải.";
+		p.title = "Người đàn bà cuồng dâm' bị cấm chiếu ở Thổ Nhĩ Kỳ";
 		p.image = (Integer) images[i];
 		return p;
 	}
