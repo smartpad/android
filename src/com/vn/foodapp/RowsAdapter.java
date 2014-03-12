@@ -51,10 +51,11 @@ public class RowsAdapter extends BaseAdapter {
 	 * @return
 	 */
 	@Override
+	@SuppressWarnings("unchecked")
 	public View getView(int pos, View view, ViewGroup parent) {
 		
 		Feed feed = FeedManager.instance.getFeed(pos);
-		ViewBuilder viewBuilder = viewMapper.getBuilder(feed);
+		ViewBuilder<Feed> viewBuilder = viewMapper.getBuilder(feed);
 		if (view == null) {
 			view = viewBuilder.createView(parent);
 		}
