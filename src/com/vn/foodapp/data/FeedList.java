@@ -21,7 +21,8 @@ public class FeedList {
 			feeds = new LinkedList<Feed>();
 			Feed feed = null;
 			for (int i = 0; i < ja.length(); i++) {
-				feed = new Post(ja.getJSONObject(i)); //TODO other types?
+				JSONObject feedJson = ja.getJSONObject(i);
+				feed = FeedManager.instance.instantiate(feedJson);
 				feeds.add(feed);
 			}
 			if (feed != null) {
