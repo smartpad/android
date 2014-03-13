@@ -6,7 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.vn.foodapp.R;
+import com.jinnova.smartpad.R;
 
 public class AppServer {
 	

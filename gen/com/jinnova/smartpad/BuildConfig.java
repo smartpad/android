@@ -1,5 +1,5 @@
 /** Automatically generated file. DO NOT MODIFY */
-package com.vn.foodapp;
+package com.jinnova.smartpad;
 
 public final class BuildConfig {
     public final static boolean DEBUG = true;

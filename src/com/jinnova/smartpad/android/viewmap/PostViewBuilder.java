@@ -7,7 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jinnova.smartpad.android.feed.Post;
-import com.vn.foodapp.R;
+import com.jinnova.smartpad.R;
 
 public class PostViewBuilder implements ViewBuilder<Post> {
 	
