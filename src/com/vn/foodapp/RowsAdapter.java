@@ -4,10 +4,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import com.vn.foodapp.data.Feed;
-import com.vn.foodapp.data.FeedManager;
-import com.vn.foodapp.mappers.ViewBuilder;
-import com.vn.foodapp.mappers.ViewMapper;
+import com.jinnova.smartpad.android.feed.Feed;
+import com.jinnova.smartpad.android.feed.FeedManager;
+import com.jinnova.smartpad.android.viewmap.ViewBuilder;
+import com.jinnova.smartpad.android.viewmap.ViewMapper;
 
 public class RowsAdapter extends BaseAdapter {
 

@@ -1,4 +1,4 @@
-package com.vn.foodapp.data;
+package com.jinnova.smartpad.android.feed;
 
 import org.json.JSONException;
 import org.json.JSONObject;

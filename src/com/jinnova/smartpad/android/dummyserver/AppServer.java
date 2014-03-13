@@ -1,4 +1,4 @@
-package com.vn.foodapp.dummyserver;
+package com.jinnova.smartpad.android.dummyserver;
 
 import java.util.Date;
 

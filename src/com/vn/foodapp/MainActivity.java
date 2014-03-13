@@ -1,7 +1,7 @@
 package com.vn.foodapp;
 
-import com.vn.foodapp.data.FeedManager;
-import com.vn.foodapp.mappers.ViewMapper;
+import com.jinnova.smartpad.android.feed.FeedManager;
+import com.jinnova.smartpad.android.viewmap.ViewMapper;
 
 import android.app.Activity;
 import android.os.Bundle;

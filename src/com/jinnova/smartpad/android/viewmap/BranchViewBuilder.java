@@ -1,7 +1,7 @@
-package com.vn.foodapp.mappers;
+package com.jinnova.smartpad.android.viewmap;
 
+import com.jinnova.smartpad.android.feed.Branch;
 import com.vn.foodapp.R;
-import com.vn.foodapp.data.Branch;
 
 import android.view.LayoutInflater;
 import android.view.View;

@@ -1,4 +1,4 @@
-package com.vn.foodapp.data;
+package com.jinnova.smartpad.android.feed;
 
 public class GPSLocation {
 
