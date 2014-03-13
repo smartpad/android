@@ -5,7 +5,6 @@ import com.vn.foodapp.mappers.ViewMapper;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.widget.ListView;
 
 public class MainActivity extends Activity {
