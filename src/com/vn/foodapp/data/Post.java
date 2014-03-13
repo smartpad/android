@@ -1,17 +1,16 @@
 package com.vn.foodapp.data;
 
-import java.util.Collection;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Post implements Feed {
+public class Post extends Feed {
 	
 	private static final int IMAGE_MISSING = 0;
 	
 	private JSONObject json;
 	
 	public Post(JSONObject json) {
+		super(json);
 		this.json = json;
 	}
 	
@@ -42,34 +41,6 @@ public class Post implements Feed {
 		} catch (JSONException e) {
 			return "";
 		}
-	}
-
-	/* (non-Javadoc)
-	 * @see com.vn.foodapp.data.Feed#getOrder()
-	 */
-	@Override
-	public int getOrder() {
-		try {
-			return json.getInt("ord");
-		} catch (JSONException e) {
-			return 0;
-		}
-	}
-
-	/* (non-Javadoc)
-	 * @see com.vn.foodapp.data.Feed#getTarget()
-	 */
-	@Override
-	public Object getTarget() {
-		return new Object();
-	}
-
-	/* (non-Javadoc)
-	 * @see com.vn.foodapp.data.Feed#getGPSLocations()
-	 */
-	@Override
-	public Collection<GPSLocation> getGPSLocations() {
-		return null;
 	}
 
 }

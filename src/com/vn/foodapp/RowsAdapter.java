@@ -1,6 +1,5 @@
 package com.vn.foodapp;
 
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -14,9 +13,9 @@ public class RowsAdapter extends BaseAdapter {
 
 	private ViewMapper viewMapper;
 	
-	public RowsAdapter(LayoutInflater layoutInflator) {
+	public RowsAdapter(ViewMapper viewMapper) {
 		super();
-		this.viewMapper = new ViewMapper(layoutInflator);
+		this.viewMapper = viewMapper;
 	}
 	
 	@Override

@@ -2,12 +2,31 @@ package com.vn.foodapp.data;
 
 import java.util.Collection;
 
-public interface Feed {
+import org.json.JSONException;
+import org.json.JSONObject;
+
+public class Feed {
 	
-	int getOrder();
+	protected final JSONObject json;
 	
-	Object getTarget();
-	
-	Collection<GPSLocation> getGPSLocations();
+	public Feed(JSONObject json) {
+		this.json = json;
+	}
+
+	public int getOrder() {
+		try {
+			return json.getInt("ord");
+		} catch (JSONException e) {
+			return 0;
+		}
+	}
+
+	public Object getTarget() {
+		return new Object();
+	}
+
+	public Collection<GPSLocation> getGPSLocations() {
+		return null;
+	}
 
 }

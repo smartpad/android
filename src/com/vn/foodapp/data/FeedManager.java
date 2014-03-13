@@ -47,6 +47,13 @@ public class FeedManager {
 					return new Post(json);
 				}
 			});
+			instantiatorMap.put("branch", new FeedInstantiator() {
+				
+				@Override
+				public Feed instantiate(JSONObject json) {
+					return new Branch(json);
+				}
+			});
 		}
 		
 		FeedInstantiator instantiator;
