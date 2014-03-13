@@ -5,19 +5,18 @@ import java.util.HashMap;
 import android.content.Context;
 import android.view.LayoutInflater;
 
-import com.jinnova.smartpad.android.feed.Branch;
 import com.jinnova.smartpad.android.feed.Feed;
-import com.jinnova.smartpad.android.feed.Post;
+import com.jinnova.smartpad.android.feed.FeedManager;
 
 public class ViewMapper {
 	
-	private HashMap<Class<? extends Feed>, ViewBuilder<?>> builderMap;
+	private HashMap<String, ViewBuilder<?>> builderMap;
 	
 	public ViewMapper(Context context) {
 		LayoutInflater layoutInflator = LayoutInflater.from(context);
-		builderMap = new HashMap<Class<? extends Feed>, ViewBuilder<?>>();
-		builderMap.put(Post.class, new PostViewBuilder(layoutInflator));
-		builderMap.put(Branch.class, new BranchViewBuilder(layoutInflator));
+		builderMap = new HashMap<String, ViewBuilder<?>>();
+		builderMap.put(FeedManager.TYPE_POST, new PostViewBuilder(layoutInflator));
+		builderMap.put(FeedManager.TYPE_BRANCH, new BranchViewBuilder(layoutInflator));
 	}
 	
 	@SuppressWarnings("unchecked")

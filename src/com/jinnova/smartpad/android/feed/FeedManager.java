@@ -9,6 +9,9 @@ import com.jinnova.smartpad.android.dummyserver.AppServer;
 
 public class FeedManager {
 	
+	public static final String TYPE_POST = "post";
+	public static final String TYPE_BRANCH = "branch";
+	
 	public static FeedManager instance;
 	
 	private FeedList feedList;
@@ -40,14 +43,14 @@ public class FeedManager {
 	public Feed instantiate(JSONObject json) {
 		if (instantiatorMap == null) {
 			instantiatorMap = new HashMap<String, FeedManager.FeedInstantiator>();
-			instantiatorMap.put("post", new FeedInstantiator() {
+			instantiatorMap.put(TYPE_POST, new FeedInstantiator() {
 				
 				@Override
 				public Feed instantiate(JSONObject json) {
 					return new Post(json);
 				}
 			});
-			instantiatorMap.put("branch", new FeedInstantiator() {
+			instantiatorMap.put(TYPE_BRANCH, new FeedInstantiator() {
 				
 				@Override
 				public Feed instantiate(JSONObject json) {
