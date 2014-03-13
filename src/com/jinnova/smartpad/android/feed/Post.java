@@ -13,6 +13,14 @@ public class Post extends Feed {
 		super(json);
 		this.json = json;
 	}
+
+	/* (non-Javadoc)
+	 * @see com.jinnova.smartpad.android.feed.Feed#getType()
+	 */
+	@Override
+	public String getType() {
+		return FeedManager.TYPE_POST;
+	}
 	
 	public int getImage() {
 		try {

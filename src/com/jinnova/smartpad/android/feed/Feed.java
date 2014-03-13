@@ -5,13 +5,15 @@ import java.util.Collection;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Feed {
+public abstract class Feed {
 	
 	protected final JSONObject json;
 	
 	public Feed(JSONObject json) {
 		this.json = json;
 	}
+	
+	public abstract String getType();
 
 	public int getOrder() {
 		try {

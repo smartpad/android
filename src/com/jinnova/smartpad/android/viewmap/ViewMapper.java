@@ -21,7 +21,7 @@ public class ViewMapper {
 	
 	@SuppressWarnings("unchecked")
 	public <F extends Feed> ViewBuilder<F> getBuilder(F feed) {
-		return (ViewBuilder<F>) builderMap.get(feed.getClass());
+		return (ViewBuilder<F>) builderMap.get(feed.getType());
 	}
 
 }

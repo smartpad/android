@@ -9,6 +9,14 @@ public class Branch extends Feed {
 		super(json);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.jinnova.smartpad.android.feed.Feed#getType()
+	 */
+	@Override
+	public String getType() {
+		return FeedManager.TYPE_BRANCH;
+	}
+
 	public String getName() {
 		try {
 			return json.getString("name");

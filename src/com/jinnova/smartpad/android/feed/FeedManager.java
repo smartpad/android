@@ -11,6 +11,9 @@ public class FeedManager {
 	
 	public static final String TYPE_POST = "post";
 	public static final String TYPE_BRANCH = "branch";
+	public static final String TYPE_STORE = "store";
+	public static final String TYPE_STOREITEM = "sitem";
+	public static final String TYPE_PROMO = "promo";
 	
 	public static FeedManager instance;
 	
