@@ -6,23 +6,23 @@ public class FeedManager {
 	
 	public static FeedManager instance;
 	
-	private Feed[] feeds;
+	private FeedList feedList;
 	
 	public static void initialize() {
 		instance = new FeedManager();
 	}
 
 	public int getFeedCount() {
-		if (feeds == null) {
-			feeds = AppServer.getFeeds(0, 50);
+		if (feedList == null) {
+			feedList = new FeedList(AppServer.getFeeds(0, 50));
 		}
-		return feeds.length;
+		return feedList.size();
 	}
 	
 	public Feed getFeed(int pos) {
-		if (feeds == null) {
-			feeds = AppServer.getFeeds(0, 50);
+		if (feedList == null) {
+			feedList = new FeedList(AppServer.getFeeds(0, 50));
 		}
-		return feeds[pos];
+		return feedList.get(pos);
 	}
 }

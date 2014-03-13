@@ -2,12 +2,11 @@ package com.vn.foodapp.dummyserver;
 
 import java.util.Date;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.vn.foodapp.R;
-import com.vn.foodapp.data.Feed;
-import com.vn.foodapp.data.Post;
 
 public class AppServer {
 	
@@ -15,17 +14,25 @@ public class AppServer {
 			, R.drawable.anh5, R.drawable.anh6, R.drawable.anh7, R.drawable.anh8
 			, R.drawable.anh9, R.drawable.anh10};
 	
-	public static Feed[] getFeeds(int from, int size) {
-		Feed[] feeds = new Feed[size];
-		for (int i = 0; i < feeds.length; i++) {
-			feeds[i] = newFeed(i % images.length);
-		}
-		return feeds;
-	}
-	
-	private static Feed newFeed(int i) {
+	public static JSONObject getFeeds(int from, int size) {
 		JSONObject json = new JSONObject();
 		try {
+			json.accumulate("ver", "a");
+			JSONArray ja = new JSONArray();
+			for (int i = 0; i < size; i++) {
+				ja.put(newFeed(i % images.length));
+			}
+			json.accumulate("feeds", ja);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return json;
+	}
+	
+	private static JSONObject newFeed(int i) {
+		JSONObject json = new JSONObject();
+		try {
+			json.accumulate("ord", i);
 			json.accumulate("date", new Date().toString());
 			json.accumulate("desc", "Oscar không chỉ là nơi tôn vinh các tài năng điện ảnh mà còn " +
 					"là nơi thể hiện tính cách, văn hóa của các ngôi sao qua những bài phát biểu nhận giải.");
@@ -34,6 +41,6 @@ public class AppServer {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		return new Post(json);
+		return json;
 	}
 }
