@@ -2,6 +2,9 @@ package com.vn.foodapp.dummyserver;
 
 import java.util.Date;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.vn.foodapp.R;
 import com.vn.foodapp.data.Feed;
 import com.vn.foodapp.data.Post;
@@ -21,11 +24,16 @@ public class AppServer {
 	}
 	
 	private static Feed newFeed(int i) {
-		Post p = new Post();
-		p.date = new Date().toString();		
-		p.decription = "Oscar không chỉ là nơi tôn vinh các tài năng điện ảnh mà còn là nơi thể hiện tính cách, văn hóa của các ngôi sao qua những bài phát biểu nhận giải.";
-		p.title = "Người đàn bà cuồng dâm' bị cấm chiếu ở Thổ Nhĩ Kỳ";
-		p.image = (Integer) images[i];
-		return p;
+		JSONObject json = new JSONObject();
+		try {
+			json.accumulate("date", new Date().toString());
+			json.accumulate("desc", "Oscar không chỉ là nơi tôn vinh các tài năng điện ảnh mà còn " +
+					"là nơi thể hiện tính cách, văn hóa của các ngôi sao qua những bài phát biểu nhận giải.");
+			json.accumulate("title", "Người đàn bà cuồng dâm' bị cấm chiếu ở Thổ Nhĩ Kỳ");
+			json.accumulate("image", images[i]);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return new Post(json);
 	}
 }

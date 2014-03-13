@@ -39,10 +39,10 @@ public class PostViewBuilder implements ViewBuilder<Post> {
 	@Override
 	public void loadView(View view, Post post) {
 		PostUI row = (PostUI) view.getTag();
-		row.date.setText(post.date);
-		row.decription.setText(post.decription);
-		row.title.setText(post.title);
-		row.imageView.setImageResource(post.image);
+		row.date.setText(post.getDate());
+		row.decription.setText(post.getDecription());
+		row.title.setText(post.getTitle());
+		row.imageView.setImageResource(post.getImage());
 	}
 
 }
