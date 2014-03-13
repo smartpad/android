@@ -35,13 +35,14 @@ public class AppServer {
 	private static JSONObject newFeed(int order, int image) {
 		JSONObject json = new JSONObject();
 		try {
-			json.accumulate("type", "feed");
+			json.accumulate("type", "post");
 			json.accumulate("ord", order);
 			json.accumulate("date", new Date().toString());
 			json.accumulate("desc", "Oscar không chỉ là nơi tôn vinh các tài năng điện ảnh mà còn " +
 					"là nơi thể hiện tính cách, văn hóa của các ngôi sao qua những bài phát biểu nhận giải.");
 			json.accumulate("title", "Người đàn bà cuồng dâm' bị cấm chiếu ở Thổ Nhĩ Kỳ");
 			json.accumulate("image", images[image]);
+			System.out.println(json);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -54,6 +55,7 @@ public class AppServer {
 			json.accumulate("type", "branch");
 			json.accumulate("ord", order);
 			json.accumulate("name", "KFC");
+			System.out.println(json);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
