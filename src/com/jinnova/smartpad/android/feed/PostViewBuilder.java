@@ -1,4 +1,4 @@
-package com.jinnova.smartpad.android.viewmap;
+package com.jinnova.smartpad.android.feed;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -6,8 +6,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.jinnova.smartpad.android.feed.FeedManager;
-import com.jinnova.smartpad.android.feed.Post;
+import com.jinnova.smartpad.android.ViewBuilder;
+import com.jinnova.smartpad.android.ViewTag;
 import com.jinnova.smartpad.R;
 
 public class PostViewBuilder implements ViewBuilder<Post> {

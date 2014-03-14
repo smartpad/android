@@ -1,10 +1,12 @@
-package com.jinnova.smartpad.android.viewmap;
+package com.jinnova.smartpad.android;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 
+import com.jinnova.smartpad.android.feed.BranchViewBuilder;
 import com.jinnova.smartpad.android.feed.Feed;
 import com.jinnova.smartpad.android.feed.FeedManager;
+import com.jinnova.smartpad.android.feed.PostViewBuilder;
 
 public class ViewMapper {
 	

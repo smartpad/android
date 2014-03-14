@@ -5,9 +5,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import com.jinnova.smartpad.android.viewmap.ViewBuilder;
-import com.jinnova.smartpad.android.viewmap.ViewMapper;
-import com.jinnova.smartpad.android.viewmap.ViewTag;
+import com.jinnova.smartpad.android.ViewBuilder;
+import com.jinnova.smartpad.android.ViewMapper;
+import com.jinnova.smartpad.android.ViewTag;
 
 public class RowsAdapter extends BaseAdapter {
 

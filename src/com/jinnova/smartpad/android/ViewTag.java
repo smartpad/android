@@ -1,4 +1,4 @@
-package com.jinnova.smartpad.android.viewmap;
+package com.jinnova.smartpad.android;
 
 public abstract class ViewTag {
 
