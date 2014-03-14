@@ -14,6 +14,8 @@ public class FeedManager {
 	public static final int TYPE_STOREITEM = 3;
 	public static final int TYPE_PROMO = 4;
 	
+	public static final int TYPE_COUNT = 5;
+	
 	public static FeedManager instance;
 	
 	private FeedList feedList;
@@ -31,7 +33,7 @@ public class FeedManager {
 	}
 	
 	private FeedManager() {
-		instantiators = new FeedInstantiator[5];
+		instantiators = new FeedInstantiator[TYPE_COUNT];
 		instantiators[TYPE_POST] = new FeedInstantiator() {
 			
 			@Override
