@@ -31,7 +31,7 @@ public abstract class Feed {
 	 * @return id of another feed (or this feed itself)
 	 */
 	public String getTarget() {
-		return null;
+		return "Hello world";
 	}
 
 	public Collection<GPSLocation> getGPSLocations() {
@@ -48,8 +48,8 @@ public abstract class Feed {
 	/**
 	 * @return id of an quick-taken offer to a member card (no introduction shown) 
 	 */
-	public String getMemberCardIssue() {
+	/*public String getMemberCardIssue() {
 		return null;
-	}
+	}*/
 
 }
