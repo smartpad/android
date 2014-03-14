@@ -15,7 +15,7 @@ public class FeedViewAdapter extends BaseAdapter {
 	private final ViewBuilder<?>[] builderMap;
 	
 	public FeedViewAdapter() {
-		builderMap = new ViewBuilder[2];
+		builderMap = new ViewBuilder[5];
 		builderMap[FeedManager.TYPE_POST] = new PostViewBuilder();
 		builderMap[FeedManager.TYPE_BRANCH] = new BranchViewBuilder();
 		builderMap[FeedManager.TYPE_PROMO] = new PromoViewBuilder();

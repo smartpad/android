@@ -31,7 +31,7 @@ public class FeedManager {
 	}
 	
 	private FeedManager() {
-		instantiators = new FeedInstantiator[2];
+		instantiators = new FeedInstantiator[5];
 		instantiators[TYPE_POST] = new FeedInstantiator() {
 			
 			@Override
