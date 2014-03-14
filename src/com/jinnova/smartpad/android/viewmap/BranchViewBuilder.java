@@ -1,6 +1,7 @@
 package com.jinnova.smartpad.android.viewmap;
 
 import com.jinnova.smartpad.android.feed.Branch;
+import com.jinnova.smartpad.android.feed.FeedManager;
 import com.jinnova.smartpad.R;
 
 import android.view.LayoutInflater;
@@ -12,21 +13,29 @@ public class BranchViewBuilder implements ViewBuilder<Branch> {
 	
 	private LayoutInflater layoutInflator;
 	
+	private class BranchUI extends ViewTag {
+		TextView name;
+
+		@Override
+		public int getFeedType() {
+			return FeedManager.TYPE_BRANCH;
+		}
+	}
+	
 	public BranchViewBuilder(LayoutInflater layoutInflator) {
 		this.layoutInflator = layoutInflator;
 	}
 
 	@Override
 	public View createView(ViewGroup parent) {
-		View view = layoutInflator.inflate(R.layout.news_row, parent, false);
+		return layoutInflator.inflate(R.layout.news_row, parent, false);
+	}
+
+	@Override
+	public ViewTag createTag(View view) {
 		BranchUI row  = new BranchUI();
 		row.name = (TextView) view.findViewById(R.id.decription);
-		view.setTag(row);
-		return view;
-	}
-	
-	private class BranchUI {
-		TextView name;
+		return row;
 	}
 
 	@Override

@@ -12,7 +12,7 @@ public class StoreItem extends Feed {
 	 * @see com.jinnova.smartpad.android.feed.Feed#getType()
 	 */
 	@Override
-	public String getType() {
+	public int getType() {
 		return FeedManager.TYPE_STOREITEM;
 	}
 

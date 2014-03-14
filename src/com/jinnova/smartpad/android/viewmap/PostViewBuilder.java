@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.jinnova.smartpad.android.feed.FeedManager;
 import com.jinnova.smartpad.android.feed.Post;
 import com.jinnova.smartpad.R;
 
@@ -13,27 +14,35 @@ public class PostViewBuilder implements ViewBuilder<Post> {
 	
 	private LayoutInflater layoutInflator;
 	
+	private class PostUI extends ViewTag {
+		ImageView imageView;
+		TextView date;
+		TextView title;
+		TextView decription;
+		
+		@Override
+		public int getFeedType() {
+			return FeedManager.TYPE_POST;
+		}
+	}
+	
 	public PostViewBuilder(LayoutInflater layoutInflator) {
 		this.layoutInflator = layoutInflator;
 	}
 
 	@Override
 	public View createView(ViewGroup parent) {
-		View view = layoutInflator.inflate(R.layout.news_row, parent, false);
-		PostUI row  = new PostUI();
-		row.title = (TextView) view.findViewById(R.id.title);
-		row.imageView = (ImageView) view.findViewById(R.id.newsImage);
-		row.date = (TextView) view.findViewById(R.id.date);
-		row.decription = (TextView) view.findViewById(R.id.decription);
-		view.setTag(row);
-		return view;
+		return layoutInflator.inflate(R.layout.news_row, parent, false);
 	}
-	
-	private class PostUI {
-		ImageView imageView;
-		TextView date;
-		TextView title;
-		TextView decription;
+
+	@Override
+	public ViewTag createTag(View view) {
+		PostUI tag = new PostUI();
+		tag.title = (TextView) view.findViewById(R.id.title);
+		tag.imageView = (ImageView) view.findViewById(R.id.newsImage);
+		tag.date = (TextView) view.findViewById(R.id.date);
+		tag.decription = (TextView) view.findViewById(R.id.decription);
+		return tag;
 	}
 
 	@Override

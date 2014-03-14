@@ -1,32 +1,67 @@
 package com.jinnova.smartpad.android.feed;
 
-import java.util.HashMap;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.jinnova.smartpad.android.dummyserver.AppServer;
 
 public class FeedManager {
-	
-	public static final String TYPE_POST = "post";
-	public static final String TYPE_BRANCH = "branch";
-	public static final String TYPE_STORE = "store";
-	public static final String TYPE_STOREITEM = "sitem";
-	public static final String TYPE_PROMO = "promo";
+
+	public static final int TYPE_UNKNOWN = -1;
+	public static final int TYPE_POST = 0;
+	public static final int TYPE_BRANCH = 1;
+	public static final int TYPE_STORE = 2;
+	public static final int TYPE_STOREITEM = 3;
+	public static final int TYPE_PROMO = 4;
 	
 	public static FeedManager instance;
 	
 	private FeedList feedList;
+	
+	//private final HashMap<String, Integer> feedTypeConverter;
 
 	private interface FeedInstantiator {
 		Feed instantiate(JSONObject json);
 	}
 	
-	private HashMap<String, FeedInstantiator> instantiatorMap;
+	private FeedInstantiator[] instantiators;
 	
 	public static void initialize() {
 		instance = new FeedManager();
+	}
+	
+	private FeedManager() {
+		instantiators = new FeedInstantiator[2];
+		instantiators[TYPE_POST] = new FeedInstantiator() {
+			
+			@Override
+			public Feed instantiate(JSONObject json) {
+				return new Post(json);
+			}
+		};
+		instantiators[TYPE_BRANCH] = new FeedInstantiator() {
+			
+			@Override
+			public Feed instantiate(JSONObject json) {
+				return new Branch(json);
+			}
+		};
+	}
+	
+	private static int convertFeedType(String type) {
+		if ("post".equals(type)) {
+			return TYPE_POST;
+		} else if ("branch".equals(type)) {
+			return TYPE_BRANCH;
+		} else if ("store".equals(type)) {
+			return TYPE_STORE;
+		} else if ("sitem".equals(type)) {
+			return TYPE_STOREITEM;
+		} else if ("promo".equals(type)) {
+			return TYPE_PROMO;
+		} else {
+			return TYPE_UNKNOWN;
+		}
 	}
 
 	public int getFeedCount() {
@@ -44,30 +79,13 @@ public class FeedManager {
 	}
 	
 	public Feed instantiate(JSONObject json) {
-		if (instantiatorMap == null) {
-			instantiatorMap = new HashMap<String, FeedManager.FeedInstantiator>();
-			instantiatorMap.put(TYPE_POST, new FeedInstantiator() {
-				
-				@Override
-				public Feed instantiate(JSONObject json) {
-					return new Post(json);
-				}
-			});
-			instantiatorMap.put(TYPE_BRANCH, new FeedInstantiator() {
-				
-				@Override
-				public Feed instantiate(JSONObject json) {
-					return new Branch(json);
-				}
-			});
-		}
 		
-		FeedInstantiator instantiator;
 		try {
-			instantiator = instantiatorMap.get(json.getString("type"));
+			int feedType = convertFeedType(json.getString("type"));
+			FeedInstantiator one = instantiators[feedType];
+			return one.instantiate(json);
 		} catch (JSONException e) {
 			return null;
 		}
-		return instantiator.instantiate(json);
 	}
 }

@@ -6,8 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 public interface ViewBuilder<F extends Feed> {
-	
-	void loadView(View view, F f);
 
 	View createView(ViewGroup parent);
+	
+	ViewTag createTag(View view);
+	
+	void loadView(View view, F f);
 }

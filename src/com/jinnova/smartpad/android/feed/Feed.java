@@ -13,7 +13,7 @@ public abstract class Feed {
 		this.json = json;
 	}
 	
-	public abstract String getType();
+	public abstract int getType();
 	
 	public String getId() {
 		return null;
