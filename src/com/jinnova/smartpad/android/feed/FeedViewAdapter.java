@@ -9,11 +9,11 @@ import com.jinnova.smartpad.android.ViewBuilder;
 import com.jinnova.smartpad.android.ViewMapper;
 import com.jinnova.smartpad.android.ViewTag;
 
-public class RowsAdapter extends BaseAdapter {
+public class FeedViewAdapter extends BaseAdapter {
 
 	private ViewMapper viewMapper;
 	
-	public RowsAdapter(ViewMapper viewMapper) {
+	public FeedViewAdapter(ViewMapper viewMapper) {
 		super();
 		this.viewMapper = viewMapper;
 	}
@@ -70,7 +70,7 @@ public class RowsAdapter extends BaseAdapter {
 			//we do safe check anyway
 			ViewTag tag = (ViewTag) convertView.getTag();
 			if (tag.getFeedType() != feed.getType()) {
-				Log.d(RowsAdapter.class.getName(), "view reuse failed");
+				Log.d(FeedViewAdapter.class.getName(), "view reuse failed");
 				convertView = viewBuilder.createView(parent);
 				ViewTag newTag = viewBuilder.createTag(convertView);
 				convertView.setTag(newTag);
