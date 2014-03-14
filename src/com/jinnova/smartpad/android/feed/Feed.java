@@ -14,6 +14,10 @@ public abstract class Feed {
 	}
 	
 	public abstract String getType();
+	
+	public String getId() {
+		return null;
+	}
 
 	public int getOrder() {
 		try {
@@ -23,11 +27,28 @@ public abstract class Feed {
 		}
 	}
 
-	public Object getTarget() {
-		return new Object();
+	/**
+	 * @return id of another feed (or this feed itself)
+	 */
+	public String getTarget() {
+		return null;
 	}
 
 	public Collection<GPSLocation> getGPSLocations() {
+		return null;
+	}
+	
+	/**
+	 * @return id of an offer to a member card 
+	 */
+	public String getMemberCardOffer() {
+		return null;
+	}
+	
+	/**
+	 * @return id of an quick-taken offer to a member card (no introduction shown) 
+	 */
+	public String getMemberCardIssue() {
 		return null;
 	}
 
