@@ -1,11 +1,9 @@
-package com.jinnova.smartpad.android;
+package com.jinnova.smartpad.android.feed;
 
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import com.jinnova.smartpad.android.feed.Feed;
-import com.jinnova.smartpad.android.feed.FeedManager;
 import com.jinnova.smartpad.android.viewmap.ViewBuilder;
 import com.jinnova.smartpad.android.viewmap.ViewMapper;
 

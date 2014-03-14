@@ -1,6 +1,5 @@
-package com.jinnova.smartpad.android;
+package com.jinnova.smartpad.android.feed;
 
-import com.jinnova.smartpad.android.feed.FeedManager;
 import com.jinnova.smartpad.android.viewmap.ViewMapper;
 import com.jinnova.smartpad.R;
 
