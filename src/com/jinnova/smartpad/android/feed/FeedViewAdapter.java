@@ -84,7 +84,10 @@ public class FeedViewAdapter extends BaseAdapter {
 		return convertView;
 	}
 	
+	public static int viewCreationCount;
+	
 	private static View createView(ViewBuilder<Feed> viewBuilder, ViewGroup parent) {
+		viewCreationCount++;
 		LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View newView = viewBuilder.createView(parent, inflater);
 		ViewTag newTag = viewBuilder.createTag(newView);

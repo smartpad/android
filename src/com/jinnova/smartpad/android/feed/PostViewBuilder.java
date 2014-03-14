@@ -40,7 +40,7 @@ public class PostViewBuilder extends ViewBuilder<Post> {
 	@Override
 	public void loadView(View view, Post post) {
 		PostUI row = (PostUI) view.getTag();
-		row.date.setText(post.getDate());
+		row.date.setText(post.getDate() + " (views: " + FeedViewAdapter.viewCreationCount + ")");
 		row.decription.setText(post.getDecription());
 		row.title.setText(post.getTitle());
 		row.imageView.setImageResource(post.getImage());
