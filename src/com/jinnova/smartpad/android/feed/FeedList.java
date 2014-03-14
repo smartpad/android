@@ -23,7 +23,9 @@ public class FeedList {
 			for (int i = 0; i < ja.length(); i++) {
 				JSONObject feedJson = ja.getJSONObject(i);
 				feed = FeedManager.instance.instantiate(feedJson);
-				feeds.add(feed);
+				if (feed != null) {
+					feeds.add(feed);
+				}
 			}
 			if (feed != null) {
 				lastOrder = feed.getOrder();

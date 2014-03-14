@@ -82,6 +82,9 @@ public class FeedManager {
 		
 		try {
 			int feedType = convertFeedType(json.getString("type"));
+			if (feedType == TYPE_UNKNOWN) {
+				return null;
+			}
 			FeedInstantiator one = instantiators[feedType];
 			return one.instantiate(json);
 		} catch (JSONException e) {
