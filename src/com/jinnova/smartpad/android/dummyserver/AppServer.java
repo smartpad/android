@@ -19,10 +19,16 @@ public class AppServer {
 		try {
 			json.accumulate("ver", "a");
 			JSONArray ja = new JSONArray();
-			for (int i = 0; i < size - 1; ) {
+			for (int i = 0; i < size - 4; ) {
 				ja.put(newFeed(from + i, i % images.length));
 				i++;
-				ja.put(newBranch(from + i));
+				ja.put(newJson("branch", from + i, "Lotteria"));
+				i++;
+				ja.put(newJson("store", from + i, "Shop & Go"));
+				i++;
+				ja.put(newJson("sitem", from + i, "Cheese Burger"));
+				i++;
+				ja.put(newJson("promo", from + i, "Buy one get one free"));
 				i++;
 			}
 			json.accumulate("feeds", ja);
@@ -49,13 +55,12 @@ public class AppServer {
 		return json;
 	}
 	
-	private static JSONObject newBranch(int order) {
+	private static JSONObject newJson(String type, int order, String name) {
 		JSONObject json = new JSONObject();
 		try {
-			json.accumulate("type", "branch");
+			json.accumulate("type", type);
 			json.accumulate("ord", order);
-			json.accumulate("name", "KFC");
-			System.out.println(json);
+			json.accumulate("name", name);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

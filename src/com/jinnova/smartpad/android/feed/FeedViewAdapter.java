@@ -18,6 +18,9 @@ public class FeedViewAdapter extends BaseAdapter {
 		builderMap = new ViewBuilder[2];
 		builderMap[FeedManager.TYPE_POST] = new PostViewBuilder();
 		builderMap[FeedManager.TYPE_BRANCH] = new BranchViewBuilder();
+		builderMap[FeedManager.TYPE_PROMO] = new PromoViewBuilder();
+		builderMap[FeedManager.TYPE_STORE] = new StoreViewBuilder();
+		builderMap[FeedManager.TYPE_STOREITEM] = new StoreItemViewBuilder();
 	}
 	
 	@Override

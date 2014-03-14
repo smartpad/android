@@ -46,6 +46,27 @@ public class FeedManager {
 				return new Branch(json);
 			}
 		};
+		instantiators[TYPE_PROMO] = new FeedInstantiator() {
+			
+			@Override
+			public Feed instantiate(JSONObject json) {
+				return new Promotion(json);
+			}
+		};
+		instantiators[TYPE_STORE] = new FeedInstantiator() {
+			
+			@Override
+			public Feed instantiate(JSONObject json) {
+				return new Store(json);
+			}
+		};
+		instantiators[TYPE_STOREITEM] = new FeedInstantiator() {
+			
+			@Override
+			public Feed instantiate(JSONObject json) {
+				return new StoreItem(json);
+			}
+		};
 	}
 	
 	private static int convertFeedType(String type) {
