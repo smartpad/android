@@ -1,7 +1,6 @@
 package com.jinnova.smartpad.android;
 
 import android.content.Context;
-import android.view.LayoutInflater;
 
 import com.jinnova.smartpad.android.feed.BranchViewBuilder;
 import com.jinnova.smartpad.android.feed.Feed;
@@ -13,10 +12,9 @@ public class ViewMapper {
 	private final ViewBuilder<?>[] builderMap;
 	
 	public ViewMapper(Context context) {
-		LayoutInflater layoutInflator = LayoutInflater.from(context);
 		builderMap = new ViewBuilder[2];
-		builderMap[FeedManager.TYPE_POST] = new PostViewBuilder(layoutInflator);
-		builderMap[FeedManager.TYPE_BRANCH] = new BranchViewBuilder(layoutInflator);
+		builderMap[FeedManager.TYPE_POST] = new PostViewBuilder();
+		builderMap[FeedManager.TYPE_BRANCH] = new BranchViewBuilder();
 	}
 	
 	public int getViewTypeCount() {

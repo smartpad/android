@@ -1,8 +1,6 @@
 package com.jinnova.smartpad.android.feed;
 
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -10,9 +8,7 @@ import com.jinnova.smartpad.android.ViewBuilder;
 import com.jinnova.smartpad.android.ViewTag;
 import com.jinnova.smartpad.R;
 
-public class PostViewBuilder implements ViewBuilder<Post> {
-	
-	private LayoutInflater layoutInflator;
+public class PostViewBuilder extends ViewBuilder<Post> {
 	
 	private class PostUI extends ViewTag {
 		ImageView imageView;
@@ -25,14 +21,10 @@ public class PostViewBuilder implements ViewBuilder<Post> {
 			return FeedManager.TYPE_POST;
 		}
 	}
-	
-	public PostViewBuilder(LayoutInflater layoutInflator) {
-		this.layoutInflator = layoutInflator;
-	}
 
 	@Override
-	public View createView(ViewGroup parent) {
-		return layoutInflator.inflate(R.layout.news_row, parent, false);
+	protected int getLayoutTemplateId() {
+		return R.layout.news_row;
 	}
 
 	@Override

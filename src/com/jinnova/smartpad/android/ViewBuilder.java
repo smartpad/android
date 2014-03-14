@@ -1,15 +1,18 @@
 package com.jinnova.smartpad.android;
 
-import com.jinnova.smartpad.android.feed.Feed;
-
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public interface ViewBuilder<F extends Feed> {
+public abstract class ViewBuilder<F> {
+	
+	protected abstract int getLayoutTemplateId(); 
 
-	View createView(ViewGroup parent);
+	public View createView(ViewGroup parent, LayoutInflater layoutInflator) {
+		return layoutInflator.inflate(getLayoutTemplateId(), parent, false);
+	}
 	
-	ViewTag createTag(View view);
+	public abstract ViewTag createTag(View view);
 	
-	void loadView(View view, F f);
+	public abstract void loadView(View view, F f);
 }

@@ -1,6 +1,8 @@
 package com.jinnova.smartpad.android.feed;
 
+import android.content.Context;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -71,12 +73,14 @@ public class FeedViewAdapter extends BaseAdapter {
 			ViewTag tag = (ViewTag) convertView.getTag();
 			if (tag.getFeedType() != feed.getType()) {
 				Log.d(FeedViewAdapter.class.getName(), "view reuse failed");
-				convertView = viewBuilder.createView(parent);
+				LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				convertView = viewBuilder.createView(parent, inflater);
 				ViewTag newTag = viewBuilder.createTag(convertView);
 				convertView.setTag(newTag);
 			}
 		} else {
-			convertView = viewBuilder.createView(parent);
+			LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			convertView = viewBuilder.createView(parent, inflater);
 			ViewTag newTag = viewBuilder.createTag(convertView);
 			convertView.setTag(newTag);
 		}
