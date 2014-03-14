@@ -8,16 +8,16 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import com.jinnova.smartpad.android.ViewBuilder;
-import com.jinnova.smartpad.android.ViewMapper;
 import com.jinnova.smartpad.android.ViewTag;
 
 public class FeedViewAdapter extends BaseAdapter {
-
-	private ViewMapper viewMapper;
 	
-	public FeedViewAdapter(ViewMapper viewMapper) {
-		super();
-		this.viewMapper = viewMapper;
+	private final ViewBuilder<?>[] builderMap;
+	
+	public FeedViewAdapter() {
+		builderMap = new ViewBuilder[2];
+		builderMap[FeedManager.TYPE_POST] = new PostViewBuilder();
+		builderMap[FeedManager.TYPE_BRANCH] = new BranchViewBuilder();
 	}
 	
 	@Override
@@ -47,7 +47,7 @@ public class FeedViewAdapter extends BaseAdapter {
 
 	@Override
 	public int getViewTypeCount() {
-		return viewMapper.getViewTypeCount();
+		return builderMap.length;
 	}
 
 	@Override
@@ -65,27 +65,30 @@ public class FeedViewAdapter extends BaseAdapter {
 	public View getView(int pos, View convertView, ViewGroup parent) {
 		
 		Feed feed = FeedManager.instance.getFeed(pos);
-		ViewBuilder<Feed> viewBuilder = viewMapper.getBuilder(feed.getType());
+		@SuppressWarnings("unchecked")
+		ViewBuilder<Feed> viewBuilder = (ViewBuilder<Feed>) builderMap[feed.getType()];
 
 		if (convertView != null) {
 			//Heterogeneous lists can specify their number of view types, so that this View is always of the right type
 			//we do safe check anyway
 			ViewTag tag = (ViewTag) convertView.getTag();
-			if (tag.getFeedType() != feed.getType()) {
+			if (tag == null || tag.getFeedType() != feed.getType()) {
 				Log.d(FeedViewAdapter.class.getName(), "view reuse failed");
-				LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				convertView = viewBuilder.createView(parent, inflater);
-				ViewTag newTag = viewBuilder.createTag(convertView);
-				convertView.setTag(newTag);
+				convertView = createView(viewBuilder, parent);
 			}
 		} else {
-			LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			convertView = viewBuilder.createView(parent, inflater);
-			ViewTag newTag = viewBuilder.createTag(convertView);
-			convertView.setTag(newTag);
+			convertView = createView(viewBuilder, parent);
 		}
 		
 		viewBuilder.loadView(convertView, feed);
 		return convertView;
+	}
+	
+	private static View createView(ViewBuilder<Feed> viewBuilder, ViewGroup parent) {
+		LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View newView = viewBuilder.createView(parent, inflater);
+		ViewTag newTag = viewBuilder.createTag(newView);
+		newView.setTag(newTag);
+		return newView;
 	}
 }

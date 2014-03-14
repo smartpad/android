@@ -1,6 +1,5 @@
 package com.jinnova.smartpad.android.feed;
 
-import com.jinnova.smartpad.android.ViewMapper;
 import com.jinnova.smartpad.R;
 
 import android.app.Activity;
@@ -17,8 +16,7 @@ public class FeedActivity extends Activity {
 		FeedManager.initialize();
 		setContentView(R.layout.activity_main);
 		list = (ListView) findViewById(R.id.list);
-		ViewMapper viewMapper = new ViewMapper(this);
-		list.setAdapter(new FeedViewAdapter(viewMapper));
+		list.setAdapter(new FeedViewAdapter());
 	}
 
 }
