@@ -8,7 +8,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.widget.ListView;
 
-public class MainActivity extends Activity {
+public class FeedActivity extends Activity {
 
 	private ListView list;
 
