@@ -16,4 +16,9 @@ public class Promotion extends Feed {
 		return FeedManager.TYPE_PROMO;
 	}
 
+	@Override
+	public String getTarget() {
+		return null;
+	}
+	
 }

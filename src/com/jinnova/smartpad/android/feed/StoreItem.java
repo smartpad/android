@@ -16,4 +16,8 @@ public class StoreItem extends Feed {
 		return FeedManager.TYPE_STOREITEM;
 	}
 
+	@Override
+	public String getTarget() {
+		return null;
+	}
 }
