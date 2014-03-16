@@ -42,7 +42,7 @@ public abstract class SmartpadViewAdapter<T> extends BaseAdapter {
 			//we do safe check anyway
 			ViewTag tag = (ViewTag) convertView.getTag();
 			if (tag == null || tag.getItemViewType() != getItemViewType(pos)) {
-				Log.d(SmartpadViewAdapter.class.getName(), "view reuse failed");
+				Log.d("SmartpadViewAdapter", "view reuse failed");
 				convertView = createView(viewBuilder, parent);
 			}
 		} else {
