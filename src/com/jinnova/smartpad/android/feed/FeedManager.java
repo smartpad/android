@@ -1,9 +1,15 @@
 package com.jinnova.smartpad.android.feed;
 
+import java.util.ArrayList;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONTokener;
+
+import android.util.Log;
 
 import com.jinnova.smartpad.android.dummyserver.AppServer;
+import com.jinnova.smartpad.android.localstore.StoreManager;
 
 public class FeedManager {
 
@@ -15,6 +21,8 @@ public class FeedManager {
 	public static final int TYPE_PROMO = 4;
 	
 	public static final int TYPE_COUNT = 5;
+	
+	private static final int FEED_PAGESIZE = 50;
 	
 	public static FeedManager instance;
 	
@@ -87,9 +95,51 @@ public class FeedManager {
 
 	public int getFeedCount() {
 		if (feedList == null) {
-			feedList = new FeedList(AppServer.getFeeds(0, 50));
+			initialLoadFeeds();
 		}
 		return feedList.size();
+	}
+	
+	private void initialLoadFeeds() {
+		ArrayList<String> feedStrings = StoreManager.instance.getFeeds(0, FEED_PAGESIZE);
+		if (feedStrings != null && !feedStrings.isEmpty()) {
+			feedList = new FeedList(StoreManager.instance.getFeedListVersion(), feedStrings);
+		} else {
+			feedList = new FeedList(AppServer.getFeeds(0, 50));
+			StoreManager.instance.replaceFeedList(feedList.getVersion(), feedList.getBackedList());
+		}
+	}
+	
+	public void getMore() {
+		
+		if (feedList == null) {
+			initialLoadFeeds();
+			return;
+		}
+		
+		int currentCount = feedList.size();
+		ArrayList<String> moreFeeds = StoreManager.instance.getFeeds(currentCount, currentCount + FEED_PAGESIZE);
+		if (moreFeeds != null && !moreFeeds.isEmpty()) {
+			for (String feedString : moreFeeds) {
+				try {
+					JSONObject feedJson = (JSONObject) new JSONTokener(feedString).nextValue();
+					feedList.append(instantiate(feedJson));
+				} catch (JSONException e) {
+					Log.e("FeedManager", "JSONException from database");
+				}
+			}
+			return;
+		}
+		
+		//load more from server
+		FeedList remoteLoadedFeeds = new FeedList(AppServer.getFeeds(currentCount, currentCount + FEED_PAGESIZE));
+		if (remoteLoadedFeeds.getVersion().equals(feedList.getVersion())) {
+			feedList.appendAll(remoteLoadedFeeds.getBackedList());
+			StoreManager.instance.appendFeeds(remoteLoadedFeeds.getBackedList());
+		} else {
+			//StoreManager.instance.replaceFeedList(remoteLoadedFeeds.getVersion(), remoteLoadedFeeds.getBackedList());
+			//TODO ask user?
+		}
 	}
 	
 	public Feed getFeed(int pos) {
