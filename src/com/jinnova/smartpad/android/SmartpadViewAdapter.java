@@ -12,18 +12,34 @@ import com.jinnova.smartpad.android.ViewTag;
 
 public abstract class SmartpadViewAdapter<T> extends BaseAdapter {
 	
-	private ViewBuilder<T>[] builderMap;
+	//builder map is long/exhausted, because there are multiple layouts / custom layouts for each feed type. 
+	private ViewBuilder<?>[][] builderMap;
+	
+	private int builderCount;
 
-	@SuppressWarnings("unchecked")
 	protected SmartpadViewAdapter() {
-		builderMap = (ViewBuilder<T>[]) initBuilderMap();
 	}
 	
-	protected abstract ViewBuilder<?>[] initBuilderMap();
+	protected abstract ViewBuilder<?>[][] initBuilderMap();
+	
+	protected abstract int getItemViewLayout(T item);
+	
+	protected abstract int getItemViewType(T item);
+	
+	private void initBuilderMapInternal() {
+		builderMap = initBuilderMap();
+		builderCount = 0;
+		for (ViewBuilder<?>[] builders : builderMap) {
+			builderCount += builders.length;
+		}
+	}
 
 	@Override
 	public int getViewTypeCount() {
-		return builderMap.length;
+		if (builderMap == null) {
+			initBuilderMapInternal();
+		}
+		return builderCount;
 	}
 
 	/**
@@ -34,8 +50,15 @@ public abstract class SmartpadViewAdapter<T> extends BaseAdapter {
 	 */
 	@Override
 	public View getView(int pos, View convertView, ViewGroup parent) {
+		if (builderMap == null) {
+			initBuilderMapInternal();
+		}
 		
-		ViewBuilder<T> viewBuilder = (ViewBuilder<T>) builderMap[getItemViewType(pos)];
+
+		@SuppressWarnings("unchecked")
+		T item = (T) getItem(pos);
+		@SuppressWarnings("unchecked")
+		ViewBuilder<T> viewBuilder = (ViewBuilder<T>) builderMap[getItemViewType(item)][getItemViewLayout(item)];
 
 		if (convertView != null) {
 			//Heterogeneous lists can specify their number of view types, so that this View is always of the right type
@@ -48,9 +71,6 @@ public abstract class SmartpadViewAdapter<T> extends BaseAdapter {
 		} else {
 			convertView = createView(viewBuilder, parent);
 		}
-
-		@SuppressWarnings("unchecked")
-		T item = (T) getItem(pos);
 		viewBuilder.loadView(convertView, item);
 		return convertView;
 	}

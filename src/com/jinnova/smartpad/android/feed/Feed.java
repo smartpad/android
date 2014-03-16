@@ -15,6 +15,18 @@ public abstract class Feed {
 	
 	public abstract int getType();
 	
+	public int getLayoutOption() {
+		if (!json.has("layOpt")) {
+			return 0;
+		}
+		try {
+			return json.getInt("layOpt");
+		} catch (JSONException e) {
+			return 0;
+		}
+		
+	}
+	
 	public String getId() {
 		return null;
 	}
