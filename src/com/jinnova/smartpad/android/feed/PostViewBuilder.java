@@ -17,7 +17,7 @@ public class PostViewBuilder extends ViewBuilder<Post> {
 		TextView decription;
 		
 		@Override
-		public int getFeedType() {
+		public int getItemViewType() {
 			return FeedManager.TYPE_POST;
 		}
 	}

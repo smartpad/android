@@ -13,7 +13,7 @@ public class StoreItemViewBuilder extends ViewBuilder<StoreItem> {
 		TextView name;
 
 		@Override
-		public int getFeedType() {
+		public int getItemViewType() {
 			return FeedManager.TYPE_STOREITEM;
 		}
 	}

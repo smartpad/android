@@ -13,7 +13,7 @@ public class PromoViewBuilder extends ViewBuilder<Promotion> {
 		TextView name;
 
 		@Override
-		public int getFeedType() {
+		public int getItemViewType() {
 			return FeedManager.TYPE_PROMO;
 		}
 	}

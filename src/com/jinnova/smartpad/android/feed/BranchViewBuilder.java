@@ -13,7 +13,7 @@ public class BranchViewBuilder extends ViewBuilder<Branch> {
 		TextView name;
 
 		@Override
-		public int getFeedType() {
+		public int getItemViewType() {
 			return FeedManager.TYPE_BRANCH;
 		}
 	}
