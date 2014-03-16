@@ -28,17 +28,17 @@ public class PostViewBuilder extends ViewBuilder<Post> {
 
 	@Override
 	protected int getLayoutTemplateId() {
-		return R.layout.news_row;
+		return R.layout.feed_row;
 	}
 
 	@Override
 	public ViewTag createTag(View view) {
 		PostUI tag = new PostUI();
-		tag.title = (TextView) view.findViewById(R.id.title);
-		tag.imageView = (ImageView) view.findViewById(R.id.newsImage);
-		tag.date = (TextView) view.findViewById(R.id.date);
-		tag.decription = (TextView) view.findViewById(R.id.decription);
-		tag.goBtn = (Button) view.findViewById(R.id.goBtn);
+		tag.title = (TextView) view.findViewById(R.id.titleFeed);
+		tag.imageView = (ImageView) view.findViewById(R.id.imageFeed);
+		tag.date = (TextView) view.findViewById(R.id.dateFeed);
+		tag.decription = (TextView) view.findViewById(R.id.decriptionFeed);
+		tag.goBtn = (Button) view.findViewById(R.id.goBtnFeed);
 		return tag;
 	}
 

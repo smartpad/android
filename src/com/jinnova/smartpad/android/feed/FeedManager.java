@@ -19,8 +19,6 @@ public class FeedManager {
 	public static FeedManager instance;
 	
 	private FeedList feedList;
-	
-	//private final HashMap<String, Integer> feedTypeConverter;
 
 	private interface FeedInstantiator {
 		Feed instantiate(JSONObject json);

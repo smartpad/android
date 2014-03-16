@@ -24,14 +24,15 @@ public class PromoViewBuilder extends ViewBuilder<Promotion> {
 
 	@Override
 	protected int getLayoutTemplateId() {
-		return R.layout.news_row;
+		return R.layout.feed_row;
 	}
 
 	@Override
 	public ViewTag createTag(View view) {
 		PromotionUI row  = new PromotionUI();
-		row.name = (TextView) view.findViewById(R.id.decription);
-		row.goBtn = (Button) view.findViewById(R.id.goBtn);
+		row.name = (TextView) view.findViewById(R.id.decriptionFeed);
+		row.goBtn = (Button) view.findViewById(R.id.goBtnFeed);
+		
 		return row;
 	}
 
