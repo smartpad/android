@@ -24,14 +24,14 @@ public class StoreViewBuilder extends ViewBuilder<Store> {
 
 	@Override
 	protected int getLayoutTemplateId() {
-		return R.layout.news_row;
+		return R.layout.feed_row;
 	}
 
 	@Override
 	public ViewTag createTag(View view) {
 		StoreUI row  = new StoreUI();
-		row.name = (TextView) view.findViewById(R.id.decription);
-		row.goBtn = (Button) view.findViewById(R.id.goBtn);
+		row.name = (TextView) view.findViewById(R.id.decriptionFeed);
+		row.goBtn = (Button) view.findViewById(R.id.goBtnFeed);
 		return row;
 	}
 
