@@ -3,7 +3,7 @@ package com.jinnova.smartpad.android.feed;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Branch extends Feed {
+public class Branch extends Operation {
 
 	public Branch(JSONObject json) {
 		super(json);
