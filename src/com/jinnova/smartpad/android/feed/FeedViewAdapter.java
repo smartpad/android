@@ -1,5 +1,7 @@
 package com.jinnova.smartpad.android.feed;
 
+import android.app.Activity;
+
 import com.jinnova.smartpad.android.SmartpadViewAdapter;
 import com.jinnova.smartpad.android.ViewBuilder;
 
@@ -19,7 +21,11 @@ public class FeedViewAdapter extends SmartpadViewAdapter<Feed> {
 	
 	private static final int LAYOUTOPT_PROMO_DEFAULT = 0;
 	private static final int LAYOUTOPT_PROMO_COUNT = 1;
-
+	
+	public FeedViewAdapter(Activity activity) {
+		super(activity);
+	}
+	
 	@Override
 	protected ViewBuilder<?>[][] initBuilderMap() {
 		ViewBuilder<?>[][] builderMap = new ViewBuilder[FeedManager.TYPE_COUNT][];

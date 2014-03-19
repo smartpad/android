@@ -1,7 +1,6 @@
 package com.jinnova.smartpad.android.feed;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.app.DialogFragment;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -9,6 +8,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jinnova.smartpad.R;
+import com.jinnova.smartpad.android.SmartpadDialogFragment;
+import com.jinnova.smartpad.android.SmartpadContext;
 import com.jinnova.smartpad.android.ViewBuilder;
 import com.jinnova.smartpad.android.ViewTag;
 
@@ -43,7 +44,7 @@ public class PostViewBuilder extends ViewBuilder<Post> {
 	}
 
 	@Override
-	public void loadView(View view, Post post) {
+	public void loadView(View view, final Post post, final SmartpadContext context) {
 		PostUI row = (PostUI) view.getTag();
 		row.date.setText(post.getDate() + " (views: " + FeedViewAdapter.viewCreationCount + ")");
 		row.decription.setText(post.getDecription());
@@ -57,7 +58,7 @@ public class PostViewBuilder extends ViewBuilder<Post> {
 				
 				@Override
 				public void onClick(View v) {
-					AlertDialog alertDialog = new AlertDialog.Builder(v.getContext()).create();
+					/*AlertDialog alertDialog = new AlertDialog.Builder(v.getContext()).create();
 					alertDialog.setTitle("Alert");
 					alertDialog.setMessage(target);
 					alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
@@ -65,11 +66,12 @@ public class PostViewBuilder extends ViewBuilder<Post> {
 					// here you can add functions
 					}
 					});
-					alertDialog.show();
-				
+					alertDialog.show();*/
+					DialogFragment newFragment = SmartpadDialogFragment.createDialog(post.getDecription());
+				    newFragment.show(context.getCurrFragmentManager(), "dialog");
 				}
 			});
 		}
 	}
-
+	
 }

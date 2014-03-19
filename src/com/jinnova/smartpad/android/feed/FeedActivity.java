@@ -21,7 +21,7 @@ public class FeedActivity extends Activity {
 		
 		setContentView(R.layout.activity_main);
 		list = (ListView) findViewById(R.id.list);
-		list.setAdapter(new FeedViewAdapter());
+		list.setAdapter(new FeedViewAdapter(this));
 	}
 
 }

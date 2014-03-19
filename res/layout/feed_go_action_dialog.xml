@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <TextView
+        android:id="@+id/titleFD"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dip"
+        android:text="@string/action_settings"
+        android:textColor="#666666"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/messageFD"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/titleFD"
+        android:layout_marginLeft="4dip"
+        android:shadowColor="#000000"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:textStyle="bold" >
+    </TextView>
+
+    <Button
+        android:id="@+id/backBtnFD"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/messageFD"
+        android:layout_marginTop="3dp"
+        android:layout_alignParentLeft="true"
+        android:text="@string/go_btn" />
+
+</RelativeLayout>
