@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    android:background="@color/olive">
+
+    <TextView
+        android:id="@+id/titleFD"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dip"
+        android:text="@string/action_settings"
+        android:textColor="@color/red"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/messageFD"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/titleFD"
+        android:layout_marginLeft="4dip"
+        android:shadowColor="#000000"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:text="@string/action_settings" 
+        >
+    </TextView>
+
+    <Button
+        android:id="@+id/backBtnFD"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:text="@string/close_btn" />
+
+</RelativeLayout>

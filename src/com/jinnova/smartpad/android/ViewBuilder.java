@@ -14,5 +14,5 @@ public abstract class ViewBuilder<F> {
 	
 	public abstract ViewTag createTag(View view);
 	
-	public abstract void loadView(View view, F f);
+	public abstract void loadView(View view, F f, SmartpadContext context);
 }
