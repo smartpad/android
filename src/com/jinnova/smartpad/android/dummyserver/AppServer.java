@@ -44,9 +44,9 @@ public class AppServer {
 			json.accumulate("type", "post");
 			json.accumulate("ord", order);
 			json.accumulate("date", new Date().toString());
-			json.accumulate("desc", "Oscar không chỉ là nơi tôn vinh các tài năng điện ảnh mà còn " +
-					"là nơi thể hiện tính cách, văn hóa của các ngôi sao qua những bài phát biểu nhận giải.");
-			json.accumulate("title", "Người đàn bà cuồng dâm' bị cấm chiếu ở Thổ Nhĩ Kỳ");
+			json.accumulate("desc", "Oscar khĂ´ng chá»‰ lĂ  nÆ¡i tĂ´n vinh cĂ¡c tĂ i nÄƒng Ä‘iá»‡n áº£nh mĂ  cĂ²n " +
+					"lĂ  nÆ¡i thá»ƒ hiá»‡n tĂ­nh cĂ¡ch, vÄƒn hĂ³a cá»§a cĂ¡c ngĂ´i sao qua nhá»¯ng bĂ i phĂ¡t biá»ƒu nháº­n giáº£i.");
+			json.accumulate("title", "NgÆ°á»�i Ä‘Ă n bĂ  cuá»“ng dĂ¢m' bá»‹ cáº¥m chiáº¿u á»Ÿ Thá»• NhÄ© Ká»³");
 			json.accumulate("image", images[image]);
 			System.out.println(json);
 		} catch (JSONException e) {
