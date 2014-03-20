@@ -1,7 +1,5 @@
 package com.jinnova.smartpad.android;
 
-import android.app.Activity;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,17 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import com.jinnova.smartpad.android.ViewBuilder;
-import com.jinnova.smartpad.android.ViewTag;
-
-public abstract class SmartpadViewAdapter<T> extends BaseAdapter implements SmartpadContext {
+public abstract class SmartpadViewAdapter<T> extends BaseAdapter {
 	
 	//builder map is long/exhausted, because there are multiple layouts / custom layouts for each feed type. 
 	private ViewBuilder<?>[][] builderMap;
 	
 	private int builderCount;
 
-	private Activity activity;
+	private SmartpadContext context;
 
 	protected SmartpadViewAdapter() {
 	}
@@ -30,12 +25,12 @@ public abstract class SmartpadViewAdapter<T> extends BaseAdapter implements Smar
 	
 	protected abstract int getItemViewType(T item);
 	
-	public SmartpadViewAdapter(Activity activity) {
-		this.activity = activity;
+	public SmartpadViewAdapter(SmartpadContext context) {
+		this.context = context;
 	}
 	
-	protected Activity getActivity() {
-		return this.activity;
+	protected SmartpadContext getContext() {
+		return this.context;
 	}
 	
 	private void initBuilderMapInternal() {
@@ -82,7 +77,7 @@ public abstract class SmartpadViewAdapter<T> extends BaseAdapter implements Smar
 		} else {
 			convertView = createView(viewBuilder, parent);
 		}
-		viewBuilder.loadView(convertView, item, this);
+		viewBuilder.loadView(convertView, item, this.context);
 		return convertView;
 	}
 	
@@ -97,11 +92,4 @@ public abstract class SmartpadViewAdapter<T> extends BaseAdapter implements Smar
 		return newView;
 	}
 	
-	@Override
-	public FragmentManager getCurrFragmentManager() {
-		if (this.activity == null) {
-			return null;
-		}
-		return this.activity.getFragmentManager();
-	}
 }

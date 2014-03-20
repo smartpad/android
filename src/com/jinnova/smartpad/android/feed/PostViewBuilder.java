@@ -1,6 +1,5 @@
 package com.jinnova.smartpad.android.feed;
 
-import android.app.DialogFragment;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -8,8 +7,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jinnova.smartpad.R;
-import com.jinnova.smartpad.android.SmartpadDialogFragment;
 import com.jinnova.smartpad.android.SmartpadContext;
+import com.jinnova.smartpad.android.SmartpadDialogFragment;
 import com.jinnova.smartpad.android.ViewBuilder;
 import com.jinnova.smartpad.android.ViewTag;
 
@@ -67,8 +66,8 @@ public class PostViewBuilder extends ViewBuilder<Post> {
 					}
 					});
 					alertDialog.show();*/
-					DialogFragment newFragment = SmartpadDialogFragment.createDialog(post.getDecription());
-				    newFragment.show(context.getCurrFragmentManager(), "dialog");
+					SmartpadDialogFragment newFragment = SmartpadDialogFragment.createDialog(post.getDecription());
+					context.getCurrFragmentManager().beginTransaction().add(context.getParentViewGroupId(), newFragment).commit();
 				}
 			});
 		}

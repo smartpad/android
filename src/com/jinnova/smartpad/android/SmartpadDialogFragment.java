@@ -1,60 +1,45 @@
 package com.jinnova.smartpad.android;
 
-import android.app.DialogFragment;
+import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.jinnova.smartpad.R;
 
-public class SmartpadDialogFragment extends DialogFragment {
+public class SmartpadDialogFragment extends Fragment {
 	
-	private String text;
+	private String decription;
 	
-    public static SmartpadDialogFragment createDialog(String text) {
-        SmartpadDialogFragment f = new SmartpadDialogFragment();
+	public static final SmartpadDialogFragment createDialog(String decription) {
+		SmartpadDialogFragment result = new SmartpadDialogFragment();
+		result.decription = decription;
+		return result;
+	}
 
-        Bundle args = new Bundle();
-        args.putString("text", text);
-        f.setArguments(args);
-        f.text = text;
-        
-        return f;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Holo);
-    }
-
-    @Override
+	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.feed_go_action_dialog, container, false);
         View titleText = view.findViewById(R.id.titleFD);
-        ((TextView)titleText).setText("Post info detail");
+        ((TextView)titleText).setText("Info detail");
         
-        /*String text = savedInstanceState.getString("text");
-        if (text == null) {
-        	text = "";
-        }*/
-        ((TextView) view.findViewById(R.id.messageFD)).setText(text);
+        ((TextView) view.findViewById(R.id.messageFD)).setText(decription);
         
-        // TODO Watch for button clicks.
-        Button button = (Button)view.findViewById(R.id.backBtnFD);
+        Button button = (Button) view.findViewById(R.id.backBtnFD);
         button.setOnClickListener(new OnClickListener() {
         	
         	@Override
             public void onClick(View v) {
-        		SmartpadDialogFragment.this.setCancelable(true);
+				SmartpadDialogFragment.this.getFragmentManager()
+						.beginTransaction().remove(SmartpadDialogFragment.this)
+						.commit();
             }
         });
-
         return view;
     }
 }

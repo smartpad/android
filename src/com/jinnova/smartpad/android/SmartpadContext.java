@@ -5,4 +5,6 @@ import android.app.FragmentManager;
 public interface SmartpadContext {
 
 	FragmentManager getCurrFragmentManager();
+
+	int getParentViewGroupId();
 }
