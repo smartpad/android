@@ -2,15 +2,17 @@ package com.jinnova.smartpad.android.feed;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.jinnova.smartpad.R;
+import com.jinnova.smartpad.android.SmartpadContext;
 import com.jinnova.smartpad.android.localstore.StoreManager;
 
-public class FeedFragment extends Fragment{
+public class FeedFragment extends Fragment implements SmartpadContext {
 	private ListView list;
 	
 	public FeedFragment() {
@@ -23,7 +25,7 @@ public class FeedFragment extends Fragment{
 		StoreManager.initialize();
 		View view = inflater.inflate(R.layout.activity_main, null);
 		list = (ListView) view.findViewById(R.id.list);
-		list.setAdapter(new FeedViewAdapter());
+		list.setAdapter(new FeedViewAdapter(this));
 		return view;
 	}
 	
@@ -31,5 +33,15 @@ public class FeedFragment extends Fragment{
 	public void onSaveInstanceState(Bundle outState) {
 		/*super.onSaveInstanceState(outState);
 		outState.putInt("mColorRes", mColorRes);*/
+	}
+
+	@Override
+	public FragmentManager getCurrFragmentManager() {
+		return this.getFragmentManager();
+	}
+
+	@Override
+	public int getParentViewGroupId() {
+		return R.id.activity_main;
 	}
 }

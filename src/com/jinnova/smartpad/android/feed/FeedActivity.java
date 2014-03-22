@@ -1,20 +1,18 @@
 package com.jinnova.smartpad.android.feed;
 
 import android.app.Activity;
-import android.app.FragmentManager;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ListView;
 
 import com.jinnova.smartpad.R;
-import com.jinnova.smartpad.android.localstore.StoreManager;
-
-import com.jinnova.smartpad.R;
 import com.jinnova.smartpad.android.SmartpadContext;
 import com.jinnova.smartpad.android.localstore.StoreManager;
 
+@Deprecated
 public class FeedActivity extends Activity implements SmartpadContext {
 
 	private ListView list;
@@ -34,7 +32,7 @@ public class FeedActivity extends Activity implements SmartpadContext {
 	
 	@Override
 	public FragmentManager getCurrFragmentManager() {
-		return this.getFragmentManager();
+		return /*this.getFragmentManager()*/null;
 	}
 	
 	@Override
@@ -58,6 +56,7 @@ public class FeedActivity extends Activity implements SmartpadContext {
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }
+	}
 
 	@Override
 	public int getParentViewGroupId() {
