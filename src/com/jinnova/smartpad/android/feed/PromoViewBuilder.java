@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.jinnova.smartpad.R;
+import com.jinnova.smartpad.android.SmartpadContext;
 import com.jinnova.smartpad.android.ViewBuilder;
 import com.jinnova.smartpad.android.ViewTag;
 
@@ -37,7 +38,7 @@ public class PromoViewBuilder extends ViewBuilder<Promotion> {
 	}
 
 	@Override
-	public void loadView(View view, Promotion promo) {
+	public void loadView(View view, Promotion promo, SmartpadContext context) {
 		PromotionUI row = (PromotionUI) view.getTag();
 		row.name.setText("Promotion");
 		

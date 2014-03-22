@@ -7,15 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import com.jinnova.smartpad.android.ViewBuilder;
-import com.jinnova.smartpad.android.ViewTag;
-
 public abstract class SmartpadViewAdapter<T> extends BaseAdapter {
 	
 	//builder map is long/exhausted, because there are multiple layouts / custom layouts for each feed type. 
 	private ViewBuilder<?>[][] builderMap;
 	
 	private int builderCount;
+
+	private SmartpadContext context;
 
 	protected SmartpadViewAdapter() {
 	}
@@ -25,6 +24,14 @@ public abstract class SmartpadViewAdapter<T> extends BaseAdapter {
 	protected abstract int getItemViewLayout(T item);
 	
 	protected abstract int getItemViewType(T item);
+	
+	public SmartpadViewAdapter(SmartpadContext context) {
+		this.context = context;
+	}
+	
+	protected SmartpadContext getContext() {
+		return this.context;
+	}
 	
 	private void initBuilderMapInternal() {
 		builderMap = initBuilderMap();
@@ -53,7 +60,6 @@ public abstract class SmartpadViewAdapter<T> extends BaseAdapter {
 		if (builderMap == null) {
 			initBuilderMapInternal();
 		}
-		
 
 		@SuppressWarnings("unchecked")
 		T item = (T) getItem(pos);
@@ -71,7 +77,7 @@ public abstract class SmartpadViewAdapter<T> extends BaseAdapter {
 		} else {
 			convertView = createView(viewBuilder, parent);
 		}
-		viewBuilder.loadView(convertView, item);
+		viewBuilder.loadView(convertView, item, this.context);
 		return convertView;
 	}
 	
@@ -85,4 +91,5 @@ public abstract class SmartpadViewAdapter<T> extends BaseAdapter {
 		newView.setTag(newTag);
 		return newView;
 	}
+	
 }
