@@ -6,6 +6,9 @@
     <string name="action_search">Search</string>
     <string name="hello_world">Hello world!</string>
     <string name="go_btn">Go</string>
+    <string name="close_btn">Close</string>
+	<string name="empty"></string>
+    <string name="go_btn">Go</string>
 	<string name="feed_list_title">Feeds</string>
 	<string name="refresh_item">Refresh</string>
 	<string name="send_feedback_item">Send feedback</string>
