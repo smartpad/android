@@ -2,7 +2,12 @@ package com.jinnova.smartpad.android.feed;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.View;
+import android.widget.PopupMenu;
+import android.widget.PopupMenu.OnMenuItemClickListener;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jinnova.smartpad.R;
 
@@ -48,5 +53,42 @@ private Fragment mContent;
 		mContent = fragment;
 		getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
 		getSlidingMenu().showContent();
+	}
+	
+	public void showPopup(int itemId){
+        View view = findViewById(itemId);
+        final PopupMenu popupMenu = new PopupMenu(getSupportActionBar().getThemedContext(), view);
+        popupMenu.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+
+			@Override
+			public boolean onMenuItemClick(android.view.MenuItem item) {
+				popupMenu.dismiss();
+				return false;
+			}
+		});
+        popupMenu.getMenuInflater().inflate(R.menu.drop_down_menu, popupMenu.getMenu());
+        popupMenu.show();
+    }
+	
+	@Override 
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    // Inflate the menu items for use in the action bar
+	    getSupportMenuInflater().inflate(R.menu.main, menu);
+	    return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    // Handle presses on the action bar items
+	    switch (item.getItemId()) {
+			case android.R.id.home:
+				toggle();
+				return true;
+	        case R.id.action_settings:
+	        	showPopup(R.id.action_settings);
+	            return true;
+	        default:
+	            return super.onOptionsItemSelected(item);
+	    }
 	}
 }

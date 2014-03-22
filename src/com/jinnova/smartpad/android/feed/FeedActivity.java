@@ -1,13 +1,7 @@
 package com.jinnova.smartpad.android.feed;
 
-import com.jinnova.smartpad.R;
-import com.jinnova.smartpad.android.localstore.StoreManager;
 
-import android.app.Activity;
-import android.os.Bundle;
-import android.widget.ListView;
-
-public class FeedActivity extends Activity {
+/*public class FeedActivity extends Activity {
 
 	private ListView list;
 
@@ -23,5 +17,4 @@ public class FeedActivity extends Activity {
 		list = (ListView) findViewById(R.id.list);
 		list.setAdapter(new FeedViewAdapter());
 	}
-
-}
+}*/
