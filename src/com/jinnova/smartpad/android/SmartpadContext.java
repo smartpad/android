@@ -1,6 +1,6 @@
 package com.jinnova.smartpad.android;
 
-import android.support.v4.app.FragmentManager;
+import android.app.FragmentManager;
 
 public interface SmartpadContext {
 

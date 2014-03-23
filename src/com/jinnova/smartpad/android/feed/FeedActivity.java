@@ -1,8 +1,8 @@
 package com.jinnova.smartpad.android.feed;
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -32,7 +32,7 @@ public class FeedActivity extends Activity implements SmartpadContext {
 	
 	@Override
 	public FragmentManager getCurrFragmentManager() {
-		return /*this.getFragmentManager()*/null;
+		return this.getFragmentManager();
 	}
 	
 	@Override

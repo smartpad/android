@@ -1,7 +1,7 @@
 package com.jinnova.smartpad.android.feed;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
+import android.app.FragmentTransaction;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
@@ -25,12 +25,12 @@ public class BaseActivity extends SlidingFragmentActivity {
 		// set the Behind View
 		setBehindContentView(R.layout.menu_frame);
 		if (savedInstanceState == null) {
-			FragmentTransaction t = this.getSupportFragmentManager().beginTransaction();
+			FragmentTransaction t = this.getFragmentManager().beginTransaction();
 			mFrag = new MenuFragment();
 			t.replace(R.id.menu_frame, mFrag);
 			t.commit();
 		} else {
-			mFrag = (MenuFragment)this.getSupportFragmentManager().findFragmentById(R.id.menu_frame);
+			mFrag = (MenuFragment)this.getFragmentManager().findFragmentById(R.id.menu_frame);
 		}
 
 		// customize the SlidingMenu
@@ -41,6 +41,6 @@ public class BaseActivity extends SlidingFragmentActivity {
 		sm.setFadeDegree(0.35f);
 		sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 	}
 }
