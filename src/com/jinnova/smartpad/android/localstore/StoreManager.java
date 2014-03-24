@@ -14,6 +14,9 @@ public class StoreManager {
 	
 	public static StoreManager instance;
 	
+	private StoreManager() {
+		
+	}
 	public static void initialize() {
 		instance = new StoreManager();
 	}
