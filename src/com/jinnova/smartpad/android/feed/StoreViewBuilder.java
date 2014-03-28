@@ -8,7 +8,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.jinnova.smartpad.R;
-import com.jinnova.smartpad.android.SmartpadContext;
+import com.jinnova.smartpad.android.SmartpadActivity;
 import com.jinnova.smartpad.android.ViewBuilder;
 import com.jinnova.smartpad.android.ViewTag;
 
@@ -37,7 +37,7 @@ public class StoreViewBuilder extends ViewBuilder<Store> {
 	}
 
 	@Override
-	public void loadView(View view, Store store, SmartpadContext context) {
+	public void loadView(View view, Store store, SmartpadActivity context) {
 		StoreUI row = (StoreUI) view.getTag();
 		row.name.setText("Store");
 		final String target = store.getTarget();

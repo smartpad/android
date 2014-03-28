@@ -7,7 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jinnova.smartpad.R;
-import com.jinnova.smartpad.android.SmartpadContext;
+import com.jinnova.smartpad.android.SmartpadActivity;
 import com.jinnova.smartpad.android.SmartpadDialogFragment;
 import com.jinnova.smartpad.android.ViewBuilder;
 import com.jinnova.smartpad.android.ViewTag;
@@ -43,7 +43,7 @@ public class PostViewBuilder extends ViewBuilder<Post> {
 	}
 
 	@Override
-	public void loadView(View view, final Post post, final SmartpadContext context) {
+	public void loadView(View view, final Post post, final SmartpadActivity activity) {
 		PostUI row = (PostUI) view.getTag();
 		row.date.setText(post.getDate() + " (views: " + FeedViewAdapter.viewCreationCount + ")");
 		row.decription.setText(post.getDecription());
@@ -67,7 +67,7 @@ public class PostViewBuilder extends ViewBuilder<Post> {
 					});
 					alertDialog.show();*/
 					SmartpadDialogFragment newFragment = SmartpadDialogFragment.createDialog(post.getDecription());
-					context.getCurrFragmentManager().beginTransaction().add(context.getParentViewGroupId(), newFragment).commit();
+					activity.getFragmentManager().beginTransaction().add(activity.getParentViewGroupId(), newFragment).commit();
 				}
 			});
 		}

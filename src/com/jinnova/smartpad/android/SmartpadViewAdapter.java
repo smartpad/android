@@ -14,7 +14,7 @@ public abstract class SmartpadViewAdapter<T> extends BaseAdapter {
 	
 	private int builderCount;
 
-	private SmartpadContext context;
+	private SmartpadActivity activity;
 
 	protected SmartpadViewAdapter() {
 	}
@@ -25,12 +25,8 @@ public abstract class SmartpadViewAdapter<T> extends BaseAdapter {
 	
 	protected abstract int getItemViewType(T item);
 	
-	public SmartpadViewAdapter(SmartpadContext context) {
-		this.context = context;
-	}
-	
-	protected SmartpadContext getContext() {
-		return this.context;
+	public SmartpadViewAdapter(SmartpadActivity activity) {
+		this.activity = activity;
 	}
 	
 	private void initBuilderMapInternal() {
@@ -77,7 +73,7 @@ public abstract class SmartpadViewAdapter<T> extends BaseAdapter {
 		} else {
 			convertView = createView(viewBuilder, parent);
 		}
-		viewBuilder.loadView(convertView, item, this.context);
+		viewBuilder.loadView(convertView, item, this.activity);
 		return convertView;
 	}
 	

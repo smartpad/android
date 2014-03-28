@@ -4,7 +4,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.jinnova.smartpad.R;
-import com.jinnova.smartpad.android.SmartpadContext;
+import com.jinnova.smartpad.android.SmartpadActivity;
 import com.jinnova.smartpad.android.ViewBuilder;
 import com.jinnova.smartpad.android.ViewTag;
 
@@ -32,7 +32,7 @@ public class BranchViewBuilder extends ViewBuilder<Branch> {
 	}
 
 	@Override
-	public void loadView(View view, Branch branch, SmartpadContext context) {
+	public void loadView(View view, Branch branch, SmartpadActivity context) {
 		BranchUI row = (BranchUI) view.getTag();
 		row.image.setImageResource(R.drawable.lotteria_logo);
 	}

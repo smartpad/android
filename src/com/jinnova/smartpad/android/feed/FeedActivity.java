@@ -1,8 +1,6 @@
 package com.jinnova.smartpad.android.feed;
 
 import android.app.ActionBar;
-import android.app.Activity;
-import android.app.FragmentManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,10 +10,10 @@ import android.widget.PopupMenu;
 import android.widget.PopupMenu.OnMenuItemClickListener;
 
 import com.jinnova.smartpad.R;
-import com.jinnova.smartpad.android.SmartpadContext;
+import com.jinnova.smartpad.android.SmartpadActivity;
 import com.jinnova.smartpad.android.localstore.StoreManager;
 
-public class FeedActivity extends Activity implements SmartpadContext {
+public class FeedActivity extends SmartpadActivity {
 
 	private ListView list;
 
@@ -35,11 +33,6 @@ public class FeedActivity extends Activity implements SmartpadContext {
 		ab.setDisplayShowTitleEnabled(false);
 		ab.setDisplayHomeAsUpEnabled(true);
 		//ab.setLogo(R.drawable.ic_action_storage);
-	}
-
-	@Override
-	public FragmentManager getCurrFragmentManager() {
-		return this.getFragmentManager();
 	}
 
 	@Override
