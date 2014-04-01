@@ -1,13 +1,7 @@
 package com.jinnova.smartpad.android.feed;
 
-import android.app.ActionBar;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.ListView;
-import android.widget.PopupMenu;
-import android.widget.PopupMenu.OnMenuItemClickListener;
 
 import com.jinnova.smartpad.R;
 import com.jinnova.smartpad.android.SmartpadActivity;
@@ -28,10 +22,11 @@ public class FeedActivity extends SmartpadActivity {
 		setContentView(R.layout.activity_main);
 		list = (ListView) findViewById(R.id.list);
 		list.setAdapter(new FeedViewAdapter(this));
-		ActionBar ab = getActionBar();
+		//TODO: Move To SmartpadActivity
+		/*ActionBar ab = getActionBar();
 		ab.setIcon(R.drawable.ic_action_storage);
 		ab.setDisplayShowTitleEnabled(false);
-		ab.setDisplayHomeAsUpEnabled(true);
+		ab.setDisplayHomeAsUpEnabled(true);*/
 		//ab.setLogo(R.drawable.ic_action_storage);
 	}
 
@@ -39,8 +34,8 @@ public class FeedActivity extends SmartpadActivity {
 	public int getParentViewGroupId() {
 		return R.id.activity_main;
 	}
-
-	public void showPopup(int itemId) {
+	//TODO: Move To SmartpadActivity
+	/*public void showPopup(int itemId) {
 		View view = findViewById(itemId);
 		final PopupMenu popupMenu = new PopupMenu(getActionBar()
 				.getThemedContext(), view);
@@ -66,15 +61,26 @@ public class FeedActivity extends SmartpadActivity {
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
 				switch (item.getItemId()) {
-				case R.id.feed_list_menu_item:
-					//toggle();
+				case R.id.promotion_menu_item:
+					switchContent(new PromotionFragment());
+					return true;
+				case R.id.store_catalog_menu_item:
+					switchContent(new StoreCatalogFragment());
+					return true;
+				case R.id.favorite_menu_item:
+					switchContent(new FavoriteFragment());
+					return true;
+				case R.id.orders_menu_item:
+					switchContent(new OrdersFragment());
+					return true;
+				case R.id.member_card_menu_item:
+					switchContent(new MemberCardFragment());
 					return true;
 				}
-				//popupMenu.dismiss();
 				return false;
 			}
 		});
-		popupMenu.getMenuInflater().inflate(R.menu.drop_right_down_menu,
+		popupMenu.getMenuInflater().inflate(R.menu.right_drop_down_menu,
 				popupMenu.getMenu());
 		popupMenu.show();
 	}
@@ -99,4 +105,15 @@ public class FeedActivity extends SmartpadActivity {
 			return super.onOptionsItemSelected(item);
 		}
 	}
+	
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		getFragmentManager().putFragment(outState, "mContent", mContent);
+	}
+	
+	public void switchContent(Fragment fragment) {
+		mContent = fragment;
+		getFragmentManager().beginTransaction().replace(R.id.activity_main, fragment).commit();
+	}*/
 }
