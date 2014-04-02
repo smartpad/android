@@ -1,7 +1,7 @@
 package com.jinnova.smartpad.android;
 
+import com.jinnova.smartpad.android.db.FeedDBManager;
 import com.jinnova.smartpad.android.feed.FeedManager;
-import com.jinnova.smartpad.android.localstore.StoreManager;
 
 import android.app.Application;
 
@@ -12,7 +12,7 @@ public class SmartpadApp extends Application {
 		super.onCreate();
 
 		FeedManager.initialize();
-		StoreManager.initialize();
+		FeedDBManager.initialize();
 	}
 
 }

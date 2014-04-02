@@ -1,4 +1,4 @@
-package com.jinnova.smartpad.android.localstore;
+package com.jinnova.smartpad.android.db;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,15 +10,15 @@ import com.jinnova.smartpad.android.feed.Feed;
  * 		id:int|value:string
  *
  */
-public class StoreManager {
+public class FeedDBManager {
 	
-	public static StoreManager instance;
+	public static FeedDBManager instance;
 	
-	private StoreManager() {
+	private FeedDBManager() {
 		
 	}
 	public static void initialize() {
-		instance = new StoreManager();
+		instance = new FeedDBManager();
 	}
 	
 	/**

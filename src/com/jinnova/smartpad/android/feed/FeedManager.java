@@ -8,8 +8,8 @@ import org.json.JSONTokener;
 
 import android.util.Log;
 
+import com.jinnova.smartpad.android.db.FeedDBManager;
 import com.jinnova.smartpad.android.dummyserver.AppServer;
-import com.jinnova.smartpad.android.localstore.StoreManager;
 
 public class FeedManager {
 
@@ -22,7 +22,7 @@ public class FeedManager {
 	
 	public static final int TYPE_COUNT = 5;
 	
-	private static final int FEED_PAGESIZE = 50;
+	private static final int FEED_PAGESIZE = 10;
 	
 	public static FeedManager instance;
 	
@@ -101,25 +101,28 @@ public class FeedManager {
 	}
 	
 	private void initialLoadFeeds() {
-		ArrayList<String> feedStrings = StoreManager.instance.getFeeds(0, FEED_PAGESIZE);
+		ArrayList<String> feedStrings = FeedDBManager.instance.getFeeds(0, FEED_PAGESIZE);
 		if (feedStrings != null && !feedStrings.isEmpty()) {
-			feedList = new FeedList(StoreManager.instance.getFeedListVersion(), feedStrings);
+			//found data from local db, load from there
+			feedList = new FeedList(FeedDBManager.instance.getFeedListVersion(), feedStrings);
 		} else {
-			feedList = new FeedList(AppServer.getFeeds(0, 50));
-			StoreManager.instance.replaceFeedList(feedList.getVersion(), feedList.getBackedList());
+			//no saved data, load from server
+			feedList = new FeedList(AppServer.getFeeds(0, FEED_PAGESIZE));
+			FeedDBManager.instance.replaceFeedList(feedList.getVersion(), feedList.getBackedList());
 		}
 	}
 	
-	public void getMore() {
+	public boolean getMore() {
 		
 		if (feedList == null) {
 			initialLoadFeeds();
-			return;
+			return true;
 		}
 		
 		int currentCount = feedList.size();
-		ArrayList<String> moreFeeds = StoreManager.instance.getFeeds(currentCount, currentCount + FEED_PAGESIZE);
+		ArrayList<String> moreFeeds = FeedDBManager.instance.getFeeds(currentCount, currentCount + FEED_PAGESIZE);
 		if (moreFeeds != null && !moreFeeds.isEmpty()) {
+			//found more data from db, keep loading from db only
 			for (String feedString : moreFeeds) {
 				try {
 					JSONObject feedJson = (JSONObject) new JSONTokener(feedString).nextValue();
@@ -128,17 +131,24 @@ public class FeedManager {
 					Log.e("FeedManager", "JSONException from database");
 				}
 			}
-			return;
+			return true;
 		}
 		
 		//load more from server
 		FeedList remoteLoadedFeeds = new FeedList(AppServer.getFeeds(currentCount, currentCount + FEED_PAGESIZE));
 		if (remoteLoadedFeeds.getVersion().equals(feedList.getVersion())) {
-			feedList.appendAll(remoteLoadedFeeds.getBackedList());
-			StoreManager.instance.appendFeeds(remoteLoadedFeeds.getBackedList());
+			ArrayList<Feed> justLoadedList = remoteLoadedFeeds.getBackedList();
+			if (!justLoadedList.isEmpty()) {
+				feedList.appendAll(remoteLoadedFeeds.getBackedList());
+				FeedDBManager.instance.appendFeeds(remoteLoadedFeeds.getBackedList());
+				return true;
+			} else {
+				return false;
+			}
 		} else {
 			//StoreManager.instance.replaceFeedList(remoteLoadedFeeds.getVersion(), remoteLoadedFeeds.getBackedList());
 			//TODO ask user?
+			return true;
 		}
 	}
 	
