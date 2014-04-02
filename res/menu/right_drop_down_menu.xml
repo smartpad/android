@@ -6,12 +6,6 @@
         android:visible="true"
         android:showAsAction="always">
     </item>
-    <item
-        android:id="@+id/promotion_menu_item"
-        android:title="@string/promotion_feed_menu"
-        android:visible="true"
-        android:showAsAction="always">
-    </item>
 
     <item
         android:id="@+id/store_catalog_menu_item"

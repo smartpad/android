@@ -6,12 +6,11 @@
     <string name="action_search">Search</string>
     <string name="hello_world">Hello world!</string>
     <string name="go_btn">Go</string>
-	<string name="feed_list_title">Feeds</string>
+	<string name="feed_list_title">Khuyến mãi</string>
 	<string name="refresh_item">Refresh</string>
 	<string name="send_feedback_item">Send feedback</string>
     <string name="close_btn">Close</string>
 	<string name="empty"></string>
-	<string name="promotion_feed_menu">Khuyến mãi</string>
 	<string name="store_catalog_menu">Cửa hàng</string>
 	<string name="orders_menu">Đơn hàng</string>
 	<string name="favorite_menu">Quan tâm</string>

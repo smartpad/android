@@ -22,15 +22,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.jinnova.smartpad.android.feed.FavoriteActivity"
+        <activity android:name="com.jinnova.smartpad.android.fav.FavoriteActivity"
              android:label="@string/app_name"></activity>
-        <activity android:name="com.jinnova.smartpad.android.feed.MemberCardActivity"
+        <activity android:name="com.jinnova.smartpad.android.member.MemberCardActivity"
              android:label="@string/app_name"></activity>
-        <activity android:name="com.jinnova.smartpad.android.feed.OrdersActivity"
+        <activity android:name="com.jinnova.smartpad.android.order.OrdersActivity"
              android:label="@string/app_name"></activity>
-        <activity android:name="com.jinnova.smartpad.android.feed.PromotionActivity"
+        <activity android:name="com.jinnova.smartpad.android.promo.PromotionActivity"
              android:label="@string/app_name"></activity>
-        <activity android:name="com.jinnova.smartpad.android.feed.StoreCatalogActivity"
+        <activity android:name="com.jinnova.smartpad.android.cat.StoreCatalogActivity"
              android:label="@string/app_name"></activity>
     </application>
 
