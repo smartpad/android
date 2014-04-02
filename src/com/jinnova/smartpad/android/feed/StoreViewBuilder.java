@@ -7,7 +7,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.jinnova.smartpad.R;
+import com.jinnova.smartpad.android.R;
 import com.jinnova.smartpad.android.SmartpadActivity;
 import com.jinnova.smartpad.android.ViewBuilder;
 import com.jinnova.smartpad.android.ViewTag;

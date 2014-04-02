@@ -6,7 +6,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.jinnova.smartpad.R;
+import com.jinnova.smartpad.android.R;
 import com.jinnova.smartpad.android.SmartpadActivity;
 import com.jinnova.smartpad.android.SmartpadDialogFragment;
 import com.jinnova.smartpad.android.ViewBuilder;

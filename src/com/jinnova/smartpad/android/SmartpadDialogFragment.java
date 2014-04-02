@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.jinnova.smartpad.R;
+import com.jinnova.smartpad.android.R;
 
 public class SmartpadDialogFragment extends Fragment {
 	

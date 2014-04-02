@@ -3,7 +3,7 @@ package com.jinnova.smartpad.android.feed;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.jinnova.smartpad.R;
+import com.jinnova.smartpad.android.R;
 import com.jinnova.smartpad.android.SmartpadActivity;
 import com.jinnova.smartpad.android.ViewBuilder;
 import com.jinnova.smartpad.android.ViewTag;

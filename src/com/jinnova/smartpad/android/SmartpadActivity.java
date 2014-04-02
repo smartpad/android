@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.PopupMenu;
 import android.widget.PopupMenu.OnMenuItemClickListener;
 
-import com.jinnova.smartpad.R;
+import com.jinnova.smartpad.android.R;
 import com.jinnova.smartpad.android.feed.FavoriteActivity;
 import com.jinnova.smartpad.android.feed.FeedActivity;
 import com.jinnova.smartpad.android.feed.MemberCardActivity;
