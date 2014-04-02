@@ -36,8 +36,7 @@ public abstract class SmartpadActivity extends Activity {
 	
 	public void showPopup(int itemId) {
 		View view = findViewById(itemId);
-		final PopupMenu popupMenu = new PopupMenu(getActionBar()
-				.getThemedContext(), view);
+		final PopupMenu popupMenu = new PopupMenu(getActionBar().getThemedContext(), view);
 		popupMenu.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 
 			@Override
@@ -46,15 +45,13 @@ public abstract class SmartpadActivity extends Activity {
 				return false;
 			}
 		});
-		popupMenu.getMenuInflater().inflate(R.menu.drop_down_menu,
-				popupMenu.getMenu());
+		popupMenu.getMenuInflater().inflate(R.menu.drop_down_menu, popupMenu.getMenu());
 		popupMenu.show();
 	}
 
 	public void showRightPopup(int itemId) {
 		View view = findViewById(itemId);
-		final PopupMenu popupMenu = new PopupMenu(getActionBar()
-				.getThemedContext(), view);
+		final PopupMenu popupMenu = new PopupMenu(getActionBar().getThemedContext(), view);
 		popupMenu.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 
 			@Override
@@ -82,8 +79,7 @@ public abstract class SmartpadActivity extends Activity {
 				return false;
 			}
 		});
-		popupMenu.getMenuInflater().inflate(R.menu.right_drop_down_menu,
-				popupMenu.getMenu());
+		popupMenu.getMenuInflater().inflate(R.menu.right_drop_down_menu, popupMenu.getMenu());
 		popupMenu.show();
 	}
 	@Override

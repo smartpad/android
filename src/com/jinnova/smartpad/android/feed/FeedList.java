@@ -9,7 +9,7 @@ import org.json.JSONTokener;
 
 import android.util.Log;
 
-public class FeedList {
+class FeedList {
 	
 	private String version;
 	
