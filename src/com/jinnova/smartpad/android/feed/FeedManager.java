@@ -1,5 +1,6 @@
 package com.jinnova.smartpad.android.feed;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.json.JSONException;
@@ -107,8 +108,12 @@ public class FeedManager {
 			feedList = new FeedList(FeedDBManager.instance.getFeedListVersion(), feedStrings);
 		} else {
 			//no saved data, load from server
-			feedList = new FeedList(AppServer.getFeeds(0, FEED_PAGESIZE));
-			FeedDBManager.instance.replaceFeedList(feedList.getVersion(), feedList.getBackedList());
+			try {
+				feedList = new FeedList(AppServer.getFeeds(0, FEED_PAGESIZE));
+				FeedDBManager.instance.replaceFeedList(feedList.getVersion(), feedList.getBackedList());
+			} catch (IOException e) {
+				feedList = new FeedList(null);
+			}
 		}
 	}
 	
@@ -135,27 +140,28 @@ public class FeedManager {
 		}
 		
 		//load more from server
-		FeedList remoteLoadedFeeds = new FeedList(AppServer.getFeeds(currentCount, currentCount + FEED_PAGESIZE));
-		if (remoteLoadedFeeds.getVersion().equals(feedList.getVersion())) {
-			ArrayList<Feed> justLoadedList = remoteLoadedFeeds.getBackedList();
-			if (!justLoadedList.isEmpty()) {
-				feedList.appendAll(remoteLoadedFeeds.getBackedList());
-				FeedDBManager.instance.appendFeeds(remoteLoadedFeeds.getBackedList());
-				return true;
+		try {
+			FeedList remoteLoadedFeeds  = new FeedList(AppServer.getFeeds(currentCount, currentCount + FEED_PAGESIZE));
+			if (remoteLoadedFeeds != null && remoteLoadedFeeds.getVersion().equals(feedList.getVersion())) {
+				ArrayList<Feed> justLoadedList = remoteLoadedFeeds.getBackedList();
+				if (!justLoadedList.isEmpty()) {
+					feedList.appendAll(remoteLoadedFeeds.getBackedList());
+					FeedDBManager.instance.appendFeeds(remoteLoadedFeeds.getBackedList());
+					return true;
+				} else {
+					return false;
+				}
 			} else {
-				return false;
+				//StoreManager.instance.replaceFeedList(remoteLoadedFeeds.getVersion(), remoteLoadedFeeds.getBackedList());
+				//TODO ask user?
+				return true;
 			}
-		} else {
-			//StoreManager.instance.replaceFeedList(remoteLoadedFeeds.getVersion(), remoteLoadedFeeds.getBackedList());
-			//TODO ask user?
-			return true;
+		} catch (IOException e) {
+			return false;
 		}
 	}
 	
 	public Feed getFeed(int pos) {
-		if (feedList == null) {
-			feedList = new FeedList(AppServer.getFeeds(0, 50));
-		}
 		return feedList.get(pos);
 	}
 	

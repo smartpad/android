@@ -34,6 +34,10 @@ class FeedList {
 	}
 
 	public FeedList(JSONObject json) {
+		if (json == null) {
+			feeds = new ArrayList<Feed>();
+			return;
+		}
 		try {
 			version = json.getString("ver");
 			JSONArray ja = json.getJSONArray("feeds");
