@@ -3,6 +3,9 @@ package com.jinnova.smartpad.android.db;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
+
+import com.jinnova.smartpad.android.UIDataStore;
 import com.jinnova.smartpad.android.feed.Feed;
 
 /**
@@ -10,21 +13,17 @@ import com.jinnova.smartpad.android.feed.Feed;
  * 		id:int|value:string
  *
  */
-public class FeedDBManager {
+public class FeedDBManager implements UIDataStore<Feed> {
 	
-	public static FeedDBManager instance;
-	
-	private FeedDBManager() {
+	public FeedDBManager() {
 		
-	}
-	public static void initialize() {
-		instance = new FeedDBManager();
 	}
 	
 	/**
 	 * @return value in table smartpad, column feed_version 
 	 */
-	public String getFeedListVersion() {
+	@Override
+	public String getListVersion() {
 		return "a";
 	}
 	
@@ -35,7 +34,8 @@ public class FeedDBManager {
 	 * @param size
 	 * @return
 	 */
-	public ArrayList<String> getFeeds(int from, int size) {
+	@Override
+	public ArrayList<String> get(int from, int size) {
 		return null;
 	}
 	
@@ -43,7 +43,8 @@ public class FeedDBManager {
 	 * insert to table feeds
 	 * @param feeds
 	 */
-	public void appendFeeds(List<?> feeds) {
+	@Override
+	public void append(JSONArray dataArray) {
 		
 	}
 	

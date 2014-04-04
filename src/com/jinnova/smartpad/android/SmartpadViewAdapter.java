@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-public abstract class SmartpadViewAdapter<T extends UIData> extends BaseAdapter implements JsonObjectFactory<T> {
+public abstract class SmartpadViewAdapter<T extends UIData> extends BaseAdapter implements UIDataFactory<T> {
 	
 	//builder map is long/exhausted, because there are multiple layouts / custom layouts for each feed type. 
 	private ViewBuilder<?>[][] builderMap;
@@ -25,9 +25,9 @@ public abstract class SmartpadViewAdapter<T extends UIData> extends BaseAdapter 
 	
 	protected abstract ViewBuilder<?>[][] initBuilderMap();
 	
-	public SmartpadViewAdapter(SmartpadActivity activity) {
+	public SmartpadViewAdapter(SmartpadActivity activity, UIDataStore<T> persistStore, String servicePath) {
 		this.activity = activity;
-		feedList = new UIDataList<T>(this);
+		feedList = new UIDataList<T>(persistStore, this, servicePath);
 	}
 	
 	private void initBuilderMapInternal() {
@@ -63,10 +63,6 @@ public abstract class SmartpadViewAdapter<T extends UIData> extends BaseAdapter 
 		}
 		return builderCount;
 	}
-	
-	//protected abstract int getItemViewLayout(T item);
-	
-	//protected abstract int getItemViewType(T item);
 
 	/* (non-Javadoc)
 	 * @see android.widget.BaseAdapter#getItemViewType(int)
@@ -76,20 +72,6 @@ public abstract class SmartpadViewAdapter<T extends UIData> extends BaseAdapter 
 		Feed feed = (Feed) feedList.get(position);
 		return feed.getType();
 	}
-
-	/* (non-Javadoc)
-	 * @see com.jinnova.smartpad.android.SmartpadViewAdapter#getItemViewType(java.lang.Object)
-	 */
-	/*protected int getItemViewType(Feed feed) {
-		return feed.getType();
-	}*/
-
-	/* (non-Javadoc)
-	 * @see com.jinnova.smartpad.android.SmartpadViewAdapter#getItemViewLayout()
-	 */
-	/*protected int getItemViewLayout(Feed feed) {
-		return feed.getLayoutOption();
-	}*/
 
 	/* (non-Javadoc)
 	 * @see android.widget.Adapter#getItemId(int)
