@@ -14,7 +14,7 @@ public class Branch extends Operation {
 	 */
 	@Override
 	public int getType() {
-		return FeedManager.TYPE_BRANCH;
+		return FeedViewAdapter.TYPE_BRANCH;
 	}
 
 	public String getName() {

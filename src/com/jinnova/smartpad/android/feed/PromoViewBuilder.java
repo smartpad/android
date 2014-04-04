@@ -19,7 +19,7 @@ public class PromoViewBuilder extends ViewBuilder<Promotion> {
 		Button goBtn;
 		@Override
 		public int getItemViewType() {
-			return FeedManager.TYPE_PROMO;
+			return FeedViewAdapter.TYPE_PROMO;
 		}
 	}
 

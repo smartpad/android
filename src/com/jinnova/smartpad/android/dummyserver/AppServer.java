@@ -16,8 +16,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.os.AsyncTask;
+import android.widget.Adapter;
+import android.widget.BaseAdapter;
 
+import com.jinnova.smartpad.android.UIDataList;
 import com.jinnova.smartpad.android.R;
+import com.jinnova.smartpad.android.SmartpadViewAdapter;
 
 @SuppressWarnings("unused")
 public class AppServer {
@@ -26,24 +30,49 @@ public class AppServer {
 			, R.drawable.anh5, R.drawable.anh6, R.drawable.anh7, R.drawable.anh8
 			, R.drawable.anh9, R.drawable.anh10};
 	
-	public static JSONObject getFeeds(int from, int size) throws IOException {
+	public static JSONObject getFeeds(int from, int size, final UIDataList feedList, final BaseAdapter adapter) {
 		
-		RequestTask t = new RequestTask();
-		t.execute("http://10.88.68.236:9090/feeds?size=" + size);
-		while (t.responseString == null) {
-			synchronized (t) {
+		new AsyncTask<String, Void, Object>() {
+
+			@Override
+			protected Object doInBackground(String... params) {
+				HttpClient httpclient = new DefaultHttpClient();
+				HttpResponse response;
 				try {
-					t.wait();
-				} catch (InterruptedException e) {
-					//safe to ignore
+					response = httpclient.execute(new HttpGet(params[0]));
+					StatusLine statusLine = response.getStatusLine();
+					if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
+						ByteArrayOutputStream out = new ByteArrayOutputStream();
+						response.getEntity().writeTo(out);
+						out.close();
+						return out.toString();
+					} else {
+						// Closes the connection.
+						response.getEntity().getContent().close();
+						throw new IOException(statusLine.getReasonPhrase());
+					}
+				} catch (ClientProtocolException e) {
+					return e;
+				} catch (IOException e) {
+					return e;
 				}
 			}
-		}
-        try {
-			return new JSONObject(t.responseString);
-		} catch (JSONException e) {
-			throw new IOException("Server returns malformed json");
-		}
+
+			@Override
+			protected void onPostExecute(Object result) {
+				if (result instanceof Throwable) {
+					return;
+				}
+				try {
+					feedList.load(new JSONObject((String) result));
+					adapter.notifyDataSetChanged();
+				} catch (JSONException e) {
+					feedList.load(null);
+				}
+			}
+			
+		}.execute("http://10.88.68.236:9090/feeds?size=" + size);
+		return null;
 		
 		/*HttpClient httpclient = new DefaultHttpClient();
 	    HttpResponse response = httpclient.execute(new HttpGet("http://10.88.68.236:9090/feeds?size=" + size));
@@ -81,7 +110,7 @@ public class AppServer {
 		return json;*/
 	}
 	
-	private static JSONObject newFeed(int order, int image) {
+	/*private static JSONObject newFeed(int order, int image) {
 		JSONObject json = new JSONObject();
 		try {
 			json.accumulate("type", "post");
@@ -108,44 +137,5 @@ public class AppServer {
 			e.printStackTrace();
 		}
 		return json;
-	}
-}
-
-class RequestTask extends AsyncTask<String, String, String> {
-	
-	String responseString = null;
-
-	@Override
-	protected String doInBackground(String... uri) {
-		HttpClient httpclient = new DefaultHttpClient();
-		HttpResponse response;
-		try {
-			response = httpclient.execute(new HttpGet(uri[0]));
-			StatusLine statusLine = response.getStatusLine();
-			if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
-				ByteArrayOutputStream out = new ByteArrayOutputStream();
-				response.getEntity().writeTo(out);
-				out.close();
-				responseString = out.toString();
-			} else {
-				// Closes the connection.
-				response.getEntity().getContent().close();
-				throw new IOException(statusLine.getReasonPhrase());
-			}
-		} catch (ClientProtocolException e) {
-			// TODO Handle problems..
-		} catch (IOException e) {
-			// TODO Handle problems..
-		}
-		synchronized (this) {
-			this.notify();
-		}
-		return responseString;
-	}
-
-	@Override
-	protected void onPostExecute(String result) {
-		super.onPostExecute(result);
-		// Do anything with response..
-	}
+	}*/
 }

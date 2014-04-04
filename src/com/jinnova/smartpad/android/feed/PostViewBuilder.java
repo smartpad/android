@@ -22,7 +22,7 @@ public class PostViewBuilder extends ViewBuilder<Post> {
 		Button goBtn;
 		@Override
 		public int getItemViewType() {
-			return FeedManager.TYPE_POST;
+			return FeedViewAdapter.TYPE_POST;
 		}
 	}
 

@@ -19,7 +19,7 @@ public class StoreViewBuilder extends ViewBuilder<Store> {
 		Button goBtn;
 		@Override
 		public int getItemViewType() {
-			return FeedManager.TYPE_STORE;
+			return FeedViewAdapter.TYPE_STORE;
 		}
 	}
 

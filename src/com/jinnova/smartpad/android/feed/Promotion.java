@@ -13,7 +13,7 @@ public class Promotion extends Feed {
 	 */
 	@Override
 	public int getType() {
-		return FeedManager.TYPE_PROMO;
+		return FeedViewAdapter.TYPE_PROMO;
 	}
 
 	@Override

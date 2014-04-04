@@ -15,7 +15,7 @@ public class BranchViewBuilder extends ViewBuilder<Branch> {
 
 		@Override
 		public int getItemViewType() {
-			return FeedManager.TYPE_BRANCH;
+			return FeedViewAdapter.TYPE_BRANCH;
 		}
 	}
 

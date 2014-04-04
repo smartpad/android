@@ -19,7 +19,7 @@ public class Post extends Feed {
 	 */
 	@Override
 	public int getType() {
-		return FeedManager.TYPE_POST;
+		return FeedViewAdapter.TYPE_POST;
 	}
 	
 	public int getImage() {

@@ -13,7 +13,7 @@ public class Store extends Operation {
 	 */
 	@Override
 	public int getType() {
-		return FeedManager.TYPE_STORE;
+		return FeedViewAdapter.TYPE_STORE;
 	}
 
 }

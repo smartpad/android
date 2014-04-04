@@ -1,5 +1,7 @@
 package com.jinnova.smartpad.android;
 
+import com.jinnova.smartpad.android.feed.Feed;
+
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -7,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-public abstract class SmartpadViewAdapter<T> extends BaseAdapter {
+public abstract class SmartpadViewAdapter<T extends UIData> extends BaseAdapter implements JsonObjectFactory<T> {
 	
 	//builder map is long/exhausted, because there are multiple layouts / custom layouts for each feed type. 
 	private ViewBuilder<?>[][] builderMap;
@@ -15,18 +17,17 @@ public abstract class SmartpadViewAdapter<T> extends BaseAdapter {
 	private int builderCount;
 
 	private SmartpadActivity activity;
+	
+	private UIDataList<T> feedList;
 
 	protected SmartpadViewAdapter() {
 	}
 	
 	protected abstract ViewBuilder<?>[][] initBuilderMap();
 	
-	protected abstract int getItemViewLayout(T item);
-	
-	protected abstract int getItemViewType(T item);
-	
 	public SmartpadViewAdapter(SmartpadActivity activity) {
 		this.activity = activity;
+		feedList = new UIDataList<T>(this);
 	}
 	
 	private void initBuilderMapInternal() {
@@ -36,13 +37,72 @@ public abstract class SmartpadViewAdapter<T> extends BaseAdapter {
 			builderCount += builders.length;
 		}
 	}
+	
+	public final void loadMore() {
+		feedList.loadMore(this);
+	}
 
 	@Override
-	public int getViewTypeCount() {
+	public final int getCount() {
+		return feedList.size();
+	}
+
+	/**
+	 * @param pos
+	 * @return
+	 */
+	@Override
+	public final Object getItem(int pos) {
+		return feedList.get(pos);
+	}
+
+	@Override
+	public final int getViewTypeCount() {
 		if (builderMap == null) {
 			initBuilderMapInternal();
 		}
 		return builderCount;
+	}
+	
+	//protected abstract int getItemViewLayout(T item);
+	
+	//protected abstract int getItemViewType(T item);
+
+	/* (non-Javadoc)
+	 * @see android.widget.BaseAdapter#getItemViewType(int)
+	 */
+	@Override
+	public final int getItemViewType(int position) {
+		Feed feed = (Feed) feedList.get(position);
+		return feed.getType();
+	}
+
+	/* (non-Javadoc)
+	 * @see com.jinnova.smartpad.android.SmartpadViewAdapter#getItemViewType(java.lang.Object)
+	 */
+	/*protected int getItemViewType(Feed feed) {
+		return feed.getType();
+	}*/
+
+	/* (non-Javadoc)
+	 * @see com.jinnova.smartpad.android.SmartpadViewAdapter#getItemViewLayout()
+	 */
+	/*protected int getItemViewLayout(Feed feed) {
+		return feed.getLayoutOption();
+	}*/
+
+	/* (non-Javadoc)
+	 * @see android.widget.Adapter#getItemId(int)
+	 */
+	@Override
+	public final long getItemId(int position) {
+		Feed feed = (Feed) feedList.get(position);
+		return feed.getOrder();
+	}
+	
+	@Override
+	public boolean areAllItemsEnabled () {
+	  	return true;
 	}
 
 	/**
@@ -57,10 +117,9 @@ public abstract class SmartpadViewAdapter<T> extends BaseAdapter {
 			initBuilderMapInternal();
 		}
 
+		T item = feedList.get(pos);
 		@SuppressWarnings("unchecked")
-		T item = (T) getItem(pos);
-		@SuppressWarnings("unchecked")
-		ViewBuilder<T> viewBuilder = (ViewBuilder<T>) builderMap[getItemViewType(item)][getItemViewLayout(item)];
+		ViewBuilder<T> viewBuilder = (ViewBuilder<T>) builderMap[item.getType()][item.getLayoutOption()];
 
 		if (convertView != null) {
 			//Heterogeneous lists can specify their number of view types, so that this View is always of the right type

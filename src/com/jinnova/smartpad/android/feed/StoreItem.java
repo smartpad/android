@@ -13,7 +13,7 @@ public class StoreItem extends Feed {
 	 */
 	@Override
 	public int getType() {
-		return FeedManager.TYPE_STOREITEM;
+		return FeedViewAdapter.TYPE_STOREITEM;
 	}
 
 	@Override

@@ -10,7 +10,7 @@ public class Operation extends Feed {
 
 	@Override
 	public int getType() {
-		return FeedManager.TYPE_UNKNOWN;
+		return FeedViewAdapter.TYPE_UNKNOWN;
 	}
 	
 	public MemberOffer getMemberOffer() {

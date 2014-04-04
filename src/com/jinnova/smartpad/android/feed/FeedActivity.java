@@ -8,15 +8,22 @@ import com.jinnova.smartpad.android.SmartpadActivity;
 
 public class FeedActivity extends SmartpadActivity {
 
-	private ListView list;
+	private FeedViewAdapter adapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_main);
-		list = (ListView) findViewById(R.id.list);
-		list.setAdapter(new FeedViewAdapter(this));
+		ListView list = (ListView) findViewById(R.id.list);
+		adapter = new FeedViewAdapter(this);
+		list.setAdapter(adapter);
+	}
+
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState) {
+		super.onPostCreate(savedInstanceState);
+		adapter.loadMore();
 	}
 
 	/* (non-Javadoc)

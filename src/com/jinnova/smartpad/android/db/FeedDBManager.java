@@ -43,7 +43,7 @@ public class FeedDBManager {
 	 * insert to table feeds
 	 * @param feeds
 	 */
-	public void appendFeeds(List<Feed> feeds) {
+	public void appendFeeds(List<?> feeds) {
 		
 	}
 	

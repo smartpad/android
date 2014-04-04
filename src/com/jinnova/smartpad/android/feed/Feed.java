@@ -5,15 +5,24 @@ import java.util.Collection;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public abstract class Feed {
+import com.jinnova.smartpad.android.UIData;
+
+public abstract class Feed implements UIData {
 	
 	protected final JSONObject json;
 	
 	public Feed(JSONObject json) {
 		this.json = json;
 	}
-	
-	public abstract int getType();
+
+	@Override
+	public String getId() {
+		try {
+			return json.getString("id");
+		} catch (JSONException e) {
+			return null;
+		}
+	}
 	
 	public int getLayoutOption() {
 		if (!json.has("layOpt")) {
@@ -25,10 +34,6 @@ public abstract class Feed {
 			return 0;
 		}
 		
-	}
-	
-	public String getId() {
-		return null;
 	}
 
 	public int getOrder() {
