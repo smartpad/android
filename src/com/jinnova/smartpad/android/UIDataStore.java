@@ -51,22 +51,29 @@ class UIDataStore<T extends UIData> {
 		openHelper = new OpenHelper(context, tableName);
 	}
 
-	ArrayList<String> get(int offset, int size) {
+	ArrayList<JSONObject> get(int offset, int size) throws JSONException {
+
+		Cursor cursor = null;
+		try {
+			cursor = openHelper.getReadableDatabase().query(
+					false, openHelper.tableName, new String[] {COL_ORD, COL_JSON}, 
+					null, null, null, null, COL_ORD, String.valueOf(offset + size));
+			
+			if (offset > 0 && !cursor.move(offset)) {
+				return null;
+			}
 		
-		Cursor cursor = openHelper.getReadableDatabase().query(
-				false, openHelper.tableName, new String[] {COL_ORD, COL_JSON}, 
-				null, null, null, null, COL_ORD, String.valueOf(offset + size));
-		
-		if (offset > 0 && !cursor.move(offset)) {
-			return null;
+			ArrayList<JSONObject> result = new ArrayList<JSONObject>();
+			while (cursor.moveToNext()) {
+				String json = cursor.getString(1);
+				result.add(new JSONObject(json));
+			}
+			return result;
+		} finally {
+			if (cursor != null) {
+				cursor.close();
+			}
 		}
-		
-		ArrayList<String> result = new ArrayList<String>();
-		while (cursor.moveToNext()) {
-			result.add(cursor.getString(1));
-		}
-		cursor.close();
-		return result;
 	}
 	
 	String getListVersion() {

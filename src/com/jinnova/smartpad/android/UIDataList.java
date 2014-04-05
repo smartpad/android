@@ -14,7 +14,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -37,10 +36,12 @@ class UIDataList<T extends UIData> {
 	
 	private final UIDataFactory<T> factory;
 
-	class UIDataTaskServer extends AsyncTask<String, Void, Object> {
+	class UIDataTaskServer extends AsyncTask<String, Void, JSONObject> {
+		
+		Object caughtError;
 	
 		@Override
-		protected Object doInBackground(String... params) {
+		protected JSONObject doInBackground(String... params) {
 			HttpClient httpclient = new DefaultHttpClient();
 			HttpResponse response;
 			try {
@@ -50,16 +51,24 @@ class UIDataList<T extends UIData> {
 					ByteArrayOutputStream out = new ByteArrayOutputStream();
 					response.getEntity().writeTo(out);
 					out.close();
-					return out.toString();
+					try {
+						return new JSONObject(out.toString());
+					} catch (JSONException e) {
+						caughtError = e;
+						return null;
+					}
 				} else {
 					// Closes the connection.
 					response.getEntity().getContent().close();
-					return new IOException(statusLine.getReasonPhrase());
+					caughtError = statusLine;
+					return null;
 				}
 			} catch (ClientProtocolException e) {
-				return e;
+				caughtError = e;
+				return null;
 			} catch (IOException e) {
-				return e;
+				caughtError = e;
+				return null;
 			}
 		}
 		
@@ -97,38 +106,46 @@ class UIDataList<T extends UIData> {
 		}
 	}
 
-	private void append(ArrayList<String> moreData) {
-		for (String oneString : moreData) {
-			try {
-				JSONObject oneJson = (JSONObject) new JSONTokener(oneString).nextValue();
-				backedList.add(factory.instantiate(oneJson));
-			} catch (JSONException e) {
-				Log.e("UIDataList", "JSONException from database");
-			}
+	private void append(ArrayList<JSONObject> moreData) {
+		for (JSONObject one : moreData) {
+			backedList.add(factory.instantiate(one));
 		}
 	}
 	
 	void loadMore(final BaseAdapter adapter) {
 		
-		ArrayList<String> moreData = persistStore.get(lastOrder, lastOrder + DEFAULT_PAGESIZE);
-		if (moreData != null && !moreData.isEmpty()) {
-			//found more data from db, keep loading from db only
-			version = persistStore.getListVersion();
-			append(moreData);
-			adapter.notifyDataSetChanged();
-			return;
+		try {
+			ArrayList<JSONObject> moreData = persistStore.get(lastOrder, lastOrder + DEFAULT_PAGESIZE);
+			if (moreData != null && !moreData.isEmpty()) {
+				//found more data from db, keep loading from db only
+				version = persistStore.getListVersion();
+				append(moreData);
+				adapter.notifyDataSetChanged();
+				return;
+			}
+		} catch (JSONException e1) {
+			Log.w("UIDataList", "json format error in stored data");
 		}
 		
 		new UIDataTaskServer() {			
 			@Override
-			protected void onPostExecute(Object result) {
-				if (result instanceof Throwable) {
+			protected void onPostExecute(JSONObject result) {
+				if (caughtError != null) {
+					String msg;
+					if (caughtError instanceof Throwable) {
+						msg = caughtError.getClass().getSimpleName() + ": " + ((Throwable) caughtError).getMessage();
+					} else if (caughtError instanceof StatusLine) {
+						StatusLine sl = (StatusLine) caughtError;
+						msg = "StatusLine: " + sl.getStatusCode() + ": " + sl.getReasonPhrase();
+					} else {
+						msg = String.valueOf(caughtError);
+					}
+					Log.w("UIDataList", msg);
 					return;
 				}
 				try {
-					JSONObject json = new JSONObject((String) result);
-					String newVer = json.getString("v");
-					JSONArray dataArray = json.getJSONArray("l");
+					String newVer = result.getString("v");
+					JSONArray dataArray = result.getJSONArray("l");
 					if (version == null || version.equals(newVer)) {
 						if (version == null) {
 							version = newVer;
