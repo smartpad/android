@@ -24,7 +24,8 @@ class UIDataList<T extends UIData> {
 	
 	private static final int DEFAULT_PAGESIZE = 10;
 	
-	private String version;
+	//private String version;
+	private final int tableId;
 	
 	private int lastOrder = 0; //order number starts from 1
 	
@@ -52,7 +53,18 @@ class UIDataList<T extends UIData> {
 					response.getEntity().writeTo(out);
 					out.close();
 					try {
-						return new JSONObject(out.toString());
+						JSONObject result = new JSONObject(out.toString());
+						String newVer = result.getString("v");
+						JSONArray dataArray = result.getJSONArray("l");
+						String version = persistStore.getVersionInUse(tableId);
+						if (version == null || version.equals(newVer)) {
+							//got more data for current version
+							persistStore.insert(tableId, dataArray, true /*toTableInUse*/);
+						} else {
+							//got new data version
+							persistStore.addNewVersion(tableId, newVer, result.getString("exp"), dataArray);
+						}
+						return result;
 					} catch (JSONException e) {
 						caughtError = e;
 						return null;
@@ -74,9 +86,10 @@ class UIDataList<T extends UIData> {
 		
 	};
 	
-	UIDataList(Context context, UIDataFactory<T> factory, String tableName, String servicePath) {
+	UIDataList(Context context, UIDataFactory<T> factory, int table, String servicePath) {
 		this.servicePath = servicePath;
-		this.persistStore = new UIDataStore<T>(context, tableName);
+		this.tableId = table;
+		this.persistStore = new UIDataStore<T>(context);
 		this.factory = factory;
 	}
 	
@@ -106,20 +119,22 @@ class UIDataList<T extends UIData> {
 		}
 	}
 
-	private void append(ArrayList<JSONObject> moreData) {
-		for (JSONObject one : moreData) {
-			backedList.add(factory.instantiate(one));
-		}
+	void switchToLatest(BaseAdapter adapter) {
+		backedList.clear();
+		persistStore.switchToLatest(tableId);
+		adapter.notifyDataSetChanged();
 	}
 	
 	void loadMore(final BaseAdapter adapter) {
 		
 		try {
-			ArrayList<JSONObject> moreData = persistStore.get(lastOrder, lastOrder + DEFAULT_PAGESIZE);
+			ArrayList<JSONObject> moreData = persistStore.get(tableId, lastOrder, lastOrder + DEFAULT_PAGESIZE);
 			if (moreData != null && !moreData.isEmpty()) {
 				//found more data from db, keep loading from db only
-				version = persistStore.getListVersion();
-				append(moreData);
+				//version = persistStore.getVersionInUse();
+				for (JSONObject one : moreData) {
+					backedList.add(factory.instantiate(one));
+				}
 				adapter.notifyDataSetChanged();
 				return;
 			}
@@ -146,16 +161,17 @@ class UIDataList<T extends UIData> {
 				try {
 					String newVer = result.getString("v");
 					JSONArray dataArray = result.getJSONArray("l");
+					String version = persistStore.getVersionInUse(tableId);
 					if (version == null || version.equals(newVer)) {
 						if (version == null) {
 							version = newVer;
 						}
-						persistStore.append(dataArray);
 						append(dataArray);
+						adapter.notifyDataSetChanged();
 					} else {
 						//got new data version
+						//TODO inform user
 					}
-					adapter.notifyDataSetChanged();
 				} catch (JSONException e) {
 					//feedList.load(null);
 				}

@@ -1,63 +1,132 @@
 package com.jinnova.smartpad.android;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import com.jinnova.smartpad.android.feed.Feed;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
-class UIDataStore<T extends UIData> {
+public class UIDataStore<T extends UIData> extends SQLiteOpenHelper {
 	
-	private static final int DATABASE_VERSION = 2;
+	private static final String DCOL_ORD = "ord";
+	private static final String DCOL_JSON = "json";
+	
+	private static final int DATABASE_VERSION = 8;
 	private static final String DATABASE_NAME = "smartpad";
+
+	public static int TABLE_FEEDS = 0;
+	private static final String[] NAMES = new String[] {"feeds"};
 	
-	private static final String COL_ORD = "ord";
-	private static final String COL_JSON = "json";
-	private static final String COL_EXPIRE = "exp";
+	private final String[] versLast = new String[NAMES.length];
+	private final String[] versPrev = new String[NAMES.length];
+	//which table_postfix is for latest version: 0 or 1
+	private final int[] postfixLast = new int[NAMES.length];
+	private final String[] exps = new String[NAMES.length];
 	
-	private class OpenHelper extends SQLiteOpenHelper {
-		
-		private final String tableName;
+	private boolean latestInUsed[] = new boolean[NAMES.length]; //true if latest version is being used, false otherwise
 
-		OpenHelper(Context context, String tableName) {
-			super(context, DATABASE_NAME, null, DATABASE_VERSION);
-			this.tableName = tableName;
-		}
-
-		@Override
-		public void onCreate(SQLiteDatabase db) {
-			db.execSQL("CREATE TABLE " + tableName + " (ord int primary key, exp datetime, json TEXT);");
-		}
-
-		@Override
-		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-			
+	@Override
+	public void onCreate(SQLiteDatabase db) {
+		Log.i("UIDataOpenHelper", "Creating database version " + DATABASE_VERSION);
+		//tid: tableId
+		//v_last: latest version
+		//v_prev: previous version
+		//t_last: postfix of table containing latest version
+		db.execSQL("CREATE TABLE table_vers (tid int primary key, v_last TEXT, v_prev TEXT, t_last int, exp TEXT);");
+		for (String tableName : NAMES) {
+			db.execSQL("CREATE TABLE " + tableName + "0 (ord int primary key, json TEXT);");
+			db.execSQL("CREATE TABLE " + tableName + "1 (ord int primary key, json TEXT);");
 		}
 		
+		ContentValues values = new ContentValues();
+		for (int i = 0; i < NAMES.length; i++) {
+			values.put("tid", i);
+			values.put("t_last", 0);
+			db.insert("table_vers", null, values);
+		}
+	}
+
+	@Override
+	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		//temporarily for dev purpose only
+		db.execSQL("drop table table_vers");
+		db.execSQL("drop table feeds0");
+		db.execSQL("drop table feeds1");
+		onCreate(db);
+	}
+
+	@Override
+	public void onOpen(SQLiteDatabase db) {
+
+		Log.i("UIDataOpenHelper", "Loading versioning data (db version: " + DATABASE_VERSION + ")");
+		Cursor cursor = null;
+		try {
+			cursor = db.query(false, "table_vers", 
+					new String[] {"tid", "v_last", "v_prev", "t_last", "exp"}, null, null, null, null, null, null);
+			while (cursor.moveToNext()) {
+				int tableNumber = cursor.getInt(0);
+				versLast[tableNumber] = cursor.getString(1);
+				versPrev[tableNumber] = cursor.getString(2);
+				postfixLast[tableNumber] = cursor.getInt(3);
+				exps[tableNumber] = cursor.getString(4);
+				
+				latestInUsed[tableNumber] = true;
+			}
+		} finally {
+			if (cursor != null) {
+				cursor.close();
+			}
+		}
 	}
 	
-	private OpenHelper openHelper;
-	
-	UIDataStore(Context context, String tableName) {
-		openHelper = new OpenHelper(context, tableName);
+	UIDataStore(Context context) {
+		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
 
-	ArrayList<JSONObject> get(int offset, int size) throws JSONException {
+	String getVersionInUse(int tableId) {
+		if (latestInUsed[tableId]) {
+			return versLast[tableId];
+		} else {
+			return versPrev[tableId];
+		}
+	}
+
+	void switchToLatest(int tableId) {
+		latestInUsed[tableId] = true;
+	}
+
+	private int getTablePostfix(int tableId, boolean ofTableInUse) {
+		
+		int postfix;
+		//post of the table being used
+		if (latestInUsed[tableId]) {
+			postfix = postfixLast[tableId];
+		} else {
+			postfix = 1 - postfixLast[tableId];
+		}
+		
+		//toggle number to get postfix of table not used
+		if (!ofTableInUse) {
+			postfix = 1 - postfix;
+		}
+		return postfix;
+	}
+
+	ArrayList<JSONObject> get(int tableId, int offset, int size) throws JSONException {
 
 		Cursor cursor = null;
 		try {
-			cursor = openHelper.getReadableDatabase().query(
-					false, openHelper.tableName, new String[] {COL_ORD, COL_JSON}, 
-					null, null, null, null, COL_ORD, String.valueOf(offset + size));
+			String tableName = NAMES[tableId] + getTablePostfix(tableId, true);
+			cursor = getWritableDatabase().query(
+					false, tableName, new String[] {DCOL_ORD, DCOL_JSON}, 
+					null, null, null, null, DCOL_ORD, String.valueOf(offset + size));
 			
 			if (offset > 0 && !cursor.move(offset)) {
 				return null;
@@ -76,41 +145,49 @@ class UIDataStore<T extends UIData> {
 		}
 	}
 	
-	String getListVersion() {
-		return null;
-	}
+	/*void append(JSONArray dataArray) throws JSONException {
+		insert(openHelper.getWritableDatabase(), openHelper.getTableName(tableId, false), dataArray);
+	}*/
 	
-	void append(JSONArray dataArray) throws JSONException {
-		SQLiteDatabase db = openHelper.getReadableDatabase();
+	void insert(int tableId, JSONArray dataArray, boolean toTableInUse) throws JSONException {
+		SQLiteDatabase db = getWritableDatabase();
 		ContentValues values = new ContentValues();
 		for (int i = 0; i < dataArray.length(); i++) {
 			values.clear();
 			JSONObject json = dataArray.getJSONObject(i);
-			values.put(COL_ORD, json.getInt(UIData.ORD));
-			values.put(COL_JSON, json.toString());
-			db.insert(openHelper.tableName, null, values);
+			values.put(DCOL_ORD, json.getInt(UIData.ORD));
+			values.put(DCOL_JSON, json.toString());
+			db.insert(NAMES[tableId] + getTablePostfix(tableId, toTableInUse), null, values);
 		}
-	}
-	
-	/**
-	 * update column feed_version of table smartpad with new version number
-	 * delete all from table feeds
-	 * insert all to table feeds
-	 * 
-	 * @param newVersion
-	 * @param feeds
-	 */
-	public void replaceFeedList(String newVersion, List<Feed> feeds) {
 		
 	}
+
+	/*void insertNewVersion(String newVersion, String expiration, JSONArray dataArray) throws JSONException {
+		openHelper.addNewVersion(tableId, newVersion, expiration, dataArray);
+	}*/
 	
-	/**
-	 * delete feedId from table feeds
-	 * 
-	 * @param feedId
-	 */
-	public void removeFeed(int feedId) {
+	void addNewVersion(int tableId, String newVersion, String expiration, JSONArray dataArray) throws JSONException {
 		
+		//delete all in unused table
+		SQLiteDatabase db = getWritableDatabase();
+		int tablePostfix = getTablePostfix(tableId, false);
+		db.delete(NAMES[tableId] + tablePostfix, null, null);
+
+		//insert data to table not being used
+		insert(tableId, dataArray, false);
+
+		//update version number, expiration
+		ContentValues values = new ContentValues();
+		//"tid", "v_last", "v_prev", "t_last", "exp"
+		values.put("v_last", newVersion);
+		values.put("v_prev", versLast[tableId]);
+		values.put("t_last", tablePostfix);
+		values.put("exp", expiration);
+		getWritableDatabase().update("table_vers", values, "tid=" + tableId, null);
+		versPrev[tableId] = versLast[tableId];
+		versLast[tableId] = newVersion;
+		postfixLast[tableId] = tablePostfix;
+		latestInUsed[tableId] = false;
 	}
 
 }

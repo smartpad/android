@@ -25,9 +25,9 @@ public abstract class SmartpadViewAdapter<T extends UIData> extends BaseAdapter 
 	
 	protected abstract ViewBuilder<?>[][] initBuilderMap();
 	
-	public SmartpadViewAdapter(SmartpadActivity activity, String tableName, String servicePath) {
+	public SmartpadViewAdapter(SmartpadActivity activity, int table, String servicePath) {
 		this.activity = activity;
-		feedList = new UIDataList<T>(activity, this, tableName, servicePath);
+		feedList = new UIDataList<T>(activity, this, table, servicePath);
 	}
 	
 	private void initBuilderMapInternal() {

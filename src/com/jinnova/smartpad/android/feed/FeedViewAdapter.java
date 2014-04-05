@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import com.jinnova.smartpad.android.UIData;
 import com.jinnova.smartpad.android.SmartpadActivity;
 import com.jinnova.smartpad.android.SmartpadViewAdapter;
+import com.jinnova.smartpad.android.UIDataStore;
 import com.jinnova.smartpad.android.ViewBuilder;
 
 public class FeedViewAdapter extends SmartpadViewAdapter<Feed> {
@@ -42,7 +43,7 @@ public class FeedViewAdapter extends SmartpadViewAdapter<Feed> {
 	private FeedInstantiator[] instantiators;
 	
 	public FeedViewAdapter(SmartpadActivity context) {
-		super(context, "feeds", "feeds");
+		super(context, UIDataStore.TABLE_FEEDS, "feeds");
 		instantiators = new FeedInstantiator[TYPE_COUNT];
 		instantiators[TYPE_POST] = new FeedInstantiator<UIData>() {
 			
