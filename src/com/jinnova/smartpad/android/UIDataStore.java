@@ -52,9 +52,12 @@ class UIDataStore<T extends UIData> {
 	}
 
 	ArrayList<String> get(int offset, int size) {
-		Cursor cursor = openHelper.getReadableDatabase().query(false, openHelper.tableName, 
-				new String[] {COL_ORD, COL_JSON}, null, null, null, null, COL_ORD, String.valueOf(offset + size));
-		if (!cursor.move(offset)) {
+		
+		Cursor cursor = openHelper.getReadableDatabase().query(
+				false, openHelper.tableName, new String[] {COL_ORD, COL_JSON}, 
+				null, null, null, null, COL_ORD, String.valueOf(offset + size));
+		
+		if (offset > 0 && !cursor.move(offset)) {
 			return null;
 		}
 		
