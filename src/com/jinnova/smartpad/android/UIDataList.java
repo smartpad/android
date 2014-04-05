@@ -16,6 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.BaseAdapter;
@@ -64,9 +65,9 @@ class UIDataList<T extends UIData> {
 		
 	};
 	
-	UIDataList(UIDataStore<T> persistStore,  UIDataFactory<T> factory, String servicePath) {
+	UIDataList(Context context, UIDataFactory<T> factory, String tableName, String servicePath) {
 		this.servicePath = servicePath;
-		this.persistStore = persistStore;
+		this.persistStore = new UIDataStore<T>(context, tableName);
 		this.factory = factory;
 	}
 	
@@ -126,8 +127,8 @@ class UIDataList<T extends UIData> {
 				}
 				try {
 					JSONObject json = new JSONObject((String) result);
-					String newVer = json.getString("ud_v");
-					JSONArray dataArray = json.getJSONArray("ud_l");
+					String newVer = json.getString("v");
+					JSONArray dataArray = json.getJSONArray("l");
 					if (version == null || version.equals(newVer)) {
 						if (version == null) {
 							version = newVer;
@@ -142,6 +143,7 @@ class UIDataList<T extends UIData> {
 					//feedList.load(null);
 				}
 			}
-		}.execute("http://10.88.68.236:9090/" + servicePath + "?offset=" + lastOrder + "&size=" + DEFAULT_PAGESIZE);
+		//}.execute("http://10.88.68.236:9090/" + servicePath + "?offset=" + lastOrder + "&size=" + DEFAULT_PAGESIZE);
+		}.execute("http://192.168.0.123:9090/" + servicePath + "?offset=" + lastOrder + "&size=" + DEFAULT_PAGESIZE);
 	}
 }

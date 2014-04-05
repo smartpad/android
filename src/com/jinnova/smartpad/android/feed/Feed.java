@@ -38,7 +38,7 @@ public abstract class Feed implements UIData {
 
 	public int getOrder() {
 		try {
-			return json.getInt("ord");
+			return json.getInt(UIData.ORD);
 		} catch (JSONException e) {
 			return 0;
 		}

@@ -1,5 +1,6 @@
 package com.jinnova.smartpad.android.feed;
 
+@SuppressWarnings("unused")
 public class MemberOffer {
 
 	private int level;
