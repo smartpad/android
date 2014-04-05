@@ -18,7 +18,7 @@ public class UIDataStore<T extends UIData> extends SQLiteOpenHelper {
 	private static final String DCOL_ORD = "ord";
 	private static final String DCOL_JSON = "json";
 	
-	private static final int DATABASE_VERSION = 8;
+	private static final int DATABASE_VERSION = 9;
 	private static final String DATABASE_NAME = "smartpad";
 
 	public static int TABLE_FEEDS = 0;
@@ -98,6 +98,10 @@ public class UIDataStore<T extends UIData> extends SQLiteOpenHelper {
 		}
 	}
 
+	String getVersionLatest(int tableId) {
+		return versLast[tableId];
+	}
+
 	void switchToLatest(int tableId) {
 		latestInUsed[tableId] = true;
 	}
@@ -123,8 +127,12 @@ public class UIDataStore<T extends UIData> extends SQLiteOpenHelper {
 
 		Cursor cursor = null;
 		try {
+			//this must be before calling to getTablePostfix, so that onOpen() get called
+			//and we have versioning data pre-populated.
+			SQLiteDatabase db = getWritableDatabase();
+			
 			String tableName = NAMES[tableId] + getTablePostfix(tableId, true);
-			cursor = getWritableDatabase().query(
+			cursor = db.query(
 					false, tableName, new String[] {DCOL_ORD, DCOL_JSON}, 
 					null, null, null, null, DCOL_ORD, String.valueOf(offset + size));
 			
@@ -145,10 +153,6 @@ public class UIDataStore<T extends UIData> extends SQLiteOpenHelper {
 		}
 	}
 	
-	/*void append(JSONArray dataArray) throws JSONException {
-		insert(openHelper.getWritableDatabase(), openHelper.getTableName(tableId, false), dataArray);
-	}*/
-	
 	void insert(int tableId, JSONArray dataArray, boolean toTableInUse) throws JSONException {
 		SQLiteDatabase db = getWritableDatabase();
 		ContentValues values = new ContentValues();
@@ -161,10 +165,6 @@ public class UIDataStore<T extends UIData> extends SQLiteOpenHelper {
 		}
 		
 	}
-
-	/*void insertNewVersion(String newVersion, String expiration, JSONArray dataArray) throws JSONException {
-		openHelper.addNewVersion(tableId, newVersion, expiration, dataArray);
-	}*/
 	
 	void addNewVersion(int tableId, String newVersion, String expiration, JSONArray dataArray) throws JSONException {
 		

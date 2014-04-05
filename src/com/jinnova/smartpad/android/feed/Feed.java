@@ -2,46 +2,14 @@ package com.jinnova.smartpad.android.feed;
 
 import java.util.Collection;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.jinnova.smartpad.android.UIData;
 
-public abstract class Feed implements UIData {
-	
-	protected final JSONObject json;
+public abstract class Feed extends UIData {
 	
 	public Feed(JSONObject json) {
-		this.json = json;
-	}
-
-	@Override
-	public String getId() {
-		try {
-			return json.getString("id");
-		} catch (JSONException e) {
-			return null;
-		}
-	}
-	
-	public int getLayoutOption() {
-		if (!json.has("layOpt")) {
-			return 0;
-		}
-		try {
-			return json.getInt("layOpt");
-		} catch (JSONException e) {
-			return 0;
-		}
-		
-	}
-
-	public int getOrder() {
-		try {
-			return json.getInt(UIData.ORD);
-		} catch (JSONException e) {
-			return 0;
-		}
+		setJson(json);
 	}
 
 	/**

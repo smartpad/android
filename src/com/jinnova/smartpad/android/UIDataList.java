@@ -18,7 +18,6 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.BaseAdapter;
 
 class UIDataList<T extends UIData> {
 	
@@ -36,55 +35,6 @@ class UIDataList<T extends UIData> {
 	private final UIDataStore<T> persistStore;
 	
 	private final UIDataFactory<T> factory;
-
-	class UIDataTaskServer extends AsyncTask<String, Void, JSONObject> {
-		
-		Object caughtError;
-	
-		@Override
-		protected JSONObject doInBackground(String... params) {
-			HttpClient httpclient = new DefaultHttpClient();
-			HttpResponse response;
-			try {
-				response = httpclient.execute(new HttpGet(params[0]));
-				StatusLine statusLine = response.getStatusLine();
-				if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
-					ByteArrayOutputStream out = new ByteArrayOutputStream();
-					response.getEntity().writeTo(out);
-					out.close();
-					try {
-						JSONObject result = new JSONObject(out.toString());
-						String newVer = result.getString("v");
-						JSONArray dataArray = result.getJSONArray("l");
-						String version = persistStore.getVersionInUse(tableId);
-						if (version == null || version.equals(newVer)) {
-							//got more data for current version
-							persistStore.insert(tableId, dataArray, true /*toTableInUse*/);
-						} else {
-							//got new data version
-							persistStore.addNewVersion(tableId, newVer, result.getString("exp"), dataArray);
-						}
-						return result;
-					} catch (JSONException e) {
-						caughtError = e;
-						return null;
-					}
-				} else {
-					// Closes the connection.
-					response.getEntity().getContent().close();
-					caughtError = statusLine;
-					return null;
-				}
-			} catch (ClientProtocolException e) {
-				caughtError = e;
-				return null;
-			} catch (IOException e) {
-				caughtError = e;
-				return null;
-			}
-		}
-		
-	};
 	
 	UIDataList(Context context, UIDataFactory<T> factory, int table, String servicePath) {
 		this.servicePath = servicePath;
@@ -100,83 +50,149 @@ class UIDataList<T extends UIData> {
 	int size() {
 		return backedList.size();
 	}
-	
-	private void append(JSONArray dataArray) {
-		try {
-			T t = null;
-			for (int i = 0; i < dataArray.length(); i++) {
-				JSONObject itemJson = dataArray.getJSONObject(i);
-				t = factory.instantiate(itemJson);
-				if (t != null) {
-					backedList.add(t);
-				}
-			}
-			if (t != null) {
-				lastOrder = t.getOrder();
-			}
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-	}
 
-	void switchToLatest(BaseAdapter adapter) {
+	void switchToLatest(SmartpadViewAdapter<? extends UIData> adapter) {
 		backedList.clear();
 		persistStore.switchToLatest(tableId);
-		adapter.notifyDataSetChanged();
+		loadMore(adapter);
 	}
 	
-	void loadMore(final BaseAdapter adapter) {
+	void loadMore(final SmartpadViewAdapter<? extends UIData> adapter) {
+
+		new AsyncTask<String, Void, Object>() {
+			
+			private ArrayList<T> newList = null;
+			private boolean newVersionLoaded = false;
 		
-		try {
-			ArrayList<JSONObject> moreData = persistStore.get(tableId, lastOrder, lastOrder + DEFAULT_PAGESIZE);
-			if (moreData != null && !moreData.isEmpty()) {
-				//found more data from db, keep loading from db only
-				//version = persistStore.getVersionInUse();
-				for (JSONObject one : moreData) {
-					backedList.add(factory.instantiate(one));
-				}
-				adapter.notifyDataSetChanged();
-				return;
-			}
-		} catch (JSONException e1) {
-			Log.w("UIDataList", "json format error in stored data");
-		}
-		
-		new UIDataTaskServer() {			
 			@Override
-			protected void onPostExecute(JSONObject result) {
+			protected Object doInBackground(String... params) {
+				
+				//first attempt with database
+				ArrayList<JSONObject> moreData;
+				try {
+					moreData = persistStore.get(tableId, lastOrder, lastOrder + DEFAULT_PAGESIZE);
+				} catch (JSONException e) {
+					Log.w("UIDataList", "json format error in stored data");
+					return e;
+				}
+				
+				if (moreData != null && !moreData.isEmpty()) {
+					//found more data from db, keep loading from db only
+					newList = buildList(moreData);
+					return null;
+				}
+				
+				//nothing in database, go to server
+				String[] data = new String[1];
+				Object caughtError = connect(data);
 				if (caughtError != null) {
-					String msg;
-					if (caughtError instanceof Throwable) {
-						msg = caughtError.getClass().getSimpleName() + ": " + ((Throwable) caughtError).getMessage();
-					} else if (caughtError instanceof StatusLine) {
-						StatusLine sl = (StatusLine) caughtError;
-						msg = "StatusLine: " + sl.getStatusCode() + ": " + sl.getReasonPhrase();
-					} else {
-						msg = String.valueOf(caughtError);
-					}
-					Log.w("UIDataList", msg);
-					return;
+					return caughtError;
 				}
 				try {
-					String newVer = result.getString("v");
-					JSONArray dataArray = result.getJSONArray("l");
-					String version = persistStore.getVersionInUse(tableId);
-					if (version == null || version.equals(newVer)) {
-						if (version == null) {
-							version = newVer;
-						}
-						append(dataArray);
-						adapter.notifyDataSetChanged();
-					} else {
+					
+					//check for data in new version
+					JSONObject result = new JSONObject(data[0]);
+					if (result.has("n")) {
 						//got new data version
-						//TODO inform user
+						JSONArray newArray = result.getJSONArray("n");
+						persistStore.addNewVersion(tableId, result.getString("v"), result.getString("exp"), newArray);
+						newVersionLoaded = true;
 					}
+
+					//check for data in target version
+					if (result.has("t")) {
+						JSONArray targetArray = result.getJSONArray("t");
+						persistStore.insert(tableId, targetArray, true /*toTableInUse*/);
+						newList = buildList(targetArray);
+					}
+					return null;
 				} catch (JSONException e) {
-					//feedList.load(null);
+					return e;
+				}
+			}			
+			@Override
+			protected void onPostExecute(Object caughtError) {
+				if (caughtError == null) {
+					if (newList != null) {
+						backedList.addAll(newList);
+						adapter.notifyDataSetChanged();
+					}
+					if (newVersionLoaded) {
+						adapter.newVersionLoaded();
+					}
+					return;
+				}
+				String msg;
+				if (caughtError instanceof Throwable) {
+					msg = caughtError.getClass().getSimpleName() + ": " + ((Throwable) caughtError).getMessage();
+				} else if (caughtError instanceof StatusLine) {
+					StatusLine sl = (StatusLine) caughtError;
+					msg = "StatusLine: " + sl.getStatusCode() + ": " + sl.getReasonPhrase();
+				} else {
+					msg = String.valueOf(caughtError);
+				}
+				Log.w("UIDataList", msg);
+			}
+			
+			private Object connect(String[] data) {
+				//nothing in database, go to server
+				String serviceUrl = "http://192.168.0.123:9090/" + servicePath + 
+						"?verTarget=" + persistStore.getVersionInUse(tableId) +
+						"verLatest=" + persistStore.getVersionLatest(tableId) +
+						"offset=" + lastOrder + "&size=" + DEFAULT_PAGESIZE;
+				HttpClient httpclient = new DefaultHttpClient();
+				ByteArrayOutputStream tempStream= null;
+				try {
+					HttpResponse response = httpclient.execute(new HttpGet(serviceUrl));
+					StatusLine statusLine = response.getStatusLine();
+					if (statusLine.getStatusCode() != HttpStatus.SC_OK) {
+						return statusLine;
+					}
+					tempStream = new ByteArrayOutputStream();
+					response.getEntity().writeTo(tempStream);
+					data[0] = tempStream.toString();
+					return null;
+				} catch (ClientProtocolException e) {
+					return e;
+				} catch (IOException e) {
+					return e;
+				} finally {
+					try {
+						if (tempStream != null) {
+							tempStream.close();
+						}
+						/*if (response != null) {
+							response.getEntity().getContent().close();
+						}*/
+					} catch (IOException e) {
+						//ignore
+						Log.w("UIDataList", "IOException in closing temp stream: " + e.getMessage());
+					}
 				}
 			}
-		//}.execute("http://10.88.68.236:9090/" + servicePath + "?offset=" + lastOrder + "&size=" + DEFAULT_PAGESIZE);
-		}.execute("http://192.168.0.123:9090/" + servicePath + "?offset=" + lastOrder + "&size=" + DEFAULT_PAGESIZE);
+			
+			private ArrayList<T> buildList(ArrayList<JSONObject> dataArray) {
+				ArrayList<T> newList = new ArrayList<T>();
+				for (JSONObject itemJson : dataArray) {
+					T t = factory.instantiate(itemJson);
+					if (t != null) {
+						newList.add(t);
+					}
+				}
+				return newList;
+			}
+			
+			private ArrayList<T> buildList(JSONArray dataArray) throws JSONException {
+				ArrayList<T> newList = new ArrayList<T>();
+				for (int i = 0; i < dataArray.length(); i++) {
+					JSONObject itemJson = dataArray.getJSONObject(i);
+					T t = factory.instantiate(itemJson);
+					if (t != null) {
+						newList.add(t);
+					}
+				}
+				return newList;
+			}
+		}.execute((String) null);
 	}
 }

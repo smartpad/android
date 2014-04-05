@@ -128,5 +128,13 @@ public abstract class SmartpadViewAdapter<T extends UIData> extends BaseAdapter 
 		newView.setTag(newTag);
 		return newView;
 	}
+
+	/**
+	 * callback from UIDataList.loadMore()
+	 */
+	public void newVersionLoaded() {
+		// ask user to refresh with latest data list
+		
+	}
 	
 }
