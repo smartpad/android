@@ -25,6 +25,14 @@ public class UIData {
 		}
 	}
 	
+	public String getName() {
+		try {
+			return json.getString("name");
+		} catch (JSONException e) {
+			return null;
+		}
+	}
+	
 	public int getLayoutOption() {
 		if (!json.has("layOpt")) {
 			return 0;

@@ -15,10 +15,11 @@ public class FeedViewAdapter extends SmartpadViewAdapter<Feed> {
 	public static final int TYPE_POST = 0;
 	public static final int TYPE_BRANCH = 1;
 	public static final int TYPE_STORE = 2;
-	public static final int TYPE_STOREITEM = 3;
-	public static final int TYPE_PROMO = 4;
+	public static final int TYPE_CAT = 3;
+	public static final int TYPE_CATITEM = 4;
+	public static final int TYPE_PROMO = 5;
 	
-	public static final int TYPE_COUNT = 5;
+	public static final int TYPE_COUNT = 6;
 	
 	private static final int LAYOUTOPT_POST_DEFAULT = 0;
 	private static final int LAYOUTOPT_POST_COUNT = 1;
@@ -29,8 +30,11 @@ public class FeedViewAdapter extends SmartpadViewAdapter<Feed> {
 	private static final int LAYOUTOPT_STORE_DEFAULT = 0;
 	private static final int LAYOUTOPT_STORE_COUNT = 1;
 	
-	private static final int LAYOUTOPT_STOREITEM_DEFAULT = 0;
-	private static final int LAYOUTOPT_STOREITEM_COUNT = 1;
+	private static final int LAYOUTOPT_CATALOG_DEFAULT = 0;
+	private static final int LAYOUTOPT_CATALOG_COUNT = 1;
+	
+	private static final int LAYOUTOPT_CATALOGITEM_DEFAULT = 0;
+	private static final int LAYOUTOPT_CATALOGITEM_COUNT = 1;
 	
 	private static final int LAYOUTOPT_PROMO_DEFAULT = 0;
 	private static final int LAYOUTOPT_PROMO_COUNT = 1;
@@ -73,11 +77,18 @@ public class FeedViewAdapter extends SmartpadViewAdapter<Feed> {
 				return new Store(json);
 			}
 		};
-		instantiators[TYPE_STOREITEM] = new FeedInstantiator<UIData>() {
+		instantiators[TYPE_CAT] = new FeedInstantiator<UIData>() {
 			
 			@Override
 			public UIData instantiate(JSONObject json) {
-				return new StoreItem(json);
+				return new Catalog(json);
+			}
+		};
+		instantiators[TYPE_CATITEM] = new FeedInstantiator<UIData>() {
+			
+			@Override
+			public UIData instantiate(JSONObject json) {
+				return new CatalogItem(json);
 			}
 		};
 	}
@@ -97,8 +108,11 @@ public class FeedViewAdapter extends SmartpadViewAdapter<Feed> {
 		builderMap[TYPE_STORE] = new ViewBuilder<?>[LAYOUTOPT_STORE_COUNT];
 		builderMap[TYPE_STORE][LAYOUTOPT_STORE_DEFAULT] = new StoreViewBuilder();
 
-		builderMap[TYPE_STOREITEM] = new ViewBuilder<?>[LAYOUTOPT_STOREITEM_COUNT];
-		builderMap[TYPE_STOREITEM][LAYOUTOPT_STOREITEM_DEFAULT] = new StoreItemViewBuilder();
+		builderMap[TYPE_CAT] = new ViewBuilder<?>[LAYOUTOPT_CATALOG_COUNT];
+		builderMap[TYPE_CAT][LAYOUTOPT_CATALOG_DEFAULT] = new CatalogViewBuilder();
+
+		builderMap[TYPE_CATITEM] = new ViewBuilder<?>[LAYOUTOPT_CATALOGITEM_COUNT];
+		builderMap[TYPE_CATITEM][LAYOUTOPT_CATALOGITEM_DEFAULT] = new CatalogItemViewBuilder();
 		return builderMap;
 	}
 	
@@ -130,8 +144,10 @@ public class FeedViewAdapter extends SmartpadViewAdapter<Feed> {
 			return TYPE_BRANCH;
 		} else if ("store".equals(type)) {
 			return TYPE_STORE;
-		} else if ("sitem".equals(type)) {
-			return TYPE_STOREITEM;
+		} else if ("cat".equals(type)) {
+			return TYPE_CAT;
+		} else if ("citem".equals(type)) {
+			return TYPE_CATITEM;
 		} else if ("promo".equals(type)) {
 			return TYPE_PROMO;
 		} else {

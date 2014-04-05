@@ -2,9 +2,9 @@ package com.jinnova.smartpad.android.feed;
 
 import org.json.JSONObject;
 
-public class StoreItem extends Feed {
+public class Catalog extends Feed {
 
-	public StoreItem(JSONObject json) {
+	public Catalog(JSONObject json) {
 		super(json);
 	}
 
@@ -13,7 +13,7 @@ public class StoreItem extends Feed {
 	 */
 	@Override
 	public int getType() {
-		return FeedViewAdapter.TYPE_STOREITEM;
+		return FeedViewAdapter.TYPE_CAT;
 	}
 
 	@Override

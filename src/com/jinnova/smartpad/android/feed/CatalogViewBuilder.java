@@ -12,14 +12,14 @@ import com.jinnova.smartpad.android.SmartpadActivity;
 import com.jinnova.smartpad.android.ViewBuilder;
 import com.jinnova.smartpad.android.ViewTag;
 
-public class StoreViewBuilder extends ViewBuilder<Store> {
+public class CatalogViewBuilder extends ViewBuilder<Catalog> {
 	
-	private class StoreUI extends ViewTag {
+	private class CatalogUI extends ViewTag {
 		TextView name;
 		Button goBtn;
 		@Override
 		public int getItemViewType() {
-			return FeedViewAdapter.TYPE_STORE;
+			return FeedViewAdapter.TYPE_CATITEM;
 		}
 	}
 
@@ -30,17 +30,17 @@ public class StoreViewBuilder extends ViewBuilder<Store> {
 
 	@Override
 	public ViewTag createTag(View view) {
-		StoreUI row  = new StoreUI();
+		CatalogUI row  = new CatalogUI();
 		row.name = (TextView) view.findViewById(R.id.decriptionFeed);
 		row.goBtn = (Button) view.findViewById(R.id.goBtnFeed);
 		return row;
 	}
 
 	@Override
-	public void loadView(View view, Store store, SmartpadActivity context) {
-		StoreUI row = (StoreUI) view.getTag();
-		row.name.setText("Shop " + store.getName());
-		final String target = store.getTarget();
+	public void loadView(View view, Catalog cat, SmartpadActivity context) {
+		CatalogUI row = (CatalogUI) view.getTag();
+		row.name.setText("Catalog " + cat.getName());
+		final String target = cat.getTarget();
 		if (target == null) {
 			row.goBtn.setVisibility(View.INVISIBLE);
 		} else {
@@ -62,5 +62,4 @@ public class StoreViewBuilder extends ViewBuilder<Store> {
 			});
 		}
 	}
-
 }
