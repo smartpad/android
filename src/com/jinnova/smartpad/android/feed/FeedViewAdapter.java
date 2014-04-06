@@ -8,6 +8,14 @@ import com.jinnova.smartpad.android.SmartpadActivity;
 import com.jinnova.smartpad.android.SmartpadViewAdapter;
 import com.jinnova.smartpad.android.UIDataStore;
 import com.jinnova.smartpad.android.ViewBuilder;
+import com.jinnova.smartpad.android.cat.Branch;
+import com.jinnova.smartpad.android.cat.BranchViewBuilder;
+import com.jinnova.smartpad.android.cat.Catalog;
+import com.jinnova.smartpad.android.cat.CatalogItem;
+import com.jinnova.smartpad.android.cat.CatalogItemViewBuilder;
+import com.jinnova.smartpad.android.cat.CatalogViewBuilder;
+import com.jinnova.smartpad.android.cat.Store;
+import com.jinnova.smartpad.android.cat.StoreViewBuilder;
 
 public class FeedViewAdapter extends SmartpadViewAdapter<Feed> {
 
@@ -148,7 +156,7 @@ public class FeedViewAdapter extends SmartpadViewAdapter<Feed> {
 			return TYPE_CAT;
 		} else if ("citem".equals(type)) {
 			return TYPE_CATITEM;
-		} else if ("promo".equals(type)) {
+		} else if ("pro".equals(type)) {
 			return TYPE_PROMO;
 		} else {
 			return TYPE_UNKNOWN;

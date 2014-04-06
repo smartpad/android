@@ -1,6 +1,8 @@
-package com.jinnova.smartpad.android.feed;
+package com.jinnova.smartpad.android.order;
 
 import org.json.JSONObject;
+
+import com.jinnova.smartpad.android.feed.Feed;
 
 public class OrderProgress extends Feed {
 

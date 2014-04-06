@@ -1,4 +1,4 @@
-package com.jinnova.smartpad.android.feed;
+package com.jinnova.smartpad.android.cat;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -11,6 +11,7 @@ import com.jinnova.smartpad.android.R;
 import com.jinnova.smartpad.android.SmartpadActivity;
 import com.jinnova.smartpad.android.ViewBuilder;
 import com.jinnova.smartpad.android.ViewTag;
+import com.jinnova.smartpad.android.feed.FeedViewAdapter;
 
 public class StoreViewBuilder extends ViewBuilder<Store> {
 	
@@ -51,10 +52,10 @@ public class StoreViewBuilder extends ViewBuilder<Store> {
 					AlertDialog alertDialog = new AlertDialog.Builder(v.getContext()).create();
 					alertDialog.setTitle("Alert");
 					alertDialog.setMessage(target);
-					alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
-					// here you can add functions
-					}
+					alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int which) {
+						// here you can add functions
+						}
 					});
 					alertDialog.show();
 				

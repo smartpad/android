@@ -31,7 +31,7 @@
              android:label="@string/app_name"></activity>
         <activity android:name="com.jinnova.smartpad.android.promo.PromotionActivity"
              android:label="@string/app_name"></activity>
-        <activity android:name="com.jinnova.smartpad.android.cat.StoreCatalogActivity"
+        <activity android:name="com.jinnova.smartpad.android.cat.ShoppingActivity"
              android:label="@string/app_name"></activity>
     </application>
 

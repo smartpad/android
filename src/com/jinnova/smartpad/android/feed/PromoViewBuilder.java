@@ -40,7 +40,7 @@ public class PromoViewBuilder extends ViewBuilder<Promotion> {
 	@Override
 	public void loadView(View view, Promotion promo, SmartpadActivity context) {
 		PromotionUI row = (PromotionUI) view.getTag();
-		row.name.setText("Promotion");
+		row.name.setText("Promotion " + promo.getName());
 		
 		final String target = promo.getTarget();
 		if (target == null) {
@@ -53,10 +53,10 @@ public class PromoViewBuilder extends ViewBuilder<Promotion> {
 					AlertDialog alertDialog = new AlertDialog.Builder(v.getContext()).create();
 					alertDialog.setTitle("Alert");
 					alertDialog.setMessage(target);
-					alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
-					// here you can add functions
-					}
+					alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int which) {
+							// here you can add functions
+						}
 					});
 					alertDialog.show();
 				

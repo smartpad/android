@@ -5,7 +5,7 @@ import android.widget.TextView;
 
 import com.jinnova.smartpad.android.SmartpadActivity;
 
-public class StoreCatalogActivity extends SmartpadActivity{
+public class ShoppingActivity extends SmartpadActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

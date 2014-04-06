@@ -12,7 +12,7 @@ import android.widget.PopupMenu;
 import android.widget.PopupMenu.OnMenuItemClickListener;
 
 import com.jinnova.smartpad.android.R;
-import com.jinnova.smartpad.android.cat.StoreCatalogActivity;
+import com.jinnova.smartpad.android.cat.ShoppingActivity;
 import com.jinnova.smartpad.android.fav.FavoriteActivity;
 import com.jinnova.smartpad.android.feed.FeedActivity;
 import com.jinnova.smartpad.android.member.MemberCardActivity;
@@ -60,7 +60,7 @@ public abstract class SmartpadActivity extends Activity {
 					switchActivity(FeedActivity.class);
 					return true;
 				case R.id.store_catalog_menu_item:
-					switchActivity(StoreCatalogActivity.class);
+					switchActivity(ShoppingActivity.class);
 					return true;
 				case R.id.favorite_menu_item:
 					switchActivity(FavoriteActivity.class);

@@ -18,7 +18,7 @@ public class UIDataStore<T extends UIData> extends SQLiteOpenHelper {
 	private static final String DCOL_ORD = "ord";
 	private static final String DCOL_JSON = "json";
 	
-	private static final int DATABASE_VERSION = 11;
+	private static final int DATABASE_VERSION = 14;
 	private static final String DATABASE_NAME = "smartpad";
 
 	public static int TABLE_FEEDS = 0;

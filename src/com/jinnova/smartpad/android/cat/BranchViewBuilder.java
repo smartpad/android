@@ -1,4 +1,4 @@
-package com.jinnova.smartpad.android.feed;
+package com.jinnova.smartpad.android.cat;
 
 import android.view.View;
 import android.widget.ImageView;
@@ -7,6 +7,7 @@ import com.jinnova.smartpad.android.R;
 import com.jinnova.smartpad.android.SmartpadActivity;
 import com.jinnova.smartpad.android.ViewBuilder;
 import com.jinnova.smartpad.android.ViewTag;
+import com.jinnova.smartpad.android.feed.FeedViewAdapter;
 
 public class BranchViewBuilder extends ViewBuilder<Branch> {
 	

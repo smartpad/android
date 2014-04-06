@@ -1,4 +1,4 @@
-package com.jinnova.smartpad.android.feed;
+package com.jinnova.smartpad.android.member;
 
 @SuppressWarnings("unused")
 public class MemberOffer {

@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import org.json.JSONObject;
 
+import com.jinnova.smartpad.android.GPSLocation;
 import com.jinnova.smartpad.android.UIData;
 
 public abstract class Feed extends UIData {
