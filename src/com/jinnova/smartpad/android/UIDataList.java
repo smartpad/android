@@ -36,18 +36,31 @@ class UIDataList<T extends UIData> {
 	
 	private final UIDataFactory<T> factory;
 	
+	private T detailed;
+	
 	UIDataList(Context context, UIDataFactory<T> factory, int table, String servicePath) {
 		this.servicePath = servicePath;
 		this.tableId = table;
 		this.persistStore = new UIDataStore<T>(context);
 		this.factory = factory;
 	}
+
+	@SuppressWarnings("unchecked")
+	public void setDetail(UIData detailed) {
+		this.detailed = (T) detailed;
+	}
 	
 	T get(int location) {
+		if (detailed != null) {
+			return (T) detailed;
+		}
 		return backedList.get(location);
 	}
 
 	int size() {
+		if (detailed != null) {
+			return 1;
+		}
 		return backedList.size();
 	}
 
@@ -59,6 +72,10 @@ class UIDataList<T extends UIData> {
 	
 	void loadMore(final SmartpadViewAdapter<? extends UIData> adapter) {
 
+		if (detailed != null) {
+			return;
+		}
+		
 		new AsyncTask<String, Void, Object>() {
 			
 			private ArrayList<T> newList = null;
@@ -136,7 +153,7 @@ class UIDataList<T extends UIData> {
 			
 			private Object connect(String[] data) {
 				//nothing in database, go to server
-				String serviceUrl = "http://192.168.0.124:9090/" + servicePath + 
+				String serviceUrl = "http://10.88.68.236:9090/" + servicePath + 
 						"?verTarget=" + persistStore.getVersionInUse(tableId) +
 						"verLatest=" + persistStore.getVersionLatest(tableId) +
 						"offset=" + lastOrder + "&size=" + DEFAULT_PAGESIZE;

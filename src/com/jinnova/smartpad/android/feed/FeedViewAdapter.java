@@ -28,24 +28,6 @@ public class FeedViewAdapter extends SmartpadViewAdapter<Feed> {
 	public static final int TYPE_PROMO = 5;
 	
 	public static final int TYPE_COUNT = 6;
-	
-	private static final int LAYOUTOPT_POST_DEFAULT = 0;
-	private static final int LAYOUTOPT_POST_COUNT = 1;
-	
-	private static final int LAYOUTOPT_BRANCH_DEFAULT = 0;
-	private static final int LAYOUTOPT_BRANCH_COUNT = 1;
-	
-	private static final int LAYOUTOPT_STORE_DEFAULT = 0;
-	private static final int LAYOUTOPT_STORE_COUNT = 1;
-	
-	private static final int LAYOUTOPT_CATALOG_DEFAULT = 0;
-	private static final int LAYOUTOPT_CATALOG_COUNT = 1;
-	
-	private static final int LAYOUTOPT_CATALOGITEM_DEFAULT = 0;
-	private static final int LAYOUTOPT_CATALOGITEM_COUNT = 1;
-	
-	private static final int LAYOUTOPT_PROMO_DEFAULT = 0;
-	private static final int LAYOUTOPT_PROMO_COUNT = 1;
 
 	private interface FeedInstantiator<T> {
 		T instantiate(JSONObject json);
@@ -104,23 +86,29 @@ public class FeedViewAdapter extends SmartpadViewAdapter<Feed> {
 	@Override
 	protected ViewBuilder<?>[][] initBuilderMap() {
 		ViewBuilder<?>[][] builderMap = new ViewBuilder[TYPE_COUNT][];
-		builderMap[TYPE_POST] = new ViewBuilder<?>[LAYOUTOPT_POST_COUNT];
-		builderMap[TYPE_POST][LAYOUTOPT_POST_DEFAULT] = new PostViewBuilder();
+		builderMap[TYPE_POST] = new ViewBuilder<?>[LAYOUTOPT_COUNT];
+		builderMap[TYPE_POST][LAYOUTOPT_DEFAULT] = new PostViewBuilder();
+		builderMap[TYPE_POST][LAYOUTOPT_DETAIL] = new PostViewBuilder();
 
-		builderMap[TYPE_BRANCH] = new ViewBuilder<?>[LAYOUTOPT_BRANCH_COUNT];
-		builderMap[TYPE_BRANCH][LAYOUTOPT_BRANCH_DEFAULT] = new BranchViewBuilder();
+		builderMap[TYPE_BRANCH] = new ViewBuilder<?>[LAYOUTOPT_COUNT];
+		builderMap[TYPE_BRANCH][LAYOUTOPT_DEFAULT] = new BranchViewBuilder();
+		builderMap[TYPE_BRANCH][LAYOUTOPT_DETAIL] = new BranchViewBuilder();
 
-		builderMap[TYPE_PROMO] = new ViewBuilder<?>[LAYOUTOPT_PROMO_COUNT];
-		builderMap[TYPE_PROMO][LAYOUTOPT_PROMO_DEFAULT] = new PromoViewBuilder();
+		builderMap[TYPE_PROMO] = new ViewBuilder<?>[LAYOUTOPT_COUNT];
+		builderMap[TYPE_PROMO][LAYOUTOPT_DEFAULT] = new PromoViewBuilder();
+		builderMap[TYPE_PROMO][LAYOUTOPT_DETAIL] = new PromoViewBuilder();
 
-		builderMap[TYPE_STORE] = new ViewBuilder<?>[LAYOUTOPT_STORE_COUNT];
-		builderMap[TYPE_STORE][LAYOUTOPT_STORE_DEFAULT] = new StoreViewBuilder();
+		builderMap[TYPE_STORE] = new ViewBuilder<?>[LAYOUTOPT_COUNT];
+		builderMap[TYPE_STORE][LAYOUTOPT_DEFAULT] = new StoreViewBuilder();
+		builderMap[TYPE_STORE][LAYOUTOPT_DETAIL] = new StoreViewBuilder();
 
-		builderMap[TYPE_CAT] = new ViewBuilder<?>[LAYOUTOPT_CATALOG_COUNT];
-		builderMap[TYPE_CAT][LAYOUTOPT_CATALOG_DEFAULT] = new CatalogViewBuilder();
+		builderMap[TYPE_CAT] = new ViewBuilder<?>[LAYOUTOPT_COUNT];
+		builderMap[TYPE_CAT][LAYOUTOPT_DEFAULT] = new CatalogViewBuilder();
+		builderMap[TYPE_CAT][LAYOUTOPT_DETAIL] = new CatalogViewBuilder();
 
-		builderMap[TYPE_CATITEM] = new ViewBuilder<?>[LAYOUTOPT_CATALOGITEM_COUNT];
-		builderMap[TYPE_CATITEM][LAYOUTOPT_CATALOGITEM_DEFAULT] = new CatalogItemViewBuilder();
+		builderMap[TYPE_CATITEM] = new ViewBuilder<?>[LAYOUTOPT_COUNT];
+		builderMap[TYPE_CATITEM][LAYOUTOPT_DEFAULT] = new CatalogItemViewBuilder();
+		builderMap[TYPE_CATITEM][LAYOUTOPT_DETAIL] = new CatalogItemViewBuilder();
 		return builderMap;
 	}
 	

@@ -7,28 +7,20 @@
         android:showAsAction="always">
     </item>
 
-    <item
+    <!-- <item
         android:id="@+id/store_catalog_menu_item"
         android:title="@string/store_catalog_menu"
         android:visible="true"
         android:showAsAction="always">
-    </item>
-    <item
+    </item> -->
+    <item android:id="@+id/favorite_menu_item" android:title="@string/favorite_menu" android:visible="true" android:showAsAction="always">
+    </item><item android:id="@+id/member_card_menu_item" android:title="@string/member_card_menu" android:visible="true" android:showAsAction="always">
+    </item><item
         android:id="@+id/orders_menu_item"
         android:title="@string/orders_menu"
         android:visible="true"
         android:showAsAction="always">
     </item>
-    <item
-        android:id="@+id/favorite_menu_item"
-        android:title="@string/favorite_menu"
-        android:visible="true"
-        android:showAsAction="always">
-    </item>
-    <item
-        android:id="@+id/member_card_menu_item"
-        android:title="@string/member_card_menu"
-        android:visible="true"
-        android:showAsAction="always">
-    </item>
+    
+    
 </menu>

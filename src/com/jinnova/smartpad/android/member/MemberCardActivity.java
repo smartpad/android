@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import com.jinnova.smartpad.android.SmartpadActivity;
+import com.jinnova.smartpad.android.SmartpadViewAdapter;
 
 public class MemberCardActivity extends SmartpadActivity {
 	@Override
@@ -17,5 +18,10 @@ public class MemberCardActivity extends SmartpadActivity {
 	@Override
 	public int getParentViewGroupId() {
 		return 0;
+	}
+
+	@Override
+	public SmartpadViewAdapter<?> getViewAdapter() {
+		return null;
 	}
 }

@@ -21,12 +21,12 @@
 			android:layout_marginLeft="4dip"></TextView>
 
 		<Button
-		    android:id="@+id/goBtnFeed"
+		    android:id="@+id/detailBtnFeed"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    android:layout_alignRight="@+id/dateFeed"
 		    android:layout_below="@+id/decriptionFeed"
 		    android:layout_marginTop="3dp"
-		    android:text="@string/go_btn" />
+		    android:text="@string/detail_btn" />
 
 </RelativeLayout>

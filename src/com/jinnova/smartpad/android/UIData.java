@@ -9,6 +9,8 @@ public class UIData {
 	
 	protected JSONObject json;
 	
+	private int overridenLayoutOpt = SmartpadViewAdapter.LAYOUTOPT_UNINITIALIZED;
+	
 	public void setJson(JSONObject json) {
 		this.json = json;
 	}
@@ -33,7 +35,14 @@ public class UIData {
 		}
 	}
 	
+	void setOverridenLayoutOpt(int opt) {
+		this.overridenLayoutOpt = opt;
+	}
+	
 	public int getLayoutOption() {
+		if (overridenLayoutOpt !=  SmartpadViewAdapter.LAYOUTOPT_UNINITIALIZED) {
+			return overridenLayoutOpt;
+		}
 		if (!json.has("layOpt")) {
 			return 0;
 		}

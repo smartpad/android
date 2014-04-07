@@ -1,14 +1,12 @@
 package com.jinnova.smartpad.android.feed;
 
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jinnova.smartpad.android.R;
 import com.jinnova.smartpad.android.SmartpadActivity;
-import com.jinnova.smartpad.android.SmartpadDialogFragment;
 import com.jinnova.smartpad.android.ViewBuilder;
 import com.jinnova.smartpad.android.ViewTag;
 
@@ -19,16 +17,11 @@ public class PostViewBuilder extends ViewBuilder<Post> {
 		TextView date;
 		TextView title;
 		TextView decription;
-		Button goBtn;
-		@Override
-		public int getItemViewType() {
-			return FeedViewAdapter.TYPE_POST;
-		}
+		Button detailBtnFeed;
 	}
 
-	@Override
-	protected int getLayoutTemplateId() {
-		return R.layout.feed_row;
+	PostViewBuilder() {
+		super(R.layout.feed_row);
 	}
 
 	@Override
@@ -38,7 +31,7 @@ public class PostViewBuilder extends ViewBuilder<Post> {
 		tag.imageView = (ImageView) view.findViewById(R.id.imageFeed);
 		tag.date = (TextView) view.findViewById(R.id.dateFeed);
 		tag.decription = (TextView) view.findViewById(R.id.decriptionFeed);
-		tag.goBtn = (Button) view.findViewById(R.id.goBtnFeed);
+		tag.detailBtnFeed = (Button) view.findViewById(R.id.detailBtnFeed);
 		return tag;
 	}
 
@@ -49,28 +42,20 @@ public class PostViewBuilder extends ViewBuilder<Post> {
 		row.decription.setText(post.getDecription());
 		row.title.setText(post.getTitle());
 		row.imageView.setImageResource(post.getImage());
-		final String target = post.getTarget();
+		row.detailBtnFeed.setOnClickListener(createDetailListener(activity.getViewAdapter(), post));
+		/*final String target = post.getTarget();
 		if (target == null) {
-			row.goBtn.setVisibility(View.INVISIBLE);
+			row.detailBtnFeed.setVisibility(View.INVISIBLE);
 		} else {
-			row.goBtn.setOnClickListener(new OnClickListener() {
+			row.detailBtnFeed.setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(View v) {
-					/*AlertDialog alertDialog = new AlertDialog.Builder(v.getContext()).create();
-					alertDialog.setTitle("Alert");
-					alertDialog.setMessage(target);
-					alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
-					// here you can add functions
-					}
-					});
-					alertDialog.show();*/
 					SmartpadDialogFragment newFragment = SmartpadDialogFragment.createDialog(post.getDecription());
 					activity.getFragmentManager().beginTransaction().add(activity.getParentViewGroupId(), newFragment).commit();
 				}
 			});
-		}
+		}*/
 	}
 	
 }

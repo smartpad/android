@@ -1,9 +1,6 @@
 package com.jinnova.smartpad.android.feed;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -16,23 +13,18 @@ public class PromoViewBuilder extends ViewBuilder<Promotion> {
 	
 	private class PromotionUI extends ViewTag {
 		TextView name;
-		Button goBtn;
-		@Override
-		public int getItemViewType() {
-			return FeedViewAdapter.TYPE_PROMO;
-		}
+		Button detailBtnFeed;
 	}
 
-	@Override
-	protected int getLayoutTemplateId() {
-		return R.layout.feed_row;
+	PromoViewBuilder() {
+		super(R.layout.feed_row);
 	}
 
 	@Override
 	public ViewTag createTag(View view) {
 		PromotionUI row  = new PromotionUI();
 		row.name = (TextView) view.findViewById(R.id.decriptionFeed);
-		row.goBtn = (Button) view.findViewById(R.id.goBtnFeed);
+		row.detailBtnFeed = (Button) view.findViewById(R.id.detailBtnFeed);
 		
 		return row;
 	}
@@ -41,12 +33,13 @@ public class PromoViewBuilder extends ViewBuilder<Promotion> {
 	public void loadView(View view, Promotion promo, SmartpadActivity context) {
 		PromotionUI row = (PromotionUI) view.getTag();
 		row.name.setText("Promotion " + promo.getName());
+		row.detailBtnFeed.setOnClickListener(createDetailListener(context.getViewAdapter(), promo));
 		
-		final String target = promo.getTarget();
+		/*final String target = promo.getTarget();
 		if (target == null) {
-			row.goBtn.setVisibility(View.INVISIBLE);
+			row.detailBtnFeed.setVisibility(View.INVISIBLE);
 		} else {
-			row.goBtn.setOnClickListener(new OnClickListener() {
+			row.detailBtnFeed.setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(View v) {
@@ -62,7 +55,7 @@ public class PromoViewBuilder extends ViewBuilder<Promotion> {
 				
 				}
 			});
-		}
+		}*/
 	}
 
 }

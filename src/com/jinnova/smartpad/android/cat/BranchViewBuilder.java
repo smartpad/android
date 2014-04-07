@@ -7,22 +7,15 @@ import com.jinnova.smartpad.android.R;
 import com.jinnova.smartpad.android.SmartpadActivity;
 import com.jinnova.smartpad.android.ViewBuilder;
 import com.jinnova.smartpad.android.ViewTag;
-import com.jinnova.smartpad.android.feed.FeedViewAdapter;
 
 public class BranchViewBuilder extends ViewBuilder<Branch> {
 	
 	private class BranchUI extends ViewTag {
 		ImageView image;
-
-		@Override
-		public int getItemViewType() {
-			return FeedViewAdapter.TYPE_BRANCH;
-		}
 	}
 
-	@Override
-	protected int getLayoutTemplateId() {
-		return R.layout.branch_row;
+	public BranchViewBuilder() {
+		super(R.layout.branch_row);
 	}
 
 	@Override

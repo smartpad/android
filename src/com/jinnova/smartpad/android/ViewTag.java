@@ -1,6 +1,14 @@
 package com.jinnova.smartpad.android;
 
 public abstract class ViewTag {
+	
+	private int viewType;
+	
+	void setItemViewType(int viewType) {
+		this.viewType = viewType;
+	}
 
-	public abstract int getItemViewType();
+	int getItemViewType() {
+		return viewType;
+	}
 }

@@ -11,6 +11,11 @@ import android.widget.BaseAdapter;
 
 public abstract class SmartpadViewAdapter<T extends UIData> extends BaseAdapter implements UIDataFactory<T> {
 	
+	public static final int LAYOUTOPT_UNINITIALIZED = -1;
+	public static final int LAYOUTOPT_DEFAULT = 0;
+	public static final int LAYOUTOPT_DETAIL = 1;
+	public static final int LAYOUTOPT_COUNT = 2;
+	
 	//builder map is long/exhausted, because there are multiple layouts / custom layouts for each feed type. 
 	private ViewBuilder<?>[][] builderMap;
 	
@@ -40,6 +45,12 @@ public abstract class SmartpadViewAdapter<T extends UIData> extends BaseAdapter 
 	
 	public final void loadMore() {
 		feedList.loadMore(this);
+	}
+	
+	public void setDetail(UIData item) {
+		item.setOverridenLayoutOpt(LAYOUTOPT_DETAIL);
+		feedList.setDetail(item);
+		notifyDataSetChanged();
 	}
 
 	@Override
@@ -110,9 +121,11 @@ public abstract class SmartpadViewAdapter<T extends UIData> extends BaseAdapter 
 			if (tag == null || tag.getItemViewType() != getItemViewType(pos)) {
 				Log.d("SmartpadViewAdapter", "view reuse failed");
 				convertView = createView(viewBuilder, parent);
+				((ViewTag) convertView.getTag()).setItemViewType(item.getType());
 			}
 		} else {
 			convertView = createView(viewBuilder, parent);
+			((ViewTag) convertView.getTag()).setItemViewType(item.getType());
 		}
 		viewBuilder.loadView(convertView, item, this.activity);
 		return convertView;

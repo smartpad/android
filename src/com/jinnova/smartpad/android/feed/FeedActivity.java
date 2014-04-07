@@ -5,6 +5,7 @@ import android.widget.ListView;
 
 import com.jinnova.smartpad.android.R;
 import com.jinnova.smartpad.android.SmartpadActivity;
+import com.jinnova.smartpad.android.SmartpadViewAdapter;
 
 public class FeedActivity extends SmartpadActivity {
 
@@ -32,5 +33,10 @@ public class FeedActivity extends SmartpadActivity {
 	@Override
 	public int getParentViewGroupId() {
 		return R.id.activity_main;
+	}
+
+	@Override
+	public SmartpadViewAdapter<?> getViewAdapter() {
+		return adapter;
 	}
 }

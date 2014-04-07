@@ -12,7 +12,6 @@ import android.widget.PopupMenu;
 import android.widget.PopupMenu.OnMenuItemClickListener;
 
 import com.jinnova.smartpad.android.R;
-import com.jinnova.smartpad.android.cat.ShoppingActivity;
 import com.jinnova.smartpad.android.fav.FavoriteActivity;
 import com.jinnova.smartpad.android.feed.FeedActivity;
 import com.jinnova.smartpad.android.member.MemberCardActivity;
@@ -22,6 +21,8 @@ public abstract class SmartpadActivity extends Activity {
 
 	protected Fragment mContent;
 	public abstract int getParentViewGroupId();
+	
+	public abstract SmartpadViewAdapter<?> getViewAdapter();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,9 +60,9 @@ public abstract class SmartpadActivity extends Activity {
 				case R.id.feed_list_menu_item:
 					switchActivity(FeedActivity.class);
 					return true;
-				case R.id.store_catalog_menu_item:
+				/*case R.id.store_catalog_menu_item:
 					switchActivity(ShoppingActivity.class);
-					return true;
+					return true;*/
 				case R.id.favorite_menu_item:
 					switchActivity(FavoriteActivity.class);
 					return true;
