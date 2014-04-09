@@ -5,7 +5,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.jinnova.smartpad.android.R;
-import com.jinnova.smartpad.android.SmartpadActivity;
+import com.jinnova.smartpad.android.SmartpadViewAdapter;
 import com.jinnova.smartpad.android.ViewBuilder;
 import com.jinnova.smartpad.android.ViewTag;
 
@@ -29,10 +29,10 @@ public class CatalogItemViewBuilder extends ViewBuilder<CatalogItem> {
 	}
 
 	@Override
-	public void loadView(View view, CatalogItem catItem, SmartpadActivity context) {
+	public void loadView(View view, CatalogItem catItem, SmartpadViewAdapter<?> viewAdapter) {
 		CatalogItemUI row = (CatalogItemUI) view.getTag();
 		row.name.setText("Catalog Item " + catItem.getName());
-		row.detailBtnFeed.setOnClickListener(createDetailListener(context.getViewAdapter(), catItem));
+		row.detailBtnFeed.setOnClickListener(createDetailListener(viewAdapter, catItem));
 	}
 
 }

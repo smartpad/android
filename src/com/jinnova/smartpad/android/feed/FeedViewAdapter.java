@@ -3,8 +3,9 @@ package com.jinnova.smartpad.android.feed;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
+
 import com.jinnova.smartpad.android.UIData;
-import com.jinnova.smartpad.android.SmartpadActivity;
 import com.jinnova.smartpad.android.SmartpadViewAdapter;
 import com.jinnova.smartpad.android.UIDataStore;
 import com.jinnova.smartpad.android.ViewBuilder;
@@ -36,7 +37,7 @@ public class FeedViewAdapter extends SmartpadViewAdapter<Feed> {
 	@SuppressWarnings("rawtypes")
 	private FeedInstantiator[] instantiators;
 	
-	public FeedViewAdapter(SmartpadActivity context) {
+	public FeedViewAdapter(Context context) {
 		super(context, UIDataStore.TABLE_FEEDS, "feeds");
 		instantiators = new FeedInstantiator[TYPE_COUNT];
 		instantiators[TYPE_POST] = new FeedInstantiator<UIData>() {

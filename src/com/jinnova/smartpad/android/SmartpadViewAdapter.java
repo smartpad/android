@@ -21,7 +21,7 @@ public abstract class SmartpadViewAdapter<T extends UIData> extends BaseAdapter 
 	
 	private int builderCount;
 
-	private SmartpadActivity activity;
+	//private Context context;
 	
 	private UIDataList<T> feedList;
 
@@ -30,9 +30,9 @@ public abstract class SmartpadViewAdapter<T extends UIData> extends BaseAdapter 
 	
 	protected abstract ViewBuilder<?>[][] initBuilderMap();
 	
-	public SmartpadViewAdapter(SmartpadActivity activity, int table, String servicePath) {
-		this.activity = activity;
-		feedList = new UIDataList<T>(activity, this, table, servicePath);
+	public SmartpadViewAdapter(Context context, int table, String servicePath) {
+		//this.context = context;
+		feedList = new UIDataList<T>(context, this, table, servicePath);
 	}
 	
 	private void initBuilderMapInternal() {
@@ -127,7 +127,7 @@ public abstract class SmartpadViewAdapter<T extends UIData> extends BaseAdapter 
 			convertView = createView(viewBuilder, parent);
 			((ViewTag) convertView.getTag()).setItemViewType(item.getType());
 		}
-		viewBuilder.loadView(convertView, item, this.activity);
+		viewBuilder.loadView(convertView, item, this);
 		return convertView;
 	}
 	

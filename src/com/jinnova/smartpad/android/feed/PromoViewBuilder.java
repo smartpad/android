@@ -5,7 +5,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.jinnova.smartpad.android.R;
-import com.jinnova.smartpad.android.SmartpadActivity;
+import com.jinnova.smartpad.android.SmartpadViewAdapter;
 import com.jinnova.smartpad.android.ViewBuilder;
 import com.jinnova.smartpad.android.ViewTag;
 
@@ -30,10 +30,10 @@ public class PromoViewBuilder extends ViewBuilder<Promotion> {
 	}
 
 	@Override
-	public void loadView(View view, Promotion promo, SmartpadActivity context) {
+	public void loadView(View view, Promotion promo, SmartpadViewAdapter<?> viewAdapter) {
 		PromotionUI row = (PromotionUI) view.getTag();
 		row.name.setText("Promotion " + promo.getName());
-		row.detailBtnFeed.setOnClickListener(createDetailListener(context.getViewAdapter(), promo));
+		row.detailBtnFeed.setOnClickListener(createDetailListener(viewAdapter, promo));
 		
 		/*final String target = promo.getTarget();
 		if (target == null) {

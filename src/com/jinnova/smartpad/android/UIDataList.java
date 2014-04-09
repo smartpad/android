@@ -153,7 +153,7 @@ class UIDataList<T extends UIData> {
 			
 			private Object connect(String[] data) {
 				//nothing in database, go to server
-				String serviceUrl = "http://10.88.68.236:9090/" + servicePath + 
+				String serviceUrl = "http://192.168.0.132:9090/" + servicePath + 
 						"?verTarget=" + persistStore.getVersionInUse(tableId) +
 						"verLatest=" + persistStore.getVersionLatest(tableId) +
 						"offset=" + lastOrder + "&size=" + DEFAULT_PAGESIZE;

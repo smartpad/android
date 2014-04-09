@@ -33,5 +33,5 @@ public abstract class ViewBuilder<T extends UIData> {
 	
 	public abstract ViewTag createTag(View view);
 	
-	public abstract void loadView(View view, T uidata, SmartpadActivity activity);
+	public abstract void loadView(View view, T uidata, SmartpadViewAdapter<?> viewAdapter);
 }

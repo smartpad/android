@@ -1,6 +1,7 @@
 package com.jinnova.smartpad.android;
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,9 +36,9 @@ public class SmartpadDialogFragment extends Fragment {
         	
         	@Override
             public void onClick(View v) {
-				SmartpadDialogFragment.this.getFragmentManager()
-						.beginTransaction().remove(SmartpadDialogFragment.this)
-						.commit();
+				FragmentTransaction tx = SmartpadDialogFragment.this.getFragmentManager().beginTransaction();
+				tx.remove(SmartpadDialogFragment.this);
+				tx.commit();
             }
         });
         return view;
