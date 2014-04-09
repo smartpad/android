@@ -118,6 +118,9 @@ public class FeedViewAdapter extends SmartpadViewAdapter<Feed> {
 	  	return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.jinnova.smartpad.android.UIDataFactory#instantiate(org.json.JSONObject)
+	 */
 	@Override
 	public Feed instantiate(JSONObject json) {
 		

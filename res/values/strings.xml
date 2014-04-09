@@ -16,5 +16,6 @@
     <string name="favorite_menu">Quan tâm</string>
     <string name="member_card_menu">Thẻ thành viên</string>
     <string name="title_activity_feed_list">FeedListActivity</string>
+    <string name="title_activity_feed_detail">Feed Detail</string>
 
 </resources>

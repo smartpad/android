@@ -15,6 +15,10 @@ public class UIData {
 		this.json = json;
 	}
 	
+	public String getJsonString() {
+		return json.toString();
+	}
+	
 	public int getType() {
 		throw new UnsupportedOperationException("Subclasses must override getType()");
 	}

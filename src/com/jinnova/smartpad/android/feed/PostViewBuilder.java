@@ -36,13 +36,13 @@ public class PostViewBuilder extends ViewBuilder<Post> {
 	}
 
 	@Override
-	public void loadView(View view, final Post post, final SmartpadViewAdapter<?> viewAdapter) {
+	public void loadView(final View view, final Post post, final SmartpadViewAdapter<?> viewAdapter) {
 		PostUI row = (PostUI) view.getTag();
 		row.date.setText(post.getDate() + " (views: " + FeedViewAdapter.viewCreationCount + ")");
 		row.decription.setText(post.getDecription());
 		row.title.setText(post.getTitle());
 		row.imageView.setImageResource(post.getImage());
-		row.detailBtnFeed.setOnClickListener(createDetailListener(viewAdapter, post));
+		row.detailBtnFeed.setOnClickListener(createDetailListener(view.getContext(), viewAdapter, post));
 		/*final String target = post.getTarget();
 		if (target == null) {
 			row.detailBtnFeed.setVisibility(View.INVISIBLE);

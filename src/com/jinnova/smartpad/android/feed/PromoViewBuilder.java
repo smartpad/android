@@ -33,7 +33,7 @@ public class PromoViewBuilder extends ViewBuilder<Promotion> {
 	public void loadView(View view, Promotion promo, SmartpadViewAdapter<?> viewAdapter) {
 		PromotionUI row = (PromotionUI) view.getTag();
 		row.name.setText("Promotion " + promo.getName());
-		row.detailBtnFeed.setOnClickListener(createDetailListener(viewAdapter, promo));
+		row.detailBtnFeed.setOnClickListener(createDetailListener(view.getContext(), viewAdapter, promo));
 		
 		/*final String target = promo.getTarget();
 		if (target == null) {

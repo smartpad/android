@@ -32,7 +32,7 @@ public class CatalogItemViewBuilder extends ViewBuilder<CatalogItem> {
 	public void loadView(View view, CatalogItem catItem, SmartpadViewAdapter<?> viewAdapter) {
 		CatalogItemUI row = (CatalogItemUI) view.getTag();
 		row.name.setText("Catalog Item " + catItem.getName());
-		row.detailBtnFeed.setOnClickListener(createDetailListener(viewAdapter, catItem));
+		row.detailBtnFeed.setOnClickListener(createDetailListener(view.getContext(), viewAdapter, catItem));
 	}
 
 }

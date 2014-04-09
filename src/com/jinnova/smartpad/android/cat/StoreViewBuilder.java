@@ -32,7 +32,7 @@ public class StoreViewBuilder extends ViewBuilder<Store> {
 	public void loadView(View view, Store store, SmartpadViewAdapter<?> viewAdapter) {
 		StoreUI row = (StoreUI) view.getTag();
 		row.name.setText("Shop " + store.getName());
-		row.detailBtnFeed.setOnClickListener(createDetailListener(viewAdapter, store));
+		row.detailBtnFeed.setOnClickListener(createDetailListener(view.getContext(), viewAdapter, store));
 	}
 
 }

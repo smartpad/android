@@ -1,5 +1,9 @@
 package com.jinnova.smartpad.android;
 
+import com.jinnova.smartpad.android.feed.FeedDetailActivity;
+
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +21,16 @@ public abstract class ViewBuilder<T extends UIData> {
 		return layoutTemplateId;
 	}
 	
-	protected OnClickListener createDetailListener(final SmartpadViewAdapter<?> adapter, final UIData uidata) {
+	protected OnClickListener createDetailListener(final Context context, final SmartpadViewAdapter<?> adapter, final UIData uidata) {
 
 		return new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				adapter.setDetail(uidata);
+				//adapter.setDetail(uidata);
+
+				Intent intent = new Intent(context, FeedDetailActivity.class);
+				intent.putExtra("feed", uidata.getJsonString());
+				context.startActivity(intent);
 			}
 		};
 	}
