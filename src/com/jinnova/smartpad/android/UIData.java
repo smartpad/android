@@ -4,6 +4,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class UIData {
+
+	public static final int TYPE_UNKNOWN = -1;
+	public static final int TYPE_POST = 0;
+	public static final int TYPE_BRANCH = 1;
+	public static final int TYPE_STORE = 2;
+	public static final int TYPE_CAT = 3;
+	public static final int TYPE_CATITEM = 4;
+	public static final int TYPE_PROMO = 5;
+	
+	public static final int TYPE_COUNT = 6;
 	
 	static final String ORD = "ord";
 	
@@ -48,12 +58,12 @@ public class UIData {
 			return overridenLayoutOpt;
 		}
 		if (!json.has("layOpt")) {
-			return 0;
+			return SmartpadViewAdapter.LAYOUTOPT_DEFAULT;
 		}
 		try {
 			return json.getInt("layOpt");
 		} catch (JSONException e) {
-			return 0;
+			return SmartpadViewAdapter.LAYOUTOPT_DEFAULT;
 		}
 		
 	}
@@ -65,5 +75,40 @@ public class UIData {
 			return 0;
 		}
 	}
+	
+	public static String getTypeName(int typeNumber) {
+		if (typeNumber == TYPE_POST) {
+			return "post";
+		} else if (typeNumber == TYPE_BRANCH) {
+			return "branch";
+		} else if (typeNumber == TYPE_STORE) {
+			return "store";
+		} else if (typeNumber == TYPE_CAT) {
+			return "cat";
+		} else if (typeNumber == TYPE_CATITEM) {
+			return "citem";
+		} else if (typeNumber == TYPE_PROMO) {
+			return "pro";
+		} else {
+			return null;
+		}
+	}
 
+	public static int getTypeNumber(String typeName) {
+		if ("post".equals(typeName)) {
+			return TYPE_POST;
+		} else if ("branch".equals(typeName)) {
+			return TYPE_BRANCH;
+		} else if ("store".equals(typeName)) {
+			return TYPE_STORE;
+		} else if ("cat".equals(typeName)) {
+			return TYPE_CAT;
+		} else if ("citem".equals(typeName)) {
+			return TYPE_CATITEM;
+		} else if ("pro".equals(typeName)) {
+			return TYPE_PROMO;
+		} else {
+			return TYPE_UNKNOWN;
+		}
+	}
 }

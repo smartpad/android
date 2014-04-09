@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-public abstract class SmartpadViewAdapter<T extends UIData> extends BaseAdapter implements UIDataFactory<T> {
+public abstract class SmartpadViewAdapter<T extends UIData> extends BaseAdapter {
 	
 	public static final int LAYOUTOPT_UNINITIALIZED = -1;
 	public static final int LAYOUTOPT_DEFAULT = 0;
@@ -30,9 +30,9 @@ public abstract class SmartpadViewAdapter<T extends UIData> extends BaseAdapter 
 	
 	protected abstract ViewBuilder<?>[][] initBuilderMap();
 	
-	public SmartpadViewAdapter(Context context, int table, String servicePath) {
+	public SmartpadViewAdapter(Context context, UIDataList<T> dataList) {
 		//this.context = context;
-		feedList = new UIDataList<T>(context, this, table, servicePath);
+		feedList = dataList;
 	}
 	
 	private void initBuilderMapInternal() {
@@ -47,8 +47,7 @@ public abstract class SmartpadViewAdapter<T extends UIData> extends BaseAdapter 
 		feedList.loadMore(this);
 	}
 	
-	public void setDetail(UIData item) {
-		item.setOverridenLayoutOpt(LAYOUTOPT_DETAIL);
+	public void setDetail(T item) {
 		feedList.setDetail(item);
 		notifyDataSetChanged();
 	}

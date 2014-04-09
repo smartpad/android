@@ -19,62 +19,59 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-class UIDataList<T extends UIData> {
+public class UIDataList<T extends UIData> {
 	
 	private static final int DEFAULT_PAGESIZE = 10;
 	
 	//private String version;
 	private final int tableId;
 	
-	private int lastOrder = 0; //order number starts from 1
+	//private int lastOrder = 0; //order number starts from 1
 	
 	private final ArrayList<T> backedList = new ArrayList<T>();
 	
-	private final String servicePath;
+	private String servicePath;
 	
 	private final UIDataStore<T> persistStore;
 	
 	private final UIDataFactory<T> factory;
 	
-	private T detailed;
-	
-	UIDataList(Context context, UIDataFactory<T> factory, int table, String servicePath) {
+	public UIDataList(Context context, UIDataFactory<T> factory, int table, String servicePath) {
 		this.servicePath = servicePath;
 		this.tableId = table;
-		this.persistStore = new UIDataStore<T>(context);
+		if (table != UIDataStore.TABLE_NOTABLE) {
+			this.persistStore = new UIDataStore<T>(context);
+		} else {
+			this.persistStore = null;
+		}
 		this.factory = factory;
 	}
 
-	@SuppressWarnings("unchecked")
-	public void setDetail(UIData detailed) {
-		this.detailed = (T) detailed;
+	public void setDetail(T detailed) {
+		backedList.clear();
+		backedList.add(detailed);
+		//TODO lastOrder = 0;
+		detailed.setOverridenLayoutOpt(SmartpadViewAdapter.LAYOUTOPT_DETAIL);
+		servicePath = "similiar/" + UIData.getTypeName(detailed.getType()) + "/" + detailed.getId();
 	}
 	
 	T get(int location) {
-		if (detailed != null) {
-			return (T) detailed;
-		}
 		return backedList.get(location);
 	}
 
 	int size() {
-		if (detailed != null) {
-			return 1;
-		}
 		return backedList.size();
 	}
 
 	void switchToLatest(SmartpadViewAdapter<? extends UIData> adapter) {
 		backedList.clear();
-		persistStore.switchToLatest(tableId);
+		if (persistStore != null) {
+			persistStore.switchToLatest(tableId);
+		}
 		loadMore(adapter);
 	}
 	
 	void loadMore(final SmartpadViewAdapter<? extends UIData> adapter) {
-
-		if (detailed != null) {
-			return;
-		}
 		
 		new AsyncTask<String, Void, Object>() {
 			
@@ -86,11 +83,17 @@ class UIDataList<T extends UIData> {
 				
 				//first attempt with database
 				ArrayList<JSONObject> moreData;
-				try {
-					moreData = persistStore.get(tableId, lastOrder, lastOrder + DEFAULT_PAGESIZE);
-				} catch (JSONException e) {
-					Log.w("UIDataList", "json format error in stored data");
-					return e;
+				if (persistStore != null) {
+					try {
+						//moreData = persistStore.get(tableId, lastOrder, lastOrder + DEFAULT_PAGESIZE);
+						int size = backedList.size();
+						moreData = persistStore.get(tableId, size, size + DEFAULT_PAGESIZE);
+					} catch (JSONException e) {
+						Log.w("UIDataList", "json format error in stored data");
+						return e;
+					}
+				} else {
+					moreData = null;
 				}
 				
 				if (moreData != null && !moreData.isEmpty()) {
@@ -111,15 +114,19 @@ class UIDataList<T extends UIData> {
 					JSONObject result = new JSONObject(data[0]);
 					if (result.has("n")) {
 						//got new data version
-						JSONArray newArray = result.getJSONArray("n");
-						persistStore.addNewVersion(tableId, result.getString("v"), result.getString("exp"), newArray);
+						if (persistStore != null) {
+							JSONArray newArray = result.getJSONArray("n");
+							persistStore.addNewVersion(tableId, result.getString("v"), result.getString("exp"), newArray);
+						}
 						newVersionLoaded = true;
 					}
 
 					//check for data in target version
 					if (result.has("t")) {
 						JSONArray targetArray = result.getJSONArray("t");
-						persistStore.insert(tableId, targetArray, true /*toTableInUse*/);
+						if (persistStore != null) {
+							persistStore.insert(tableId, targetArray, true /*toTableInUse*/);
+						}
 						newList = buildList(targetArray);
 					}
 					return null;
@@ -152,11 +159,15 @@ class UIDataList<T extends UIData> {
 			}
 			
 			private Object connect(String[] data) {
-				//nothing in database, go to server
-				String serviceUrl = "http://192.168.0.132:9090/" + servicePath + 
-						"?verTarget=" + persistStore.getVersionInUse(tableId) +
-						"verLatest=" + persistStore.getVersionLatest(tableId) +
-						"offset=" + lastOrder + "&size=" + DEFAULT_PAGESIZE;
+				String versionParams;
+				if (persistStore != null) {
+					versionParams= "verTarget=" + persistStore.getVersionInUse(tableId) +
+							"&verLatest=" + persistStore.getVersionLatest(tableId);
+				} else {
+					versionParams = "";
+				}
+				String serviceUrl = "http://192.168.0.132:9090/" + servicePath + "?" + versionParams +
+						"&offset=" + backedList.size() + "&size=" + DEFAULT_PAGESIZE;
 				HttpClient httpclient = new DefaultHttpClient();
 				ByteArrayOutputStream tempStream= null;
 				try {
@@ -212,4 +223,6 @@ class UIDataList<T extends UIData> {
 			}
 		}.execute((String) null);
 	}
+
 }
+

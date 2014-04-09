@@ -4,7 +4,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.jinnova.smartpad.android.feed.Feed;
-import com.jinnova.smartpad.android.feed.FeedViewAdapter;
 
 public class Branch extends Feed {
 
@@ -17,7 +16,7 @@ public class Branch extends Feed {
 	 */
 	@Override
 	public int getType() {
-		return FeedViewAdapter.TYPE_BRANCH;
+		return TYPE_BRANCH;
 	}
 
 	public String getName() {

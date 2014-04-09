@@ -2,6 +2,8 @@ package com.jinnova.smartpad.android.feed;
 
 import org.json.JSONObject;
 
+import com.jinnova.smartpad.android.UIData;
+
 public class Promotion extends Feed {
 
 	public Promotion(JSONObject json) {
@@ -13,7 +15,7 @@ public class Promotion extends Feed {
 	 */
 	@Override
 	public int getType() {
-		return FeedViewAdapter.TYPE_PROMO;
+		return UIData.TYPE_PROMO;
 	}
 
 	@Override

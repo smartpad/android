@@ -3,6 +3,8 @@ package com.jinnova.smartpad.android.feed;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.jinnova.smartpad.android.UIData;
+
 public class Post extends Feed {
 	
 	private static final int IMAGE_MISSING = 0;
@@ -19,7 +21,7 @@ public class Post extends Feed {
 	 */
 	@Override
 	public int getType() {
-		return FeedViewAdapter.TYPE_POST;
+		return UIData.TYPE_POST;
 	}
 	
 	public int getImage() {

@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.jinnova.smartpad.android.R;
+import com.jinnova.smartpad.android.UIDataList;
+import com.jinnova.smartpad.android.UIDataStore;
 
 public class FeedListFragment extends Fragment {
 	
@@ -20,8 +22,11 @@ public class FeedListFragment extends Fragment {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		/*ListView list = (ListView) view.findViewById(R.id.feed_list);
 		FeedViewAdapter adapter = (FeedViewAdapter) list.getAdapter();*/
+		
+		UIDataList<Feed> dataList = new UIDataList<Feed>(this.getActivity(), new FeedFactory(), UIDataStore.TABLE_FEEDS, "feeds");
+		FeedViewAdapter adapter = new FeedViewAdapter(this.getActivity(), dataList);
+		
 		ListView list = (ListView) view.findViewById(R.id.feed_list);
-		FeedViewAdapter adapter = new FeedViewAdapter(this.getActivity());
 		list.setAdapter(adapter);
 		adapter.loadMore();
 	}

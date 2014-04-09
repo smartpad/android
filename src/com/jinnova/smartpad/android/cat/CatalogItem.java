@@ -3,7 +3,6 @@ package com.jinnova.smartpad.android.cat;
 import org.json.JSONObject;
 
 import com.jinnova.smartpad.android.feed.Feed;
-import com.jinnova.smartpad.android.feed.FeedViewAdapter;
 
 public class CatalogItem extends Feed {
 
@@ -16,7 +15,7 @@ public class CatalogItem extends Feed {
 	 */
 	@Override
 	public int getType() {
-		return FeedViewAdapter.TYPE_CATITEM;
+		return TYPE_CATITEM;
 	}
 
 	@Override

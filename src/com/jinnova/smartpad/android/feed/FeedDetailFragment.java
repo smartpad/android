@@ -4,6 +4,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.jinnova.smartpad.android.R;
+import com.jinnova.smartpad.android.UIDataList;
+import com.jinnova.smartpad.android.UIDataStore;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -24,17 +26,20 @@ public class FeedDetailFragment extends Fragment {
 		/*ListView list = (ListView) view.findViewById(R.id.feed_list);
 		FeedViewAdapter adapter = (FeedViewAdapter) list.getAdapter();*/
 
-		FeedViewAdapter adapter = new FeedViewAdapter(this.getActivity());
+		FeedFactory feedFactory = new FeedFactory();
+		UIDataList<Feed> dataList = new UIDataList<Feed>(this.getActivity(), feedFactory, UIDataStore.TABLE_NOTABLE, "feeds/details");
+		FeedViewAdapter adapter = new FeedViewAdapter(this.getActivity(), dataList);
+		
 		String jsonString = getActivity().getIntent().getStringExtra("feed");
 		try {
-			adapter.setDetail(adapter.instantiate(new JSONObject(jsonString)));
+			adapter.setDetail(feedFactory.instantiate(new JSONObject(jsonString)));
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 		ListView list = (ListView) view.findViewById(R.id.feed_detail);
 		list.setAdapter(adapter);
+		adapter.loadMore();
 		//adapter.notifyDataSetChanged();
 	}
 
