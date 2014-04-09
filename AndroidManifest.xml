@@ -7,15 +7,17 @@
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="19" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name="com.jinnova.smartpad.android.SmartpadApp"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" android:name="SmartpadApp">
+        android:theme="@style/AppTheme" >
         <activity
-            android:name="com.jinnova.smartpad.android.feed.FeedActivity"
+            android:name="com.jinnova.smartpad.android.feed.FeedListActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,16 +25,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.jinnova.smartpad.android.fav.FavoriteActivity"
-             android:label="@string/app_name"></activity>
-        <activity android:name="com.jinnova.smartpad.android.member.MemberCardActivity"
-             android:label="@string/app_name"></activity>
-        <activity android:name="com.jinnova.smartpad.android.order.OrdersActivity"
-             android:label="@string/app_name"></activity>
-        <activity android:name="com.jinnova.smartpad.android.promo.PromotionActivity"
-             android:label="@string/app_name"></activity>
-        <activity android:name="com.jinnova.smartpad.android.cat.ShoppingActivity"
-             android:label="@string/app_name"></activity>
+        <activity
+            android:name="com.jinnova.smartpad.android.fav.FavoriteActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.jinnova.smartpad.android.member.MemberCardActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.jinnova.smartpad.android.order.OrdersActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.jinnova.smartpad.android.promo.PromotionActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.jinnova.smartpad.android.cat.ShoppingActivity"
+            android:label="@string/app_name" >
+        </activity>
     </application>
 
 </manifest>

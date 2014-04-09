@@ -124,7 +124,6 @@ public class UIDataStore<T extends UIData> extends SQLiteOpenHelper {
 	}
 
 	ArrayList<JSONObject> get(int tableId, int offset, int size) throws JSONException {
-
 		Cursor cursor = null;
 		try {
 			//this must be before calling to getTablePostfix, so that onOpen() get called
@@ -145,6 +144,7 @@ public class UIDataStore<T extends UIData> extends SQLiteOpenHelper {
 				String json = cursor.getString(1);
 				result.add(new JSONObject(json));
 			}
+			Log.d("UIDataStore", "Loaded " + tableId + " from " + offset + ", size " + size + ", got " + result.size());
 			return result;
 		} finally {
 			if (cursor != null) {

@@ -1,0 +1,28 @@
+<!-- <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.jinnova.smartpad.android.FeedListActivity"
+    tools:ignore="MergeRootFrame" >
+    
+    <fragment class="com.jinnova.smartpad.android.feed.FeedListFragment"
+            android:id="@+id/feed_list_frag"
+            android:layout_width="@dimen/activity_horizontal_margin"
+            android:layout_height="match_parent"/>
+    
+</FrameLayout> -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    	android:id="@+id/container"
+	    android:orientation="horizontal"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:baselineAligned="false"
+	    android:background="@color/gray">
+	    
+	    <fragment android:name="com.jinnova.smartpad.android.feed.FeedListFragment"
+	            android:id="@+id/list"
+	            android:layout_weight="1"
+	            android:layout_width="0dp"
+	            android:layout_height="match_parent" />
+	</LinearLayout>
