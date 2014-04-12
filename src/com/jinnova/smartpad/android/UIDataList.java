@@ -166,7 +166,7 @@ public class UIDataList<T extends UIData> {
 				} else {
 					versionParams = "";
 				}
-				String serviceUrl = "http://192.168.0.132:9090/" + servicePath + "?" + versionParams +
+				String serviceUrl = "http://192.168.0.112:9090/" + servicePath + "?" + versionParams +
 						"&offset=" + backedList.size() + "&size=" + DEFAULT_PAGESIZE;
 				HttpClient httpclient = new DefaultHttpClient();
 				ByteArrayOutputStream tempStream= null;
