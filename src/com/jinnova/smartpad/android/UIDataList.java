@@ -52,7 +52,7 @@ public class UIDataList<T extends UIData> {
 		backedList.add(detailed);
 		//TODO lastOrder = 0;
 		detailed.setOverridenLayoutOpt(SmartpadViewAdapter.LAYOUTOPT_DETAIL);
-		servicePath = "similiar/" + UIData.getTypeName(detailed.getType()) + "/" + detailed.getId();
+		servicePath = "similar/" + UIData.getTypeName(detailed.getType()) + "/" + detailed.getId();
 	}
 	
 	T get(int location) {
