@@ -12,8 +12,9 @@ public class UIData {
 	public static final int TYPE_CAT = 3;
 	public static final int TYPE_CATITEM = 4;
 	public static final int TYPE_PROMO = 5;
+	public static final int TYPE_COMPOUND = 6;
 	
-	public static final int TYPE_COUNT = 6;
+	public static final int TYPE_COUNT = 7;
 	
 	static final String ORD = "ord";
 	
@@ -89,6 +90,8 @@ public class UIData {
 			return "citem";
 		} else if (typeNumber == TYPE_PROMO) {
 			return "pro";
+		} else if (typeNumber == TYPE_COMPOUND) {
+			return "com";
 		} else {
 			return null;
 		}
@@ -107,6 +110,8 @@ public class UIData {
 			return TYPE_CATITEM;
 		} else if ("pro".equals(typeName)) {
 			return TYPE_PROMO;
+		} else if ("com".equals(typeName)) {
+			return TYPE_COMPOUND;
 		} else {
 			return TYPE_UNKNOWN;
 		}

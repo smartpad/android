@@ -3,6 +3,7 @@ package com.jinnova.smartpad.android.feed;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.jinnova.smartpad.android.UICompound;
 import com.jinnova.smartpad.android.UIData;
 import com.jinnova.smartpad.android.UIDataFactory;
 import com.jinnova.smartpad.android.cat.Branch;
@@ -62,6 +63,13 @@ public class FeedFactory implements UIDataFactory<Feed> {
 			@Override
 			public UIData instantiate(JSONObject json) {
 				return new CatalogItem(json);
+			}
+		};
+		instantiators[UIData.TYPE_COMPOUND] = new FeedInstantiator<UIData>() {
+			
+			@Override
+			public UIData instantiate(JSONObject json) {
+				return new UICompound(json);
 			}
 		};
 	}
