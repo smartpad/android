@@ -1,5 +1,7 @@
 package com.jinnova.smartpad.android.feed;
 
+import static com.jinnova.smartpad.android.ServerConstants.*;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -22,54 +24,55 @@ public class FeedFactory implements UIDataFactory<Feed> {
 	
 	public FeedFactory() {
 
-		instantiators = new FeedInstantiator[UIData.TYPE_COUNT];
-		instantiators[UIData.TYPE_POST] = new FeedInstantiator<UIData>() {
+		instantiators = new FeedInstantiator[TYPE_COUNT];
+		instantiators[TYPE_POST] = new FeedInstantiator<UIData>() {
 			
 			@Override
 			public UIData instantiate(JSONObject json) {
 				return new Post(json);
 			}
 		};
-		instantiators[UIData.TYPE_BRANCH] = new FeedInstantiator<UIData>() {
+		instantiators[TYPE_BRANCH] = new FeedInstantiator<UIData>() {
 			
 			@Override
 			public UIData instantiate(JSONObject json) {
 				return new Branch(json);
 			}
 		};
-		instantiators[UIData.TYPE_PROMO] = new FeedInstantiator<UIData>() {
+		instantiators[TYPE_PROMO] = new FeedInstantiator<UIData>() {
 			
 			@Override
 			public UIData instantiate(JSONObject json) {
 				return new Promotion(json);
 			}
 		};
-		instantiators[UIData.TYPE_STORE] = new FeedInstantiator<UIData>() {
+		instantiators[TYPE_STORE] = new FeedInstantiator<UIData>() {
 			
 			@Override
 			public UIData instantiate(JSONObject json) {
 				return new Store(json);
 			}
 		};
-		instantiators[UIData.TYPE_CAT] = new FeedInstantiator<UIData>() {
+		instantiators[TYPE_CAT] = new FeedInstantiator<UIData>() {
 			
 			@Override
 			public UIData instantiate(JSONObject json) {
 				return new Catalog(json);
 			}
 		};
-		instantiators[UIData.TYPE_CATITEM] = new FeedInstantiator<UIData>() {
+		instantiators[TYPE_CATITEM] = new FeedInstantiator<UIData>() {
 			
 			@Override
 			public UIData instantiate(JSONObject json) {
 				return new CatalogItem(json);
 			}
 		};
-		instantiators[UIData.TYPE_COMPOUND] = new FeedInstantiator<UIData>() {
+		instantiators[TYPE_COMPOUND] = new FeedInstantiator<UIData>() {
 			
 			@Override
 			public UIData instantiate(JSONObject json) {
-				return new UICompound(json);
+				//return new UICompound(json);
+				return new CompoundFeed(json);
 			}
 		};
 	}
@@ -81,12 +84,16 @@ public class FeedFactory implements UIDataFactory<Feed> {
 	public Feed instantiate(JSONObject json) {
 		
 		try {
-			int feedType = UIData.getTypeNumber(json.getString("type"));
-			if (feedType == UIData.TYPE_UNKNOWN) {
+			//int feedType = UIData.getTypeNumber(json.getString(FIELD_TYPE));
+			int feedType = json.getInt(FIELD_TYPENUM);
+			if (feedType == TYPE_UNKNOWN) {
 				return null;
 			}
 			@SuppressWarnings("unchecked")
 			FeedInstantiator<Feed> one = instantiators[feedType];
+			if (one == null) {
+				return null;
+			}
 			return one.instantiate(json);
 		} catch (JSONException e) {
 			return null;

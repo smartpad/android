@@ -19,6 +19,11 @@ public class CatalogItem extends Feed {
 	}
 
 	@Override
+	public String getTypeName() {
+		return TYPENAME_CATITEM;
+	}
+
+	@Override
 	public String getTarget() {
 		return null;
 	}

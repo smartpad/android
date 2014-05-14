@@ -18,4 +18,9 @@ public class Store extends Feed {
 		return TYPE_STORE;
 	}
 
+	@Override
+	public String getTypeName() {
+		return TYPENAME_STORE;
+	}
+
 }

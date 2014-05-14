@@ -20,4 +20,9 @@ public class UICompound extends UIData {
 		return SmartpadViewAdapter.LAYOUTOPT_DEFAULT;
 	}
 
+	@Override
+	public String getTypeName() {
+		return TYPENAME_COMPOUND;
+	}
+
 }

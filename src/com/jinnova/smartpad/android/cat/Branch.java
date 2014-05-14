@@ -1,6 +1,5 @@
 package com.jinnova.smartpad.android.cat;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.jinnova.smartpad.android.feed.Feed;
@@ -19,11 +18,16 @@ public class Branch extends Feed {
 		return TYPE_BRANCH;
 	}
 
-	public String getName() {
+	@Override
+	public String getTypeName() {
+		return TYPENAME_BRANCH;
+	}
+
+	/*public String getName() {
 		try {
 			return json.getString("name");
 		} catch (JSONException e) {
 			return "";
 		}
-	}
+	}*/
 }

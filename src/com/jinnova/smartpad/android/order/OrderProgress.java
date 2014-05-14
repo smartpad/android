@@ -15,4 +15,9 @@ public class OrderProgress extends Feed {
 		return 0;
 	}
 
+	@Override
+	public String getTypeName() {
+		return "undefined";
+	}
+
 }

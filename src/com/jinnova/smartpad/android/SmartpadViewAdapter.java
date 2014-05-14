@@ -1,5 +1,6 @@
 package com.jinnova.smartpad.android;
 
+import com.jinnova.smartpad.android.feed.CompoundFeed;
 import com.jinnova.smartpad.android.feed.Feed;
 
 import android.content.Context;
@@ -24,7 +25,7 @@ public abstract class SmartpadViewAdapter<T extends UIData> extends BaseAdapter 
 	//private Context context;
 	
 	private UIDataList<T> feedList;
-
+	private CompoundFeed compoundFeed;
 	protected SmartpadViewAdapter() {
 	}
 	
@@ -39,7 +40,9 @@ public abstract class SmartpadViewAdapter<T extends UIData> extends BaseAdapter 
 		builderMap = initBuilderMap();
 		builderCount = 0;
 		for (ViewBuilder<?>[] builders : builderMap) {
-			builderCount += builders.length;
+			if (builders != null) {
+				builderCount += builders.length;
+			}
 		}
 	}
 	
@@ -103,14 +106,35 @@ public abstract class SmartpadViewAdapter<T extends UIData> extends BaseAdapter 
 	 * @param parent
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public View getView(int pos, View convertView, ViewGroup parent) {
 		if (builderMap == null) {
 			initBuilderMapInternal();
 		}
-
+		/*if (pos == 0) {
+			if (compoundFeed == null) {
+				compoundFeed = new CompoundFeed();
+				compoundFeed.addfeed((Feed) feedList.get(0));
+				compoundFeed.addfeed((Feed) feedList.get(1));
+				compoundFeed.addfeed((Feed) feedList.get(2));
+			}
+			ViewBuilder<T> viewBuilder = (ViewBuilder<T>) builderMap[compoundFeed.getType()][compoundFeed.getLayoutOption()];
+			if (convertView != null) {
+				ViewTag tag = (ViewTag) convertView.getTag();
+				if (tag == null || tag.getItemViewType() != getItemViewType(pos)) {
+					Log.d("SmartpadViewAdapter", "view reuse failed");
+					convertView = createView(viewBuilder, parent);
+					((ViewTag) convertView.getTag()).setItemViewType(compoundFeed.getType());
+				}
+			} else {
+				convertView = createView(viewBuilder, parent);
+				((ViewTag) convertView.getTag()).setItemViewType(compoundFeed.getType());
+			}
+			viewBuilder.loadView(convertView, (T) compoundFeed, this);
+			return convertView;
+		}*/
 		T item = feedList.get(pos);
-		@SuppressWarnings("unchecked")
 		ViewBuilder<T> viewBuilder = (ViewBuilder<T>) builderMap[item.getType()][item.getLayoutOption()];
 
 		if (convertView != null) {

@@ -23,6 +23,11 @@ public class Post extends Feed {
 	public int getType() {
 		return UIData.TYPE_POST;
 	}
+
+	@Override
+	public String getTypeName() {
+		return TYPENAME_POST;
+	}
 	
 	public int getImage() {
 		try {

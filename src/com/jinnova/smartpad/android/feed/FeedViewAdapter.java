@@ -47,9 +47,9 @@ public class FeedViewAdapter extends SmartpadViewAdapter<Feed> {
 		builderMap[UIData.TYPE_CATITEM] = new ViewBuilder<?>[LAYOUTOPT_COUNT];
 		builderMap[UIData.TYPE_CATITEM][LAYOUTOPT_DEFAULT] = new CatalogItemViewBuilder();
 		builderMap[UIData.TYPE_CATITEM][LAYOUTOPT_DETAIL] = new CatalogItemViewDetailBuilder();
-
+		
 		builderMap[UIData.TYPE_COMPOUND] = new ViewBuilder<?>[LAYOUTOPT_COUNT];
-		builderMap[UIData.TYPE_COMPOUND][LAYOUTOPT_DEFAULT] = new CatalogItemViewBuilder();
+		builderMap[UIData.TYPE_COMPOUND][LAYOUTOPT_DEFAULT] = new CompoundFeedViewBuilder(builderMap);
 		return builderMap;
 	}
 	

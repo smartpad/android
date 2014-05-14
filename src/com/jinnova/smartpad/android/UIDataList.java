@@ -1,5 +1,7 @@
 package com.jinnova.smartpad.android;
 
+import static com.jinnova.smartpad.android.ServerConstants.*;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -52,7 +54,8 @@ public class UIDataList<T extends UIData> {
 		backedList.add(detailed);
 		//TODO lastOrder = 0;
 		detailed.setOverridenLayoutOpt(SmartpadViewAdapter.LAYOUTOPT_DETAIL);
-		servicePath = "similar/" + UIData.getTypeName(detailed.getType()) + "/" + detailed.getId();
+		//servicePath = "similar/" + UIData.getTypeName(detailed.getType()) + "/" + detailed.getId();
+		servicePath = "similar/" + detailed.getTypeName() + "/" + detailed.getId();
 	}
 	
 	T get(int location) {
@@ -112,21 +115,23 @@ public class UIDataList<T extends UIData> {
 					
 					//check for data in new version
 					JSONObject result = new JSONObject(data[0]);
-					if (result.has("n")) {
+					if (result.has(VERSIONING_NEW)) {
 						//got new data version
 						if (persistStore != null) {
-							JSONArray newArray = result.getJSONArray("n");
-							persistStore.addNewVersion(tableId, result.getString("v"), result.getString("exp"), newArray);
+							JSONObject newData = result.getJSONObject(VERSIONING_NEW);
+							persistStore.addNewVersion(tableId, result.getString("v"), result.getString("exp"), newData);
 						}
 						newVersionLoaded = true;
 					}
 
 					//check for data in target version
-					if (result.has("t")) {
-						JSONArray targetArray = result.getJSONArray("t");
+					if (result.has(VERSIONING_TARGET)) {
+						JSONObject targetData = result.getJSONObject(VERSIONING_TARGET);
 						if (persistStore != null) {
-							persistStore.insert(tableId, targetArray, true /*toTableInUse*/);
+							persistStore.insert(tableId, targetData, true /*toTableInUse*/);
 						}
+						
+						JSONArray targetArray = targetData.getJSONArray(FIELD_ARRAY);
 						newList = buildList(targetArray);
 					}
 					return null;
@@ -166,7 +171,7 @@ public class UIDataList<T extends UIData> {
 				} else {
 					versionParams = "";
 				}
-				String serviceUrl = "http://192.168.0.112:9090/" + servicePath + "?" + versionParams +
+				String serviceUrl = "http://10.88.106.11:9090/" + servicePath + "?" + versionParams +
 						"&offset=" + backedList.size() + "&size=" + DEFAULT_PAGESIZE;
 				HttpClient httpclient = new DefaultHttpClient();
 				ByteArrayOutputStream tempStream= null;

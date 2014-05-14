@@ -1,5 +1,7 @@
 package com.jinnova.smartpad.android.feed;
 
+import static com.jinnova.smartpad.android.ServerConstants.*;
+
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -25,7 +27,7 @@ public class FeedListFragment extends Fragment {
 		/*ListView list = (ListView) view.findViewById(R.id.feed_list);
 		FeedViewAdapter adapter = (FeedViewAdapter) list.getAdapter();*/
 		
-		UIDataList<Feed> dataList = new UIDataList<Feed>(this.getActivity(), new FeedFactory(), UIDataStore.TABLE_FEEDS, "feeds");
+		UIDataList<Feed> dataList = new UIDataList<Feed>(this.getActivity(), new FeedFactory(), UIDataStore.TABLE_FEEDS, REST_FEEDS);
 		final FeedViewAdapter adapter = new FeedViewAdapter(this.getActivity(), dataList);
 		
 		ListView list = (ListView) view.findViewById(R.id.feed_list);
@@ -45,7 +47,7 @@ public class FeedListFragment extends Fragment {
 					adapter.loadMore();
 					isLoadMore = false;
 				} else {
-					isLoadMore = true;
+					isLoadMore = firstVisibleItem + visibleItemCount != totalItemCount;
 				}
 			}
 		});

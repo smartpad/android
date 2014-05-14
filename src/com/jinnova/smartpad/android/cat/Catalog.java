@@ -19,6 +19,11 @@ public class Catalog extends Feed {
 	}
 
 	@Override
+	public String getTypeName() {
+		return TYPENAME_CAT;
+	}
+
+	@Override
 	public String getTarget() {
 		return null;
 	}

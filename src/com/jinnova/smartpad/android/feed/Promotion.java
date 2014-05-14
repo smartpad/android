@@ -19,6 +19,11 @@ public class Promotion extends Feed {
 	}
 
 	@Override
+	public String getTypeName() {
+		return TYPENAME_PROMO;
+	}
+
+	@Override
 	public String getTarget() {
 		return null;
 	}

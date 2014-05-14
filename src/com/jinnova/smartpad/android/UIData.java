@@ -3,9 +3,9 @@ package com.jinnova.smartpad.android;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class UIData {
+public abstract class UIData implements ServerConstants {
 
-	public static final int TYPE_UNKNOWN = -1;
+	/*public static final int TYPE_UNKNOWN = -1;
 	public static final int TYPE_POST = 0;
 	public static final int TYPE_BRANCH = 1;
 	public static final int TYPE_STORE = 2;
@@ -14,9 +14,9 @@ public class UIData {
 	public static final int TYPE_PROMO = 5;
 	public static final int TYPE_COMPOUND = 6;
 	
-	public static final int TYPE_COUNT = 7;
+	public static final int TYPE_COUNT = 7;*/
 	
-	static final String ORD = "ord";
+	//static final String ORD = "ord";
 	
 	protected JSONObject json;
 	
@@ -33,10 +33,12 @@ public class UIData {
 	public int getType() {
 		throw new UnsupportedOperationException("Subclasses must override getType()");
 	}
+	
+	public abstract String getTypeName();
 
 	public String getId() {
 		try {
-			return json.getString("id");
+			return json.getString(FIELD_ID);
 		} catch (JSONException e) {
 			return null;
 		}
@@ -44,7 +46,7 @@ public class UIData {
 	
 	public String getName() {
 		try {
-			return json.getString("name");
+			return json.getString(FIELD_NAME);
 		} catch (JSONException e) {
 			return null;
 		}
@@ -70,14 +72,15 @@ public class UIData {
 	}
 
 	public int getOrder() {
-		try {
+		/*try {
 			return json.getInt(ORD);
 		} catch (JSONException e) {
 			return 0;
-		}
+		}*/
+		return 1;
 	}
 	
-	public static String getTypeName(int typeNumber) {
+	/*public static String getTypeName(int typeNumber) {
 		if (typeNumber == TYPE_POST) {
 			return "post";
 		} else if (typeNumber == TYPE_BRANCH) {
@@ -110,10 +113,8 @@ public class UIData {
 			return TYPE_CATITEM;
 		} else if ("pro".equals(typeName)) {
 			return TYPE_PROMO;
-		} else if ("com".equals(typeName)) {
-			return TYPE_COMPOUND;
 		} else {
 			return TYPE_UNKNOWN;
 		}
-	}
+	}*/
 }

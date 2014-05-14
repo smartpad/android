@@ -1,5 +1,7 @@
 package com.jinnova.smartpad.android;
 
+import static com.jinnova.smartpad.android.ServerConstants.*;
+
 import java.util.ArrayList;
 
 import org.json.JSONArray;
@@ -15,10 +17,10 @@ import android.util.Log;
 
 public class UIDataStore<T extends UIData> extends SQLiteOpenHelper {
 	
-	private static final String DCOL_ORD = "ord";
+	//private static final String DCOL_ORD = "ord";
 	private static final String DCOL_JSON = "json";
 	
-	private static final int DATABASE_VERSION = 16;
+	private static final int DATABASE_VERSION = 19;
 	private static final String DATABASE_NAME = "smartpad";
 
 	public static final int TABLE_NOTABLE = -1;
@@ -31,6 +33,8 @@ public class UIDataStore<T extends UIData> extends SQLiteOpenHelper {
 	private final int[] postfixLast = new int[NAMES.length];
 	private final String[] exps = new String[NAMES.length];
 	
+	private static final int TABLE_FEEDS_COLINDEX_JSON = 0;
+	
 	private boolean latestInUsed[] = new boolean[NAMES.length]; //true if latest version is being used, false otherwise
 
 	@Override
@@ -42,8 +46,10 @@ public class UIDataStore<T extends UIData> extends SQLiteOpenHelper {
 		//t_last: postfix of table containing latest version
 		db.execSQL("CREATE TABLE table_vers (tid int primary key, v_last TEXT, v_prev TEXT, t_last int, exp TEXT);");
 		for (String tableName : NAMES) {
-			db.execSQL("CREATE TABLE " + tableName + "0 (ord int primary key, json TEXT);");
-			db.execSQL("CREATE TABLE " + tableName + "1 (ord int primary key, json TEXT);");
+			/*db.execSQL("CREATE TABLE " + tableName + "0 (ord int primary key, json TEXT);");
+			db.execSQL("CREATE TABLE " + tableName + "1 (ord int primary key, json TEXT);");*/
+			db.execSQL("CREATE TABLE " + tableName + "0 (json TEXT);");
+			db.execSQL("CREATE TABLE " + tableName + "1 (json TEXT);");
 		}
 		
 		ContentValues values = new ContentValues();
@@ -133,8 +139,8 @@ public class UIDataStore<T extends UIData> extends SQLiteOpenHelper {
 			
 			String tableName = NAMES[tableId] + getTablePostfix(tableId, true);
 			cursor = db.query(
-					false, tableName, new String[] {DCOL_ORD, DCOL_JSON}, 
-					null, null, null, null, DCOL_ORD, String.valueOf(offset + size));
+					false, tableName, new String[] {/*DCOL_ORD,*/ DCOL_JSON}, 
+					null, null, null, null, /*DCOL_ORD*/null, String.valueOf(offset + size));
 			
 			if (offset > 0 && !cursor.move(offset)) {
 				return null;
@@ -142,7 +148,7 @@ public class UIDataStore<T extends UIData> extends SQLiteOpenHelper {
 		
 			ArrayList<JSONObject> result = new ArrayList<JSONObject>();
 			while (cursor.moveToNext()) {
-				String json = cursor.getString(1);
+				String json = cursor.getString(TABLE_FEEDS_COLINDEX_JSON);
 				result.add(new JSONObject(json));
 			}
 			Log.d("UIDataStore", "Loaded " + tableId + " from " + offset + ", size " + size + ", got " + result.size());
@@ -154,20 +160,21 @@ public class UIDataStore<T extends UIData> extends SQLiteOpenHelper {
 		}
 	}
 	
-	void insert(int tableId, JSONArray dataArray, boolean toTableInUse) throws JSONException {
+	void insert(int tableId, JSONObject data, boolean toTableInUse) throws JSONException {
 		SQLiteDatabase db = getWritableDatabase();
 		ContentValues values = new ContentValues();
+		JSONArray dataArray = data.getJSONArray(FIELD_ARRAY);
 		for (int i = 0; i < dataArray.length(); i++) {
 			values.clear();
 			JSONObject json = dataArray.getJSONObject(i);
-			values.put(DCOL_ORD, json.getInt(UIData.ORD));
+			//values.put(DCOL_ORD, 1/*json.getInt(UIData.ORD)*/);
 			values.put(DCOL_JSON, json.toString());
 			db.insert(NAMES[tableId] + getTablePostfix(tableId, toTableInUse), null, values);
 		}
 		
 	}
 	
-	void addNewVersion(int tableId, String newVersion, String expiration, JSONArray dataArray) throws JSONException {
+	void addNewVersion(int tableId, String newVersion, String expiration, JSONObject data) throws JSONException {
 		
 		//delete all in unused table
 		SQLiteDatabase db = getWritableDatabase();
@@ -175,7 +182,7 @@ public class UIDataStore<T extends UIData> extends SQLiteOpenHelper {
 		db.delete(NAMES[tableId] + tablePostfix, null, null);
 
 		//insert data to table not being used
-		insert(tableId, dataArray, false);
+		insert(tableId, data, false);
 
 		//update version number, expiration
 		ContentValues values = new ContentValues();
