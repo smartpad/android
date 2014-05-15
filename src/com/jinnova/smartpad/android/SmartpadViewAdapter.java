@@ -62,12 +62,14 @@ public abstract class SmartpadViewAdapter<T extends UIData> extends BaseAdapter 
 	
 	public void setDetail(T item) {
 		feedList.setDetail(item);
-		notifyDataSetChanged();
+		//notifyDataSetChanged();
+		feedList.loadMore(this);
 	}
 	
 	public void setServicePath(String servicePath) {
 		feedList.setServicePath(servicePath);
-		notifyDataSetChanged();
+		//notifyDataSetChanged();
+		feedList.loadMore(this);
 	}
 
 	@Override

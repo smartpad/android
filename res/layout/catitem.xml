@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/white"
+    android:orientation="horizontal"
+    android:padding="5dp" >
+
+    <TextView
+        android:id="@+id/catitemBranchName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="18dp"
+        android:layout_marginTop="19dp"
+        android:text="branchName" />
+
+    <TextView
+        android:id="@+id/catitemDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/catitemBranchName"
+        android:layout_below="@+id/catitemName"
+        android:layout_marginTop="20dp"
+        android:text="details" />
+
+    <TextView
+        android:id="@+id/catitemName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/catitemBranchName"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/catitemBranchName"
+        android:layout_marginTop="14dp"
+        android:text="name (catName)" />
+
+</RelativeLayout>

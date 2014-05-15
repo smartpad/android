@@ -35,7 +35,7 @@ public class CatalogItem extends Feed {
 
 	public String getUrl() {
 		try {
-			return TYPENAME_CATITEM + "/" + json.getString(FIELD_SYSCATID) + "/" + getId() + "/drill";
+			return "/" + TYPENAME_CATITEM + "/" + json.getString(FIELD_SYSCATID) + "/" + getId() + "/drill";
 		} catch (JSONException e) {
 			Log.w("smartpad.json", e);
 			return null;

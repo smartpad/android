@@ -5,6 +5,10 @@ import static com.jinnova.smartpad.android.ServerConstants.*;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.text.Html;
+import android.text.SpannableStringBuilder;
+import android.text.style.ClickableSpan;
+import android.text.style.URLSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -58,6 +62,10 @@ public abstract class UIData {
 			Log.w("smartpad.json", e);
 			return null;
 		}
+	}
+	
+	public String getCatItemTypeName() {
+		return JSONSupport.getString(json, FIELD_SYSCATID);
 	}
 	
 	void setOverridenLayoutOpt(int opt) {
@@ -115,6 +123,53 @@ public abstract class UIData {
 
 		view.setText("");
 		view.setVisibility(View.GONE);
+	}
+
+	public void setToViewHtml(TextView view, String name, SmartpadViewAdapter<UIData> viewAdapter) {
+		
+		try {
+			if (json.has(name)) {
+				String html = json.getString(name);
+				if (html != null) {
+					//view.setText(Html.fromHtml(source));
+					setTextViewHTML(view, html, viewAdapter);
+					return;
+				}
+			}
+		} catch (JSONException e) {
+			Log.w("json", e);
+		}
+
+		view.setText("");
+		view.setVisibility(View.GONE);
+	}
+	
+	//http://stackoverflow.com/questions/12418279/android-textview-with-clickable-links-how-to-capture-clicks
+	private void makeLinkClickable(SpannableStringBuilder strBuilder, final URLSpan span,
+			final SmartpadViewAdapter<UIData> viewAdapter) {
+		int start = strBuilder.getSpanStart(span);
+		int end = strBuilder.getSpanEnd(span);
+		int flags = strBuilder.getSpanFlags(span);
+		ClickableSpan clickable = new ClickableSpan() {
+			public void onClick(View view) {
+				// Do something with span.getURL() to handle the link click...
+				//System.out.println(span.getURL());
+				viewAdapter.setServicePath(span.getURL().substring("smartpad://".length()));
+			}
+		};
+		strBuilder.setSpan(clickable, start, end, flags);
+		strBuilder.removeSpan(span);
+	}
+
+	private void setTextViewHTML(TextView text, String html, SmartpadViewAdapter<UIData> viewAdapter) {
+		CharSequence sequence = Html.fromHtml(html);
+		SpannableStringBuilder strBuilder = new SpannableStringBuilder(sequence);
+		URLSpan[] urls = strBuilder.getSpans(0, sequence.length(),
+				URLSpan.class);
+		for (URLSpan span : urls) {
+			makeLinkClickable(strBuilder, span, viewAdapter);
+		}
+		text.setText(strBuilder);
 	}
 	
 	/*public static String getTypeName(int typeNumber) {

@@ -1,7 +1,8 @@
 package com.jinnova.smartpad.android.cat;
 
+import static com.jinnova.smartpad.android.ServerConstants.*;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.jinnova.smartpad.android.R;
@@ -13,27 +14,34 @@ import com.jinnova.smartpad.android.ViewTag;
 public class CatalogItemViewBuilder extends ViewBuilder<CatalogItem> {
 	
 	private class CatalogItemUI extends ViewTag {
+		TextView branchName;
 		TextView name;
-		Button detailBtnFeed;
+		TextView details;
 	}
 
 	public CatalogItemViewBuilder() {
-		super(R.layout.feed_row);
+		super(R.layout.catitem);
 	}
 
 	@Override
 	public ViewTag createTag(View view) {
 		CatalogItemUI row  = new CatalogItemUI();
-		row.name = (TextView) view.findViewById(R.id.decriptionFeed);
-		row.detailBtnFeed = (Button) view.findViewById(R.id.detailBtnFeed);
+		row.branchName = (TextView) view.findViewById(R.id.catitemBranchName);
+		row.name = (TextView) view.findViewById(R.id.catitemName);
+		row.name.setMovementMethod(LinkMovementMethod.getInstance());
+		//row.name.setLinksClickable(true);
+		row.details = (TextView) view.findViewById(R.id.catitemDetails);
+		row.details.setMovementMethod(LinkMovementMethod.getInstance());
+		//row.details.setLinksClickable(true);
 		return row;
 	}
 
 	@Override
 	public void loadView(View view, CatalogItem catItem, SmartpadViewAdapter<UIData> viewAdapter) {
 		CatalogItemUI row = (CatalogItemUI) view.getTag();
-		row.name.setText("Catalog Item " + catItem.getName());
-		row.detailBtnFeed.setOnClickListener(createDetailListener(view.getContext(), viewAdapter, catItem));
+		row.branchName.setText(catItem.getString(FIELD_BRANCHNAME));
+		catItem.setToViewHtml(row.name, FIELD_NAME, viewAdapter);
+		catItem.setToViewHtml(row.details, FIELD_DISP, viewAdapter);
 	}
 
 }

@@ -55,9 +55,9 @@ public class UIDataList<T extends UIData> {
 
 	public void setDetail(T detailed) {
 		backedList.clear();
-		backedList.add(detailed);
+		//backedList.add(detailed);	
 		//TODO lastOrder = 0;
-		detailed.setOverridenLayoutOpt(SmartpadViewAdapter.LAYOUTOPT_DETAIL);
+		//detailed.setOverridenLayoutOpt(SmartpadViewAdapter.LAYOUTOPT_DETAIL);
 		//servicePath = "similar/" + UIData.getTypeName(detailed.getType()) + "/" + detailed.getId();
 		//servicePath = "similar/" + detailed.getTypeName() + "/" + detailed.getId();
 		//feed = (Feed) detailed;
@@ -192,7 +192,10 @@ public class UIDataList<T extends UIData> {
 				} else {
 					feedUrl = "";
 				}
-				String serviceUrl = "http://10.88.106.11:9090/" + ServerConstants.REST_FEEDS + "/" + feedUrl;
+				
+				//String serviceUrl = "http://10.88.106.11:9090/" + ServerConstants.REST_FEEDS + "/" + feedUrl;
+				String serviceUrl = "http://192.168.1.8:9090/" + ServerConstants.REST_FEEDS + feedUrl;
+				
 				HttpClient httpclient = new DefaultHttpClient();
 				ByteArrayOutputStream tempStream= null;
 				try {
