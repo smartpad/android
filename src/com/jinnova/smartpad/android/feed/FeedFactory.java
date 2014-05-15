@@ -11,6 +11,7 @@ import com.jinnova.smartpad.android.cat.Branch;
 import com.jinnova.smartpad.android.cat.Catalog;
 import com.jinnova.smartpad.android.cat.CatalogItem;
 import com.jinnova.smartpad.android.cat.Store;
+import com.jinnova.smartpad.android.cat.Syscat;
 
 public class FeedFactory implements UIDataFactory<Feed> {
 
@@ -29,6 +30,13 @@ public class FeedFactory implements UIDataFactory<Feed> {
 			@Override
 			public UIData instantiate(JSONObject json) {
 				return new Post(json);
+			}
+		};
+		instantiators[TYPE_SYSCAT] = new FeedInstantiator<UIData>() {
+			
+			@Override
+			public UIData instantiate(JSONObject json) {
+				return new Syscat(json);
 			}
 		};
 		instantiators[TYPE_BRANCH] = new FeedInstantiator<UIData>() {

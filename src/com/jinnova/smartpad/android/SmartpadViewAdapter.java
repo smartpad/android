@@ -135,7 +135,19 @@ public abstract class SmartpadViewAdapter<T extends UIData> extends BaseAdapter 
 			return convertView;
 		}*/
 		T item = feedList.get(pos);
+		if (item.getType() >= builderMap.length) {
+			//unknown item
+			return null;
+		}
+		if (item.getLayoutOption() >= builderMap[item.getType()].length) {
+			//unknown layout option
+			return null;
+		}
 		ViewBuilder<T> viewBuilder = (ViewBuilder<T>) builderMap[item.getType()][item.getLayoutOption()];
+		if (viewBuilder == null) {
+			//unsupported layout option
+			return null;
+		}
 
 		if (convertView != null) {
 			//Heterogeneous lists can specify their number of view types, so that this View is always of the right type

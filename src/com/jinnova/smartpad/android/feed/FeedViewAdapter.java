@@ -15,6 +15,7 @@ import com.jinnova.smartpad.android.cat.CatalogViewBuilder;
 import com.jinnova.smartpad.android.cat.CatalogViewDetailBuilder;
 import com.jinnova.smartpad.android.cat.StoreViewBuilder;
 import com.jinnova.smartpad.android.cat.StoreViewDetailBuilder;
+import com.jinnova.smartpad.android.cat.SyscatViewBuilder;
 
 public class FeedViewAdapter extends SmartpadViewAdapter<Feed> {
 	
@@ -28,6 +29,10 @@ public class FeedViewAdapter extends SmartpadViewAdapter<Feed> {
 		builderMap[TYPE_POST] = new ViewBuilder<?>[LAYOUTOPT_COUNT];
 		builderMap[TYPE_POST][LAYOUTOPT_DEFAULT] = new PostViewBuilder();
 		builderMap[TYPE_POST][LAYOUTOPT_DETAIL] = new PostViewDetailBuilder();
+
+		builderMap[TYPE_SYSCAT] = new ViewBuilder<?>[LAYOUTOPT_COUNT];
+		builderMap[TYPE_SYSCAT][LAYOUTOPT_DEFAULT] = new SyscatViewBuilder();
+		builderMap[TYPE_SYSCAT][LAYOUTOPT_DETAIL] = new SyscatViewBuilder();
 
 		builderMap[TYPE_BRANCH] = new ViewBuilder<?>[LAYOUTOPT_COUNT];
 		builderMap[TYPE_BRANCH][LAYOUTOPT_DEFAULT] = new BranchViewBuilder();
