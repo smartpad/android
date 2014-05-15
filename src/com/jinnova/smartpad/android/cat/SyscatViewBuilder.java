@@ -5,6 +5,7 @@ import android.widget.ImageView;
 
 import com.jinnova.smartpad.android.R;
 import com.jinnova.smartpad.android.SmartpadViewAdapter;
+import com.jinnova.smartpad.android.UIData;
 import com.jinnova.smartpad.android.ViewBuilder;
 import com.jinnova.smartpad.android.ViewTag;
 
@@ -26,7 +27,7 @@ public class SyscatViewBuilder extends ViewBuilder<Syscat> {
 	}
 
 	@Override
-	public void loadView(View view, Syscat syscat, SmartpadViewAdapter<?> viewAdapter) {
+	public void loadView(View view, Syscat syscat, SmartpadViewAdapter<UIData> viewAdapter) {
 		SyscatUI row = (SyscatUI) view.getTag();
 		row.image.setImageResource(R.drawable.lotteria_logo);
 	}

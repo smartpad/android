@@ -5,6 +5,7 @@ import android.widget.TextView;
 
 import com.jinnova.smartpad.android.R;
 import com.jinnova.smartpad.android.SmartpadViewAdapter;
+import com.jinnova.smartpad.android.UIData;
 import com.jinnova.smartpad.android.ViewBuilder;
 import com.jinnova.smartpad.android.ViewTag;
 
@@ -26,7 +27,7 @@ public class StoreViewDetailBuilder extends ViewBuilder<Store> {
 	}
 
 	@Override
-	public void loadView(View view, Store store, SmartpadViewAdapter<?> viewAdapter) {
+	public void loadView(View view, Store store, SmartpadViewAdapter<UIData> viewAdapter) {
 		StoreUI row = (StoreUI) view.getTag();
 		row.name.setText("Shop " + store.getName());
 	}

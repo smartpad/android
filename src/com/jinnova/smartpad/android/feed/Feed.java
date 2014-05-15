@@ -30,6 +30,10 @@ public abstract class Feed extends UIData {
 	public String getMemberCardOffer() {
 		return null;
 	}
+
+	public String getUrl() {
+		return getTypeName() + "/" + getId() + "/drill";
+	}
 	
 	/**
 	 * @return id of an quick-taken offer to a member card (no introduction shown) 

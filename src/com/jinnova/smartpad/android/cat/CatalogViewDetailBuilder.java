@@ -5,6 +5,7 @@ import android.widget.TextView;
 
 import com.jinnova.smartpad.android.R;
 import com.jinnova.smartpad.android.SmartpadViewAdapter;
+import com.jinnova.smartpad.android.UIData;
 import com.jinnova.smartpad.android.ViewBuilder;
 import com.jinnova.smartpad.android.ViewTag;
 
@@ -26,7 +27,7 @@ public class CatalogViewDetailBuilder extends ViewBuilder<Catalog> {
 	}
 
 	@Override
-	public void loadView(View view, Catalog cat, SmartpadViewAdapter<?> viewAdapter) {
+	public void loadView(View view, Catalog cat, SmartpadViewAdapter<UIData> viewAdapter) {
 		CatalogUI row = (CatalogUI) view.getTag();
 		row.name.setText("Catalog " + cat.getName());
 	}

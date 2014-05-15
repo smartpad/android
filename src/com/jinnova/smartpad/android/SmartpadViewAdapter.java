@@ -19,6 +19,7 @@ public abstract class SmartpadViewAdapter<T extends UIData> extends BaseAdapter 
 	//builder map is long/exhausted, because there are multiple layouts / custom layouts for each feed type. 
 	private ViewBuilder<?>[][] builderMap;
 	
+	private int[][] viewTypeNumbers;
 	private int builderCount;
 
 	//private Context context;
@@ -39,8 +40,14 @@ public abstract class SmartpadViewAdapter<T extends UIData> extends BaseAdapter 
 	private void initBuilderMapInternal() {
 		builderMap = initBuilderMap();
 		builderCount = 0;
-		for (ViewBuilder<?>[] builders : builderMap) {
+		viewTypeNumbers = new int[builderMap.length][];
+		for (int i = 0; i < builderMap.length; i++) {
+			ViewBuilder<?>[] builders = builderMap[i];
 			if (builders != null) {
+				viewTypeNumbers[i] = new int[builders.length];
+				for (int j = 0; j < builders.length; j++) {
+					viewTypeNumbers[i][j] = builderCount + j;
+				}
 				builderCount += builders.length;
 			}
 		}
@@ -83,7 +90,8 @@ public abstract class SmartpadViewAdapter<T extends UIData> extends BaseAdapter 
 	@Override
 	public final int getItemViewType(int position) {
 		Feed feed = (Feed) feedList.get(position);
-		return feed.getType();
+		//return feed.getType();
+		return viewTypeNumbers[feed.getType()][feed.getLayoutOption()];
 	}
 
 	/* (non-Javadoc)
@@ -162,7 +170,7 @@ public abstract class SmartpadViewAdapter<T extends UIData> extends BaseAdapter 
 			convertView = createView(viewBuilder, parent);
 			((ViewTag) convertView.getTag()).setItemViewType(item.getType());
 		}
-		viewBuilder.loadView(convertView, item, this);
+		viewBuilder.loadView(convertView, item, (SmartpadViewAdapter<UIData>) this);
 		return convertView;
 	}
 	

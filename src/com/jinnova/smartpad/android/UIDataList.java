@@ -17,6 +17,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.jinnova.smartpad.android.feed.Feed;
+
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -32,14 +34,15 @@ public class UIDataList<T extends UIData> {
 	
 	private final ArrayList<T> backedList = new ArrayList<T>();
 	
-	private String servicePath;
+	//private String servicePath;
+	private Feed feed;
 	
 	private final UIDataStore<T> persistStore;
 	
 	private final UIDataFactory<T> factory;
 	
 	public UIDataList(Context context, UIDataFactory<T> factory, int table, String servicePath) {
-		this.servicePath = servicePath;
+		//this.servicePath = servicePath;
 		this.tableId = table;
 		if (table != UIDataStore.TABLE_NOTABLE) {
 			this.persistStore = new UIDataStore<T>(context);
@@ -55,7 +58,8 @@ public class UIDataList<T extends UIData> {
 		//TODO lastOrder = 0;
 		detailed.setOverridenLayoutOpt(SmartpadViewAdapter.LAYOUTOPT_DETAIL);
 		//servicePath = "similar/" + UIData.getTypeName(detailed.getType()) + "/" + detailed.getId();
-		servicePath = "similar/" + detailed.getTypeName() + "/" + detailed.getId();
+		//servicePath = "similar/" + detailed.getTypeName() + "/" + detailed.getId();
+		feed = (Feed) detailed;
 	}
 	
 	T get(int location) {
@@ -164,7 +168,7 @@ public class UIDataList<T extends UIData> {
 			}
 			
 			private Object connect(String[] data) {
-				String versionParams;
+				/*String versionParams;
 				if (persistStore != null) {
 					versionParams= "verTarget=" + persistStore.getVersionInUse(tableId) +
 							"&verLatest=" + persistStore.getVersionLatest(tableId);
@@ -172,7 +176,15 @@ public class UIDataList<T extends UIData> {
 					versionParams = "";
 				}
 				String serviceUrl = "http://10.88.106.11:9090/" + servicePath + "?" + versionParams +
-						"&offset=" + backedList.size() + "&size=" + DEFAULT_PAGESIZE;
+						"&offset=" + backedList.size() + "&size=" + DEFAULT_PAGESIZE;*/
+				
+				String feedUrl;
+				if (feed != null) {
+					feedUrl = feed.getUrl();
+				} else {
+					feedUrl = "";
+				}
+				String serviceUrl = "http://10.88.106.11:9090/" + ServerConstants.REST_FEEDS + "/" + feedUrl;
 				HttpClient httpclient = new DefaultHttpClient();
 				ByteArrayOutputStream tempStream= null;
 				try {

@@ -24,12 +24,4 @@ public class Branch extends Feed {
 	public String getTypeName() {
 		return TYPENAME_BRANCH;
 	}
-
-	/*public String getName() {
-		try {
-			return json.getString("name");
-		} catch (JSONException e) {
-			return "";
-		}
-	}*/
 }

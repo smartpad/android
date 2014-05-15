@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.jinnova.smartpad.android.R;
 import com.jinnova.smartpad.android.SmartpadViewAdapter;
+import com.jinnova.smartpad.android.UIData;
 import com.jinnova.smartpad.android.ViewBuilder;
 import com.jinnova.smartpad.android.ViewTag;
 
@@ -37,7 +38,7 @@ public class CompoundFeedViewBuilder extends ViewBuilder<CompoundFeed> {
 	}
 
 	@Override
-	public void loadView(final View view, final CompoundFeed compoundFeed, final SmartpadViewAdapter<?> viewAdapter) {
+	public void loadView(final View view, final CompoundFeed compoundFeed, final SmartpadViewAdapter<UIData> viewAdapter) {
 		CompoundFeedUI row = (CompoundFeedUI) view.getTag();
 		row.viewPager.setAdapter(new ViewPagerAdapter(view.getContext(), viewAdapter, compoundFeed));
 		
@@ -46,10 +47,10 @@ public class CompoundFeedViewBuilder extends ViewBuilder<CompoundFeed> {
 	private class ViewPagerAdapter extends PagerAdapter {
 		
 		private CompoundFeed compoundFeed;
-		private SmartpadViewAdapter<?> viewAdapter;
+		private SmartpadViewAdapter<UIData> viewAdapter;
 		private LayoutInflater inflater;
 		
-		public ViewPagerAdapter(Context context, SmartpadViewAdapter<?> viewAdapter, CompoundFeed compoundFeed) {
+		public ViewPagerAdapter(Context context, SmartpadViewAdapter<UIData> viewAdapter, CompoundFeed compoundFeed) {
 			this.viewAdapter = viewAdapter;
 			inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			this.compoundFeed = compoundFeed;

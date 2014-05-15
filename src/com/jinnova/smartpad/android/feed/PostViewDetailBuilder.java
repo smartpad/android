@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import com.jinnova.smartpad.android.R;
 import com.jinnova.smartpad.android.SmartpadViewAdapter;
+import com.jinnova.smartpad.android.UIData;
 import com.jinnova.smartpad.android.ViewBuilder;
 import com.jinnova.smartpad.android.ViewTag;
 
@@ -33,7 +34,7 @@ public class PostViewDetailBuilder extends ViewBuilder<Post> {
 	}
 
 	@Override
-	public void loadView(final View view, final Post post, final SmartpadViewAdapter<?> viewAdapter) {
+	public void loadView(final View view, final Post post, final SmartpadViewAdapter<UIData> viewAdapter) {
 		PostUI row = (PostUI) view.getTag();
 		row.date.setText(post.getDate() + " (views: " + FeedViewAdapter.viewCreationCount + ")");
 		row.decription.setText(post.getDecription());
