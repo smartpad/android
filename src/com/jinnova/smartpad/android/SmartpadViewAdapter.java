@@ -1,6 +1,5 @@
 package com.jinnova.smartpad.android;
 
-import com.jinnova.smartpad.android.feed.CompoundFeed;
 import com.jinnova.smartpad.android.feed.Feed;
 
 import android.content.Context;
@@ -25,7 +24,8 @@ public abstract class SmartpadViewAdapter<T extends UIData> extends BaseAdapter 
 	//private Context context;
 	
 	private UIDataList<T> feedList;
-	private CompoundFeed compoundFeed;
+	//private CompoundFeed compoundFeed;
+	
 	protected SmartpadViewAdapter() {
 	}
 	

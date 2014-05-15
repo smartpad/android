@@ -39,22 +39,18 @@ public class CompoundFeedViewBuilder extends ViewBuilder<CompoundFeed> {
 	@Override
 	public void loadView(final View view, final CompoundFeed compoundFeed, final SmartpadViewAdapter<?> viewAdapter) {
 		CompoundFeedUI row = (CompoundFeedUI) view.getTag();
-		row.viewPager.setAdapter(new ViewPagerAdapter(view.getContext(), compoundFeed) {
-
-			@Override
-			protected void loadView(ViewBuilder<Feed> viewBuilder,View convertView, Feed feed) {
-				viewBuilder.loadView(convertView, feed, viewAdapter);
-			}
-			
-		});
+		row.viewPager.setAdapter(new ViewPagerAdapter(view.getContext(), viewAdapter, compoundFeed));
 		
 	}
 	
 	private class ViewPagerAdapter extends PagerAdapter {
 		
 		private CompoundFeed compoundFeed;
+		private SmartpadViewAdapter<?> viewAdapter;
 		private LayoutInflater inflater;
-		public ViewPagerAdapter(Context context, CompoundFeed compoundFeed) {
+		
+		public ViewPagerAdapter(Context context, SmartpadViewAdapter<?> viewAdapter, CompoundFeed compoundFeed) {
+			this.viewAdapter = viewAdapter;
 			inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			this.compoundFeed = compoundFeed;
 		}
@@ -69,9 +65,17 @@ public class CompoundFeedViewBuilder extends ViewBuilder<CompoundFeed> {
 			return compoundFeed.size();
 		}
 		
+		/* (non-Javadoc)
+		 * @see android.support.v4.view.PagerAdapter#instantiateItem(android.view.ViewGroup, int)
+		 */
 		@Override
 		public Object instantiateItem(ViewGroup container, int position) {
 			Feed item = compoundFeed.getfeed(position);
+			
+			//there may be new/unknown feed type from server, causing null item
+			if (item == null) {
+				return null;
+			}
 			
 			@SuppressWarnings("unchecked")
 			ViewBuilder<Feed> viewBuilder = (ViewBuilder<Feed>) builderMap[item.getType()][item.getLayoutOption()];
@@ -85,7 +89,9 @@ public class CompoundFeedViewBuilder extends ViewBuilder<CompoundFeed> {
 		}
 
 		protected void loadView(ViewBuilder<Feed> viewBuilder, View convertView, Feed feed) {
+			viewBuilder.loadView(convertView, feed, viewAdapter);
 		}
+		
 		@Override
 		public void destroyItem(ViewGroup container, int position, Object object) {
 			((ViewPager) container).removeView((View) object);

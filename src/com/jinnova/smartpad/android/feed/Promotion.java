@@ -1,8 +1,8 @@
 package com.jinnova.smartpad.android.feed;
 
-import org.json.JSONObject;
+import static com.jinnova.smartpad.android.ServerConstants.*;
 
-import com.jinnova.smartpad.android.UIData;
+import org.json.JSONObject;
 
 public class Promotion extends Feed {
 
@@ -15,7 +15,7 @@ public class Promotion extends Feed {
 	 */
 	@Override
 	public int getType() {
-		return UIData.TYPE_PROMO;
+		return TYPE_PROMO;
 	}
 
 	@Override

@@ -8,8 +8,8 @@ public interface ServerConstants {
 
 	static final String REST_FEEDS = "feeds";
 
-	static final String VERSIONING_TARGET = "T";
-	static final String VERSIONING_NEW = "N";
+	static final String VERSIONING_TARGET = "VT";
+	static final String VERSIONING_NEW = "VN";
 
 	static final String FIELD_ACTION_LOADNEXT = "ALN";
 	static final String FIELD_VERSION = "V";

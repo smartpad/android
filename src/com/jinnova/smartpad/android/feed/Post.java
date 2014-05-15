@@ -1,9 +1,9 @@
 package com.jinnova.smartpad.android.feed;
 
+import static com.jinnova.smartpad.android.ServerConstants.*;
+
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import com.jinnova.smartpad.android.UIData;
 
 public class Post extends Feed {
 	
@@ -21,7 +21,7 @@ public class Post extends Feed {
 	 */
 	@Override
 	public int getType() {
-		return UIData.TYPE_POST;
+		return TYPE_POST;
 	}
 
 	@Override

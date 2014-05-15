@@ -1,5 +1,7 @@
 package com.jinnova.smartpad.android.cat;
 
+import static com.jinnova.smartpad.android.ServerConstants.*;
+
 import org.json.JSONObject;
 
 import com.jinnova.smartpad.android.feed.Feed;

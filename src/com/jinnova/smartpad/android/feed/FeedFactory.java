@@ -5,7 +5,6 @@ import static com.jinnova.smartpad.android.ServerConstants.*;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.jinnova.smartpad.android.UICompound;
 import com.jinnova.smartpad.android.UIData;
 import com.jinnova.smartpad.android.UIDataFactory;
 import com.jinnova.smartpad.android.cat.Branch;

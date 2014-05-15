@@ -1,9 +1,11 @@
 package com.jinnova.smartpad.android;
 
+import static com.jinnova.smartpad.android.ServerConstants.*;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public abstract class UIData implements ServerConstants {
+public abstract class UIData {
 
 	/*public static final int TYPE_UNKNOWN = -1;
 	public static final int TYPE_POST = 0;
