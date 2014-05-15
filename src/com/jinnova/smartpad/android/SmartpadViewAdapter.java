@@ -3,11 +3,14 @@ package com.jinnova.smartpad.android;
 import com.jinnova.smartpad.android.feed.Feed;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
+import android.widget.TextView;
 
 public abstract class SmartpadViewAdapter<T extends UIData> extends BaseAdapter {
 	
@@ -59,6 +62,11 @@ public abstract class SmartpadViewAdapter<T extends UIData> extends BaseAdapter 
 	
 	public void setDetail(T item) {
 		feedList.setDetail(item);
+		notifyDataSetChanged();
+	}
+	
+	public void setServicePath(String servicePath) {
+		feedList.setServicePath(servicePath);
 		notifyDataSetChanged();
 	}
 
@@ -191,6 +199,18 @@ public abstract class SmartpadViewAdapter<T extends UIData> extends BaseAdapter 
 	public void newVersionLoaded() {
 		// ask user to refresh with latest data list
 		
+	}
+
+	public void setOnClickListener(TextView view, final String servicePath) {
+		
+		view.setTextColor(Color.BLUE);
+		view.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				
+				setServicePath(servicePath);
+			}
+		});
 	}
 	
 }

@@ -25,6 +25,7 @@ import android.util.Log;
 
 public class UIDataList<T extends UIData> {
 	
+	@SuppressWarnings("unused")
 	private static final int DEFAULT_PAGESIZE = 10;
 	
 	//private String version;
@@ -34,8 +35,8 @@ public class UIDataList<T extends UIData> {
 	
 	private final ArrayList<T> backedList = new ArrayList<T>();
 	
-	//private String servicePath;
-	private Feed feed;
+	private String servicePath;
+	//private Feed feed;
 	
 	private final UIDataStore<T> persistStore;
 	
@@ -59,7 +60,13 @@ public class UIDataList<T extends UIData> {
 		detailed.setOverridenLayoutOpt(SmartpadViewAdapter.LAYOUTOPT_DETAIL);
 		//servicePath = "similar/" + UIData.getTypeName(detailed.getType()) + "/" + detailed.getId();
 		//servicePath = "similar/" + detailed.getTypeName() + "/" + detailed.getId();
-		feed = (Feed) detailed;
+		//feed = (Feed) detailed;
+		servicePath = ((Feed) detailed).getUrl();
+	}
+
+	public void setServicePath(String p) {
+		backedList.clear();
+		servicePath = p;
 	}
 	
 	T get(int location) {
@@ -89,7 +96,8 @@ public class UIDataList<T extends UIData> {
 			protected Object doInBackground(String... params) {
 				
 				//first attempt with database
-				ArrayList<JSONObject> moreData;
+				//TODO temporarily ignore loading from local store
+				/*ArrayList<JSONObject> moreData;
 				if (persistStore != null) {
 					try {
 						//moreData = persistStore.get(tableId, lastOrder, lastOrder + DEFAULT_PAGESIZE);
@@ -107,7 +115,7 @@ public class UIDataList<T extends UIData> {
 					//found more data from db, keep loading from db only
 					newList = buildList(moreData);
 					return null;
-				}
+				}*/
 				
 				//nothing in database, go to server
 				String[] data = new String[1];
@@ -179,8 +187,8 @@ public class UIDataList<T extends UIData> {
 						"&offset=" + backedList.size() + "&size=" + DEFAULT_PAGESIZE;*/
 				
 				String feedUrl;
-				if (feed != null) {
-					feedUrl = feed.getUrl();
+				if (servicePath != null) {
+					feedUrl = servicePath;
 				} else {
 					feedUrl = "";
 				}
@@ -216,6 +224,7 @@ public class UIDataList<T extends UIData> {
 				}
 			}
 			
+			@SuppressWarnings("unused")
 			private ArrayList<T> buildList(ArrayList<JSONObject> dataArray) {
 				ArrayList<T> newList = new ArrayList<T>();
 				for (JSONObject itemJson : dataArray) {

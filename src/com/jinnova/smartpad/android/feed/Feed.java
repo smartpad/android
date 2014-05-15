@@ -5,6 +5,7 @@ import java.util.Collection;
 import org.json.JSONObject;
 
 import com.jinnova.smartpad.android.GPSLocation;
+import com.jinnova.smartpad.android.ServerConstants;
 import com.jinnova.smartpad.android.UIData;
 
 public abstract class Feed extends UIData {
@@ -32,7 +33,7 @@ public abstract class Feed extends UIData {
 	}
 
 	public String getUrl() {
-		return getTypeName() + "/" + getId() + "/drill";
+		return getTypeName() + "/" + getId() + "/" + ServerConstants.REST_DRILL;
 	}
 	
 	/**

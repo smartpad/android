@@ -5,6 +5,10 @@ import static com.jinnova.smartpad.android.ServerConstants.*;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
+
 public abstract class UIData {
 
 	/*public static final int TYPE_UNKNOWN = -1;
@@ -42,6 +46,7 @@ public abstract class UIData {
 		try {
 			return json.getString(FIELD_ID);
 		} catch (JSONException e) {
+			Log.w("smartpad.json", e);
 			return null;
 		}
 	}
@@ -50,6 +55,7 @@ public abstract class UIData {
 		try {
 			return json.getString(FIELD_NAME);
 		} catch (JSONException e) {
+			Log.w("smartpad.json", e);
 			return null;
 		}
 	}
@@ -68,6 +74,7 @@ public abstract class UIData {
 		try {
 			return json.getInt("layOpt");
 		} catch (JSONException e) {
+			Log.w("smartpad.json", e);
 			return SmartpadViewAdapter.LAYOUTOPT_DEFAULT;
 		}
 		
@@ -80,6 +87,34 @@ public abstract class UIData {
 			return 0;
 		}*/
 		return 1;
+	}
+	
+	public String getString(String name) {
+		if (json.has(name)) {
+			try {
+				return json.getString(name);
+			} catch (JSONException e) {
+				Log.w("json", e);
+				return null;
+			}
+		} else {
+			return null;
+		}
+	}
+
+	public void setToView(TextView view, String name) {
+		
+		try {
+			if (json.has(name)) {
+				view.setText(json.getString(name));
+				return;
+			}
+		} catch (JSONException e) {
+			Log.w("json", e);
+		}
+
+		view.setText("");
+		view.setVisibility(View.GONE);
 	}
 	
 	/*public static String getTypeName(int typeNumber) {

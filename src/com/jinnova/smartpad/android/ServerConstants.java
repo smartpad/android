@@ -7,6 +7,7 @@ package com.jinnova.smartpad.android;
 public interface ServerConstants {
 
 	static final String REST_FEEDS = "feeds";
+	static final String REST_DRILL = "drill";
 
 	static final String VERSIONING_TARGET = "VT";
 	static final String VERSIONING_NEW = "VN";
