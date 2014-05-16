@@ -17,8 +17,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.jinnova.smartpad.android.feed.Feed;
-
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -29,18 +27,21 @@ public class UIDataList<T extends UIData> {
 	private static final int DEFAULT_PAGESIZE = 10;
 	
 	//private String version;
-	private final int tableId;
+	final int tableId;
 	
 	//private int lastOrder = 0; //order number starts from 1
 	
-	private final ArrayList<T> backedList = new ArrayList<T>();
+	final ArrayList<T> backedList = new ArrayList<T>();
 	
-	private String servicePath;
+	private String servicePath = "/" + REST_FEEDS;
 	//private Feed feed;
 	
-	private final UIDataStore<T> persistStore;
+	final UIDataStore<T> persistStore;
 	
-	private final UIDataFactory<T> factory;
+	final UIDataFactory<T> factory;
+	
+	final boolean[] newListLock = new boolean[] {false};
+	//private boolean newListLoading = false;
 	
 	public UIDataList(Context context, UIDataFactory<T> factory, int table, String servicePath) {
 		//this.servicePath = servicePath;
@@ -52,17 +53,21 @@ public class UIDataList<T extends UIData> {
 		}
 		this.factory = factory;
 	}
+	
+	String getServicePath() {
+		return this.servicePath;
+	}
 
-	public void setDetail(T detailed) {
+	/*public void setDetail(T detailed) {
 		backedList.clear();
 		//backedList.add(detailed);	
-		//TODO lastOrder = 0;
+		// lastOrder = 0;
 		//detailed.setOverridenLayoutOpt(SmartpadViewAdapter.LAYOUTOPT_DETAIL);
 		//servicePath = "similar/" + UIData.getTypeName(detailed.getType()) + "/" + detailed.getId();
 		//servicePath = "similar/" + detailed.getTypeName() + "/" + detailed.getId();
 		//feed = (Feed) detailed;
 		servicePath = ((Feed) detailed).getUrl();
-	}
+	}*/
 
 	public void setServicePath(String p) {
 		backedList.clear();
@@ -77,181 +82,217 @@ public class UIDataList<T extends UIData> {
 		return backedList.size();
 	}
 
-	void switchToLatest(SmartpadViewAdapter<? extends UIData> adapter) {
+	void switchToLatest(SmartpadViewAdapter<? extends UIData> loadingCallback) {
 		backedList.clear();
 		if (persistStore != null) {
 			persistStore.switchToLatest(tableId);
 		}
-		loadMore(adapter);
+		loadMore(loadingCallback);
 	}
 	
-	void loadMore(final SmartpadViewAdapter<? extends UIData> adapter) {
+	void loadMore(final SmartpadViewAdapter<? extends UIData> loadingCallback) {
 		
-		new AsyncTask<String, Void, Object>() {
-			
-			private ArrayList<T> newList = null;
-			private boolean newVersionLoaded = false;
+		synchronized (newListLock) {
+			if (newListLock[0]) {
+				return;
+			}
+			newListLock[0] = true;
+		}
 		
-			@Override
-			protected Object doInBackground(String... params) {
-				
-				//first attempt with database
-				//TODO temporarily ignore loading from local store
-				/*ArrayList<JSONObject> moreData;
-				if (persistStore != null) {
-					try {
-						//moreData = persistStore.get(tableId, lastOrder, lastOrder + DEFAULT_PAGESIZE);
-						int size = backedList.size();
-						moreData = persistStore.get(tableId, size, size + DEFAULT_PAGESIZE);
-					} catch (JSONException e) {
-						Log.w("UIDataList", "json format error in stored data");
-						return e;
-					}
-				} else {
-					moreData = null;
-				}
-				
-				if (moreData != null && !moreData.isEmpty()) {
-					//found more data from db, keep loading from db only
-					newList = buildList(moreData);
-					return null;
-				}*/
-				
-				//nothing in database, go to server
-				String[] data = new String[1];
-				Object caughtError = connect(data);
-				if (caughtError != null) {
-					return caughtError;
-				}
-				try {
-					
-					//check for data in new version
-					JSONObject result = new JSONObject(data[0]);
-					if (result.has(VERSIONING_NEW)) {
-						//got new data version
-						if (persistStore != null) {
-							JSONObject newData = result.getJSONObject(VERSIONING_NEW);
-							persistStore.addNewVersion(tableId, result.getString("v"), result.getString("exp"), newData);
-						}
-						newVersionLoaded = true;
-					}
-
-					//check for data in target version
-					if (result.has(VERSIONING_TARGET)) {
-						JSONObject targetData = result.getJSONObject(VERSIONING_TARGET);
-						if (persistStore != null) {
-							persistStore.insert(tableId, targetData, true /*toTableInUse*/);
-						}
-						
-						JSONArray targetArray = targetData.getJSONArray(FIELD_ARRAY);
-						newList = buildList(targetArray);
-					}
-					return null;
-				} catch (JSONException e) {
-					return e;
-				}
-			}			
-			@Override
-			protected void onPostExecute(Object caughtError) {
-				if (caughtError == null) {
-					if (newList != null) {
-						backedList.addAll(newList);
-						adapter.notifyDataSetChanged();
-					}
-					if (newVersionLoaded) {
-						adapter.newVersionLoaded();
-					}
-					return;
-				}
-				String msg;
-				if (caughtError instanceof Throwable) {
-					msg = caughtError.getClass().getSimpleName() + ": " + ((Throwable) caughtError).getMessage();
-				} else if (caughtError instanceof StatusLine) {
-					StatusLine sl = (StatusLine) caughtError;
-					msg = "StatusLine: " + sl.getStatusCode() + ": " + sl.getReasonPhrase();
-				} else {
-					msg = String.valueOf(caughtError);
-				}
-				Log.w("UIDataList", msg);
-			}
-			
-			private Object connect(String[] data) {
-				/*String versionParams;
-				if (persistStore != null) {
-					versionParams= "verTarget=" + persistStore.getVersionInUse(tableId) +
-							"&verLatest=" + persistStore.getVersionLatest(tableId);
-				} else {
-					versionParams = "";
-				}
-				String serviceUrl = "http://10.88.106.11:9090/" + servicePath + "?" + versionParams +
-						"&offset=" + backedList.size() + "&size=" + DEFAULT_PAGESIZE;*/
-				
-				String feedUrl;
-				if (servicePath != null) {
-					feedUrl = servicePath;
-				} else {
-					feedUrl = "";
-				}
-				
-				//String serviceUrl = "http://10.88.106.11:9090/" + ServerConstants.REST_FEEDS + "/" + feedUrl;
-				String serviceUrl = "http://192.168.1.8:9090/" + ServerConstants.REST_FEEDS + feedUrl;
-				
-				HttpClient httpclient = new DefaultHttpClient();
-				ByteArrayOutputStream tempStream= null;
-				try {
-					HttpResponse response = httpclient.execute(new HttpGet(serviceUrl));
-					StatusLine statusLine = response.getStatusLine();
-					if (statusLine.getStatusCode() != HttpStatus.SC_OK) {
-						return statusLine;
-					}
-					tempStream = new ByteArrayOutputStream();
-					response.getEntity().writeTo(tempStream);
-					data[0] = tempStream.toString();
-					return null;
-				} catch (ClientProtocolException e) {
-					return e;
-				} catch (IOException e) {
-					return e;
-				} finally {
-					try {
-						if (tempStream != null) {
-							tempStream.close();
-						}
-						/*if (response != null) {
-							response.getEntity().getContent().close();
-						}*/
-					} catch (IOException e) {
-						//ignore
-						Log.w("UIDataList", "IOException in closing temp stream: " + e.getMessage());
-					}
-				}
-			}
-			
-			@SuppressWarnings("unused")
-			private ArrayList<T> buildList(ArrayList<JSONObject> dataArray) {
-				ArrayList<T> newList = new ArrayList<T>();
-				for (JSONObject itemJson : dataArray) {
-					T t = factory.instantiate(itemJson);
-					if (t != null) {
-						newList.add(t);
-					}
-				}
-				return newList;
-			}
-			
-			private ArrayList<T> buildList(JSONArray dataArray) throws JSONException {
-				ArrayList<T> newList = new ArrayList<T>();
-				for (int i = 0; i < dataArray.length(); i++) {
-					JSONObject itemJson = dataArray.getJSONObject(i);
-					T t = factory.instantiate(itemJson);
-					if (t != null) {
-						newList.add(t);
-					}
-				}
-				return newList;
-			}
-		}.execute((String) null);
+		new LoadTask<T>(this, loadingCallback).execute();
 	}
 
 }
 
+class LoadTask<T extends UIData> extends AsyncTask<String, Void, Object> {
+	
+	private final UIDataList<T> dataList;
+	
+	private ArrayList<T> newList = null;
+	private boolean newVersionLoaded = false;
+	SmartpadViewAdapter<? extends UIData> loadingCallback;
+	
+	LoadTask(UIDataList<T> dataList, SmartpadViewAdapter<? extends UIData> loadingCallback) {
+		this.dataList = dataList;
+		this.loadingCallback = loadingCallback;
+	}
+
+	/* (non-Javadoc)
+	 * @see android.os.AsyncTask#doInBackground(Params[])
+	 */
+	@Override
+	protected Object doInBackground(String... params) {
+		try {
+			return doInBackground();
+		} finally {
+			synchronized (dataList.newListLock) {
+				dataList.newListLock[0] = false;
+			}
+		}
+	}
+	
+	private Object doInBackground() {
+		//first attempt with database
+		//TODO temporarily ignore loading from local store
+		/*ArrayList<JSONObject> moreData;
+		if (persistStore != null) {
+			try {
+				//moreData = persistStore.get(tableId, lastOrder, lastOrder + DEFAULT_PAGESIZE);
+				int size = backedList.size();
+				moreData = persistStore.get(tableId, size, size + DEFAULT_PAGESIZE);
+			} catch (JSONException e) {
+				Log.w("UIDataList", "json format error in stored data");
+				return e;
+			}
+		} else {
+			moreData = null;
+		}
+		
+		if (moreData != null && !moreData.isEmpty()) {
+			//found more data from db, keep loading from db only
+			newList = buildList(moreData);
+			return null;
+		}*/
+		
+		//nothing in database, go to server
+		String[] data = new String[1];
+		Object caughtError = connect(data);
+		if (caughtError != null) {
+			return caughtError;
+		}
+		try {
+			
+			//check for data in new version
+			JSONObject result = new JSONObject(data[0]);
+			if (result.has(VERSIONING_NEW)) {
+				//got new data version
+				if (dataList.persistStore != null) {
+					JSONObject newData = result.getJSONObject(VERSIONING_NEW);
+					dataList.persistStore.addNewVersion(dataList.tableId, result.getString("v"), result.getString("exp"), newData);
+				}
+				newVersionLoaded = true;
+			}
+
+			//check for data in target version
+			if (result.has(VERSIONING_TARGET)) {
+				JSONObject targetData = result.getJSONObject(VERSIONING_TARGET);
+				if (dataList.persistStore != null) {
+					dataList.persistStore.insert(dataList.tableId, targetData, true /*toTableInUse*/);
+				}
+				
+				JSONArray targetArray = targetData.getJSONArray(FIELD_ARRAY);
+				newList = buildList(targetArray);
+				String nextUrl = JSONSupport.getString(targetData, FIELD_ACTION_LOADNEXT);
+				//next url is null, when no more data available
+				if (nextUrl != null) {
+					nextUrl = nextUrl.substring(REST_SCHEME.length());
+				}
+				dataList.setServicePath(nextUrl);
+			}
+			return null;
+		} catch (JSONException e) {
+			return e;
+		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+	 */
+	@Override
+	protected void onPostExecute(Object caughtError) {
+		if (caughtError == null) {
+			if (newList != null) {
+				dataList.backedList.addAll(newList);
+				loadingCallback.notifyDataSetChanged();
+			}
+			if (newVersionLoaded) {
+				loadingCallback.newVersionLoaded();
+			}
+			return;
+		}
+		String msg;
+		if (caughtError instanceof Throwable) {
+			msg = caughtError.getClass().getSimpleName() + ": " + ((Throwable) caughtError).getMessage();
+		} else if (caughtError instanceof StatusLine) {
+			StatusLine sl = (StatusLine) caughtError;
+			msg = "StatusLine: " + sl.getStatusCode() + ": " + sl.getReasonPhrase();
+		} else {
+			msg = String.valueOf(caughtError);
+		}
+		Log.w("UIDataList", msg);
+	}
+	
+	private Object connect(String[] data) {
+		/*String versionParams;
+		if (persistStore != null) {
+			versionParams= "verTarget=" + persistStore.getVersionInUse(tableId) +
+					"&verLatest=" + persistStore.getVersionLatest(tableId);
+		} else {
+			versionParams = "";
+		}
+		String serviceUrl = "http://10.88.106.11:9090/" + servicePath + "?" + versionParams +
+				"&offset=" + backedList.size() + "&size=" + DEFAULT_PAGESIZE;*/
+		
+		String feedUrl = dataList.getServicePath();
+		/*if (feedUrl == null) {
+			feedUrl = "/" + REST_FEEDS;
+		}*/
+		
+		String serviceUrl = "http://10.88.106.11:9090" + feedUrl;
+		//String serviceUrl = "http://192.168.1.8:9090" + ServerConstants.REST_FEEDS + feedUrl;
+		
+		HttpClient httpclient = new DefaultHttpClient();
+		ByteArrayOutputStream tempStream= null;
+		try {
+			HttpResponse response = httpclient.execute(new HttpGet(serviceUrl));
+			StatusLine statusLine = response.getStatusLine();
+			if (statusLine.getStatusCode() != HttpStatus.SC_OK) {
+				return statusLine;
+			}
+			tempStream = new ByteArrayOutputStream();
+			response.getEntity().writeTo(tempStream);
+			data[0] = tempStream.toString();
+			return null;
+		} catch (ClientProtocolException e) {
+			return e;
+		} catch (IOException e) {
+			return e;
+		} finally {
+			try {
+				if (tempStream != null) {
+					tempStream.close();
+				}
+				/*if (response != null) {
+					response.getEntity().getContent().close();
+				}*/
+			} catch (IOException e) {
+				//ignore
+				Log.w("UIDataList", "IOException in closing temp stream: " + e.getMessage());
+			}
+		}
+	}
+	
+	@SuppressWarnings("unused")
+	private ArrayList<T> buildList(ArrayList<JSONObject> dataArray) {
+		ArrayList<T> newList = new ArrayList<T>();
+		for (JSONObject itemJson : dataArray) {
+			T t = dataList.factory.instantiate(itemJson);
+			if (t != null) {
+				newList.add(t);
+			}
+		}
+		return newList;
+	}
+	
+	private ArrayList<T> buildList(JSONArray dataArray) throws JSONException {
+		ArrayList<T> newList = new ArrayList<T>();
+		for (int i = 0; i < dataArray.length(); i++) {
+			JSONObject itemJson = dataArray.getJSONObject(i);
+			T t = dataList.factory.instantiate(itemJson);
+			if (t != null) {
+				newList.add(t);
+			}
+		}
+		return newList;
+	}
+}

@@ -6,6 +6,7 @@ package com.jinnova.smartpad.android;
  */
 public interface ServerConstants {
 
+	static final String REST_SCHEME = "smartpad://";
 	static final String REST_FEEDS = "feeds";
 	static final String REST_DRILL = "drill";
 

@@ -154,7 +154,7 @@ public abstract class UIData {
 			public void onClick(View view) {
 				// Do something with span.getURL() to handle the link click...
 				//System.out.println(span.getURL());
-				viewAdapter.setServicePath(span.getURL().substring("smartpad://".length()));
+				viewAdapter.setServicePath(span.getURL().substring(REST_SCHEME.length()));
 			}
 		};
 		strBuilder.setSpan(clickable, start, end, flags);

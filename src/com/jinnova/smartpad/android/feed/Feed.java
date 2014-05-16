@@ -33,7 +33,7 @@ public abstract class Feed extends UIData {
 	}
 
 	public String getUrl() {
-		return "/" + getTypeName() + "/" + getId() + "/" + ServerConstants.REST_DRILL;
+		return "/" + ServerConstants.REST_FEEDS + "/" + getTypeName() + "/" + getId() + "/" + ServerConstants.REST_DRILL;
 	}
 	
 	/**
