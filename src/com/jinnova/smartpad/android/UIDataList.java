@@ -93,7 +93,7 @@ public class UIDataList<T extends UIData> {
 	void loadMore(final SmartpadViewAdapter<? extends UIData> loadingCallback) {
 		
 		synchronized (newListLock) {
-			if (newListLock[0]) {
+			if (newListLock[0] || servicePath == null) {
 				return;
 			}
 			newListLock[0] = true;
