@@ -7,25 +7,24 @@
     android:padding="5dp" >
 
     <TextView
-        android:id="@+id/syscatUpName"
+        android:id="@+id/syscatName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="26dp"
-        android:layout_marginTop="31dp"
-        android:text="upCatName" />
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="16dp"
+        android:text="catName" />
 
     <TextView
-        android:id="@+id/syscatName"
+        android:id="@+id/syscatSegments"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/syscatUpName"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/syscatUpName"
-        android:layout_marginLeft="19dp"
-        android:layout_marginTop="30dp"
-        android:text="catName" />
+        android:layout_alignLeft="@+id/syscatName"
+        android:layout_alignRight="@+id/syscatName"
+        android:layout_below="@+id/syscatName"
+        android:layout_marginTop="15dp"
+        android:text="segments" />
 
 </RelativeLayout>

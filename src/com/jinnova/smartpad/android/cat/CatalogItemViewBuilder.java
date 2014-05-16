@@ -40,8 +40,8 @@ public class CatalogItemViewBuilder extends ViewBuilder<CatalogItem> {
 	public void loadView(View view, CatalogItem catItem, SmartpadViewAdapter<UIData> viewAdapter) {
 		CatalogItemUI row = (CatalogItemUI) view.getTag();
 		row.branchName.setText(catItem.getString(FIELD_BRANCHNAME));
-		catItem.setToViewHtml(row.name, FIELD_NAME, viewAdapter);
-		catItem.setToViewHtml(row.details, FIELD_DISP, viewAdapter);
+		viewAdapter.setToViewHtml(catItem, row.name, FIELD_NAME);
+		viewAdapter.setToViewHtml(catItem, row.details, FIELD_DISP);
 	}
 
 }

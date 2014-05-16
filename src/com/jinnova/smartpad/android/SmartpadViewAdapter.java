@@ -1,9 +1,15 @@
 package com.jinnova.smartpad.android;
 
+import static com.jinnova.smartpad.android.ServerConstants.*;
+
 import com.jinnova.smartpad.android.feed.Feed;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.text.Html;
+import android.text.SpannableStringBuilder;
+import android.text.style.ClickableSpan;
+import android.text.style.URLSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -203,7 +209,7 @@ public abstract class SmartpadViewAdapter<T extends UIData> extends BaseAdapter 
 		// ask user to refresh with latest data list
 		
 	}
-
+	
 	public void setOnClickListener(TextView view, final String servicePath) {
 		
 		view.setTextColor(Color.BLUE);
@@ -214,6 +220,76 @@ public abstract class SmartpadViewAdapter<T extends UIData> extends BaseAdapter 
 				setServicePath(servicePath);
 			}
 		});
+	}
+	
+	public void setOnClickListener(TextView view, Feed feed, final String typeName, final String fieldId) {
+		
+		view.setTextColor(Color.BLUE);
+		final String fieldValue = feed.getString(FIELD_UP_ID);
+		if (fieldValue == null) {
+			return;
+		}
+		
+		view.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				
+				String servicePath = "/" + REST_FEEDS + "/" + TYPENAME_SYSCAT + "/" + fieldValue + "/" + REST_DRILL;
+				setServicePath(servicePath);
+			}
+		});
+	}
+
+	public void setToView(UIData data, TextView view, String fieldId) {
+
+		String s = data.getString(fieldId);
+		if (s != null) {
+			view.setText(s);
+			return;
+		}
+
+		view.setText("");
+		view.setVisibility(View.GONE);
+	}
+
+	public void setToViewHtml(UIData data, TextView view, String fieldId) {
+
+		String html = data.getString(fieldId);
+		if (html != null) {
+			//view.setText(Html.fromHtml(source));
+			setTextViewHTML(view, html);
+			return;
+		}
+
+		view.setText("");
+		view.setVisibility(View.GONE);
+	}
+
+	//http://stackoverflow.com/questions/12418279/android-textview-with-clickable-links-how-to-capture-clicks
+	private void setTextViewHTML(TextView text, String html) {
+		CharSequence sequence = Html.fromHtml(html);
+		SpannableStringBuilder strBuilder = new SpannableStringBuilder(sequence);
+		URLSpan[] urls = strBuilder.getSpans(0, sequence.length(),
+				URLSpan.class);
+		for (URLSpan span : urls) {
+			makeLinkClickable(strBuilder, span);
+		}
+		text.setText(strBuilder);
+	}
+	
+	private void makeLinkClickable(SpannableStringBuilder strBuilder, final URLSpan span) {
+		int start = strBuilder.getSpanStart(span);
+		int end = strBuilder.getSpanEnd(span);
+		int flags = strBuilder.getSpanFlags(span);
+		ClickableSpan clickable = new ClickableSpan() {
+			public void onClick(View view) {
+				// Do something with span.getURL() to handle the link click...
+				//System.out.println(span.getURL());
+				SmartpadViewAdapter.this.setServicePath(span.getURL().substring(REST_SCHEME.length()));
+			}
+		};
+		strBuilder.setSpan(clickable, start, end, flags);
+		strBuilder.removeSpan(span);
 	}
 	
 }
