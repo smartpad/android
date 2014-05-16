@@ -31,7 +31,8 @@ public class UIDataList<T extends UIData> {
 	
 	//private int lastOrder = 0; //order number starts from 1
 	
-	final ArrayList<T> backedList = new ArrayList<T>();
+	final ArrayList<T> backedList = new ArrayList<T>(50);
+	boolean backedListClear = false;
 	
 	private String servicePath = "/" + REST_FEEDS;
 	//private Feed feed;
@@ -70,7 +71,11 @@ public class UIDataList<T extends UIData> {
 	}*/
 
 	public void setServicePath(String p) {
-		backedList.clear();
+		backedListClear = true;
+		servicePath = p;
+	}
+
+	void setServicePathInternal(String p) {
 		servicePath = p;
 	}
 	
@@ -83,7 +88,7 @@ public class UIDataList<T extends UIData> {
 	}
 
 	void switchToLatest(SmartpadViewAdapter<? extends UIData> loadingCallback) {
-		backedList.clear();
+		backedListClear = true;
 		if (persistStore != null) {
 			persistStore.switchToLatest(tableId);
 		}
@@ -187,7 +192,7 @@ class LoadTask<T extends UIData> extends AsyncTask<String, Void, Object> {
 				if (nextUrl != null) {
 					nextUrl = nextUrl.substring(REST_SCHEME.length());
 				}
-				dataList.setServicePath(nextUrl);
+				dataList.setServicePathInternal(nextUrl);
 			}
 			return null;
 		} catch (JSONException e) {
@@ -201,7 +206,11 @@ class LoadTask<T extends UIData> extends AsyncTask<String, Void, Object> {
 	@Override
 	protected void onPostExecute(Object caughtError) {
 		if (caughtError == null) {
-			if (newList != null) {
+			if (newList != null && !newList.isEmpty()) {
+				Log.d("UIDataList", "Loaded items: " + newList.size());
+				if (dataList.backedListClear) {
+					dataList.backedList.clear();
+				}
 				dataList.backedList.addAll(newList);
 				loadingCallback.notifyDataSetChanged();
 			}
@@ -244,6 +253,7 @@ class LoadTask<T extends UIData> extends AsyncTask<String, Void, Object> {
 		HttpClient httpclient = new DefaultHttpClient();
 		ByteArrayOutputStream tempStream= null;
 		try {
+			Log.d("UIDataList", "Connect: " + serviceUrl);
 			HttpResponse response = httpclient.execute(new HttpGet(serviceUrl));
 			StatusLine statusLine = response.getStatusLine();
 			if (statusLine.getStatusCode() != HttpStatus.SC_OK) {
