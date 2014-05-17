@@ -179,13 +179,15 @@ public abstract class SmartpadViewAdapter<T extends UIData> extends BaseAdapter 
 			//we do safe check anyway
 			ViewTag tag = (ViewTag) convertView.getTag();
 			if (tag == null || tag.getItemViewType() != getItemViewType(pos)) {
-				Log.d("SmartpadViewAdapter", "view reuse failed");
+				if (tag.getItemViewType() != getItemViewType(pos)) {
+					Log.d("SmartpadViewAdapter", "view reuse failed");
+				}
 				convertView = createView(viewBuilder, parent);
 				((ViewTag) convertView.getTag()).setItemViewType(item.getType());
 			}
 		} else {
 			convertView = createView(viewBuilder, parent);
-			((ViewTag) convertView.getTag()).setItemViewType(item.getType());
+			((ViewTag) convertView.getTag()).setItemViewType(viewTypeNumbers[item.getType()][item.getLayoutOption()]);
 		}
 		viewBuilder.loadView(convertView, item, (SmartpadViewAdapter<UIData>) this);
 		return convertView;
