@@ -17,22 +17,28 @@
         android:text="branchName" />
 
     <TextView
-        android:id="@+id/catitemDetails"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/catitemBranchName"
-        android:layout_below="@+id/catitemName"
-        android:layout_marginTop="20dp"
-        android:text="details" />
-
-    <TextView
         android:id="@+id/catitemName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/catitemBranchName"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/catitemBranchName"
-        android:layout_marginTop="14dp"
+        android:layout_alignLeft="@+id/catitemDetails"
+        android:layout_below="@+id/catitemPrivateCat"
         android:text="name (catName)" />
+
+    <TextView
+        android:id="@+id/catitemPrivateCat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/catitemBranchName"
+        android:layout_below="@+id/catitemBranchName"
+        android:text="privateCat" />
+
+    <TextView
+        android:id="@+id/catitemDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/catitemPrivateCat"
+        android:layout_below="@+id/catitemName"
+        android:layout_marginTop="14dp"
+        android:text="details" />
 
 </RelativeLayout>

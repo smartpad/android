@@ -15,6 +15,7 @@ public class CatalogItemViewBuilder extends ViewBuilder<CatalogItem> {
 	
 	private class CatalogItemUI extends ViewTag {
 		TextView branchName;
+		TextView privateCat;
 		TextView name;
 		TextView details;
 	}
@@ -27,6 +28,9 @@ public class CatalogItemViewBuilder extends ViewBuilder<CatalogItem> {
 	public ViewTag createTag(View view) {
 		CatalogItemUI row  = new CatalogItemUI();
 		row.branchName = (TextView) view.findViewById(R.id.catitemBranchName);
+		row.branchName.setMovementMethod(LinkMovementMethod.getInstance());
+		row.privateCat = (TextView) view.findViewById(R.id.catitemPrivateCat);
+		row.privateCat.setMovementMethod(LinkMovementMethod.getInstance());
 		row.name = (TextView) view.findViewById(R.id.catitemName);
 		row.name.setMovementMethod(LinkMovementMethod.getInstance());
 		//row.name.setLinksClickable(true);
@@ -39,7 +43,8 @@ public class CatalogItemViewBuilder extends ViewBuilder<CatalogItem> {
 	@Override
 	public void loadView(View view, CatalogItem catItem, SmartpadViewAdapter<UIData> viewAdapter) {
 		CatalogItemUI row = (CatalogItemUI) view.getTag();
-		row.branchName.setText(catItem.getString(FIELD_BRANCHNAME));
+		viewAdapter.setToViewHtml(catItem, row.branchName, FIELD_BRANCHNAME);
+		viewAdapter.setToViewHtml(catItem, row.privateCat, FIELD_CATNAME);
 		viewAdapter.setToViewHtml(catItem, row.name, FIELD_NAME);
 		viewAdapter.setToViewHtml(catItem, row.details, FIELD_DISP);
 	}
