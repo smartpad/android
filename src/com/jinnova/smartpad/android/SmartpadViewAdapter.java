@@ -247,6 +247,7 @@ public abstract class SmartpadViewAdapter<T extends UIData> extends BaseAdapter 
 		String s = data.getString(fieldId);
 		if (s != null) {
 			view.setText(s);
+			view.setVisibility(View.VISIBLE);
 			return;
 		}
 
@@ -260,6 +261,7 @@ public abstract class SmartpadViewAdapter<T extends UIData> extends BaseAdapter 
 		if (html != null) {
 			//view.setText(Html.fromHtml(source));
 			setTextViewHTML(view, html);
+			view.setVisibility(View.VISIBLE);
 			return;
 		}
 
@@ -271,8 +273,7 @@ public abstract class SmartpadViewAdapter<T extends UIData> extends BaseAdapter 
 	private void setTextViewHTML(TextView text, String html) {
 		CharSequence sequence = Html.fromHtml(html);
 		SpannableStringBuilder strBuilder = new SpannableStringBuilder(sequence);
-		URLSpan[] urls = strBuilder.getSpans(0, sequence.length(),
-				URLSpan.class);
+		URLSpan[] urls = strBuilder.getSpans(0, sequence.length(), URLSpan.class);
 		for (URLSpan span : urls) {
 			makeLinkClickable(strBuilder, span);
 		}
