@@ -22,7 +22,7 @@ public class BranchViewDetailBuilder extends ViewBuilder<Branch> {
 	@Override
 	public ViewTag createTag(View view) {
 		BranchUI row  = new BranchUI();
-		row.branchName = (TextView) view.findViewById(R.id.branchName);
+		row.branchName = (TextView) view.findViewById(R.id.opBranchName);
 		return row;
 	}
 

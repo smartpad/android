@@ -26,7 +26,7 @@ public class BranchViewBuilder extends ViewBuilder<Branch> {
 	@Override
 	public ViewTag createTag(View view) {
 		BranchUI row  = new BranchUI();
-		row.branchName = (TextView) view.findViewById(R.id.branchName);
+		row.branchName = (TextView) view.findViewById(R.id.opBranchName);
 		row.branchName.setMovementMethod(LinkMovementMethod.getInstance());
 		return row;
 	}
