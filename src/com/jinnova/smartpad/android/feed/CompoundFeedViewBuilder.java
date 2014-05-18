@@ -31,9 +31,9 @@ public class CompoundFeedViewBuilder extends ViewBuilder<CompoundFeed> {
 	public ViewTag createTag(View view) {
 		CompoundFeedUI tag = new CompoundFeedUI();
 		tag.viewPager = (ViewPager) view.findViewById(R.id.viewpager_feed);
-		tag.viewPager.setPageMargin(-10);
+		tag.viewPager.setPageMargin(-30);
 		tag.viewPager.setHorizontalFadingEdgeEnabled(true);
-		tag.viewPager.setFadingEdgeLength(5);
+		tag.viewPager.setFadingEdgeLength(50);
 		return tag;
 	}
 

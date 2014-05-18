@@ -1,5 +1,9 @@
 package com.jinnova.smartpad.android.cat;
 
+import static com.jinnova.smartpad.android.ServerConstants.*;
+
+import android.text.method.LinkMovementMethod;
+
 import android.view.View;
 import android.widget.TextView;
 
@@ -23,6 +27,7 @@ public class BranchViewBuilder extends ViewBuilder<Branch> {
 	public ViewTag createTag(View view) {
 		BranchUI row  = new BranchUI();
 		row.branchName = (TextView) view.findViewById(R.id.branchName);
+		row.branchName.setMovementMethod(LinkMovementMethod.getInstance());
 		return row;
 	}
 
@@ -30,6 +35,7 @@ public class BranchViewBuilder extends ViewBuilder<Branch> {
 	public void loadView(View view, Branch branch, SmartpadViewAdapter<UIData> viewAdapter) {
 		BranchUI row = (BranchUI) view.getTag();
 		row.branchName.setText(branch.getName());
+		viewAdapter.setToViewHtml(branch, row.branchName, FIELD_NAME);
 	}
 
 }

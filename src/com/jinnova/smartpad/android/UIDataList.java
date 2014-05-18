@@ -210,6 +210,7 @@ class LoadTask<T extends UIData> extends AsyncTask<String, Void, Object> {
 				Log.d("UIDataList", "Loaded items: " + newList.size());
 				if (dataList.backedListClear) {
 					dataList.backedList.clear();
+					dataList.backedListClear = false;
 				}
 				dataList.backedList.addAll(newList);
 				loadingCallback.notifyDataSetChanged();
@@ -247,8 +248,9 @@ class LoadTask<T extends UIData> extends AsyncTask<String, Void, Object> {
 			feedUrl = "/" + REST_FEEDS;
 		}*/
 		
-		String serviceUrl = "http://10.88.106.11:9090" + feedUrl;
-		//String serviceUrl = "http://192.168.1.8:9090" + ServerConstants.REST_FEEDS + feedUrl;
+		//String serviceUrl = "http://10.88.106.11:9090" + feedUrl;
+		//String serviceUrl = "http://192.168.1.8:9090" + feedUrl;
+		String serviceUrl = "http://192.168.0.104:9090" + feedUrl;
 		
 		HttpClient httpclient = new DefaultHttpClient();
 		ByteArrayOutputStream tempStream= null;

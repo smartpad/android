@@ -8,12 +8,12 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.jinnova.smartpad.android.FeedListActivity$PlaceholderFragment" >
 
-    <ListView android:id="@+id/feed_list" android:choiceMode="singleChoice" 
+    <com.jinnova.smartpad.android.HorizontalPagingListView android:id="@+id/feed_list" android:choiceMode="singleChoice" 
         android:smoothScrollbar="false"
         android:layout_width="fill_parent" android:layout_height="fill_parent" 
         android:focusable="true" android:focusableInTouchMode="true"
         android:clickable="true"
         android:divider="@android:color/transparent"
-  		android:dividerHeight="10.0sp"></ListView>
+  		android:dividerHeight="10.0sp"></com.jinnova.smartpad.android.HorizontalPagingListView>
 
 </RelativeLayout>

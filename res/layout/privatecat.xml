@@ -7,24 +7,24 @@
     android:padding="5dp" >
 
     <TextView
-        android:id="@+id/syscatName"
+        android:id="@+id/pcatName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/pcatBranchName"
+        android:layout_alignRight="@+id/pcatBranchName"
+        android:layout_below="@+id/pcatBranchName"
+        android:layout_marginTop="16dp"
+        android:text="pcatName" />
+
+    <TextView
+        android:id="@+id/pcatBranchName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="16dp"
-        android:text="syscatName" />
-
-    <TextView
-        android:id="@+id/syscatSegments"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/syscatName"
-        android:layout_alignRight="@+id/syscatName"
-        android:layout_below="@+id/syscatName"
-        android:layout_marginTop="15dp"
-        android:text="syscatSegments" />
+        android:layout_marginLeft="23dp"
+        android:layout_marginTop="17dp"
+        android:text="pcatBranchName" />
 
 </RelativeLayout>

@@ -1,9 +1,9 @@
 package com.jinnova.smartpad.android.feed;
 
 import static com.jinnova.smartpad.android.ServerConstants.*;
-
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +33,7 @@ public class FeedListFragment extends Fragment {
 		ListView list = (ListView) view.findViewById(R.id.feed_list);
 		list.setAdapter(adapter);
 		list.setOnScrollListener(new OnScrollListener() {
-			Boolean isLoadMore = true;
+			//Boolean isLoadMore = true;
 			@Override
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
 				
@@ -42,13 +42,14 @@ public class FeedListFragment extends Fragment {
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem,
 					int visibleItemCount, int totalItemCount) {
-				isLoadMore = (firstVisibleItem + visibleItemCount >= totalItemCount) && isLoadMore;
+				boolean isLoadMore = (firstVisibleItem + visibleItemCount >= totalItemCount) /*&& isLoadMore*/;
 				if (isLoadMore) {
+					Log.d("FeedListFragment", "loadMore detected");
 					adapter.loadMore();
-					isLoadMore = false;
-				} else {
+					//isLoadMore = false;
+				} /*else {
 					isLoadMore = firstVisibleItem + visibleItemCount != totalItemCount;
-				}
+				}*/
 			}
 		});
 		adapter.loadMore();
