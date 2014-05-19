@@ -2,14 +2,13 @@ package com.jinnova.smartpad.android.cat;
 
 import static com.jinnova.smartpad.android.ServerConstants.*;
 
-import android.graphics.drawable.Drawable;
 import android.text.method.LinkMovementMethod;
 
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.jinnova.smartpad.android.ImageLoaderTask;
+import com.jinnova.smartpad.android.ImageLoadManager;
 import com.jinnova.smartpad.android.R;
 import com.jinnova.smartpad.android.SmartpadViewAdapter;
 import com.jinnova.smartpad.android.UIData;
@@ -41,13 +40,7 @@ public class BranchViewBuilder extends ViewBuilder<Branch> {
 		BranchUI row = (BranchUI) view.getTag();
 		row.branchName.setText(branch.getName());
 		viewAdapter.setToViewHtml(branch, row.branchName, FIELD_NAME);
-		row.image.setTag("http://totallystockholm.se/wp-content/uploads/2014/02/kfc.jpg");
-		Drawable dr = ImageLoaderTask.getInstance().loadImage(viewAdapter, row.image);
-		if (dr != null) {
-			row.image.setImageDrawable(dr);
-		} else {
-			row.image.setImageResource(R.drawable.lotteria_logo);
-		}
+		ImageLoadManager.instance.registerView(branch.getImagePath(), row.image);
 	}
 
 }

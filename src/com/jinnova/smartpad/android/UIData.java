@@ -103,6 +103,15 @@ public abstract class UIData {
 		}
 	}
 	
+	public String getImagePath() {
+		return "/wp-content/uploads/2014/02/kfc.jpg";
+	}
+
+	public void registerImageLoads() {
+		//ImageLoadManager.instance.registerLoad(JSONSupport.getString(json, FIELD_IMAGE));
+		ImageLoadManager.instance.registerLoad("/wp-content/uploads/2014/02/kfc.jpg");
+	}
+	
 	/*public static String getTypeName(int typeNumber) {
 		if (typeNumber == TYPE_POST) {
 			return "post";

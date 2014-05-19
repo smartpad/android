@@ -187,6 +187,9 @@ class LoadTask<T extends UIData> extends AsyncTask<String, Void, Object> {
 				
 				JSONArray targetArray = targetData.getJSONArray(FIELD_ARRAY);
 				newList = buildList(targetArray);
+				for (UIData f : newList) {
+					f.registerImageLoads();
+				}
 				String nextUrl = JSONSupport.getString(targetData, FIELD_ACTION_LOADNEXT);
 				//next url is null, when no more data available
 				if (nextUrl != null) {

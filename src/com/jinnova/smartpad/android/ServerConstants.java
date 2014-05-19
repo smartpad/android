@@ -25,6 +25,7 @@ public interface ServerConstants {
 	static final String FIELD_SYSCATNAME = "SCN";
 	static final String FIELD_NAME = "N";
 	static final String FIELD_DESC = "D";
+	static final String FIELD_IMAGE = "IMG";
 	static final String FIELD_BRANCHID = "BI";
 	static final String FIELD_BRANCHNAME = "BN";
 	static final String FIELD_CATID = "CID";

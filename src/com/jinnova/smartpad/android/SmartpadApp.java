@@ -7,6 +7,7 @@ public class SmartpadApp extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		ImageLoadManager.initialize(this);
 	}
 
 }

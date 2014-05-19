@@ -25,6 +25,7 @@
         android:layout_alignRight="@+id/opBranchName"
         android:layout_below="@+id/opBranchName"
         android:layout_marginTop="15dp"
-        android:src="@drawable/anh1" />
+        android:contentDescription="branchImage" 
+        android:src="@drawable/image_loading" />
 
 </RelativeLayout>
