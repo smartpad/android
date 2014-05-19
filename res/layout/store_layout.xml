@@ -9,12 +9,21 @@
     android:padding="5dp" >
 
     <TextView
+        android:id="@+id/storeBranchName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/opStoreName"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:text="branchName" />
+
+    <TextView
         android:id="@+id/opStoreName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:text="branchName" />
+        android:layout_below="@+id/storeBranchName"
+        android:layout_marginTop="15dp"
+        android:text="storeName" />
 
 </RelativeLayout>

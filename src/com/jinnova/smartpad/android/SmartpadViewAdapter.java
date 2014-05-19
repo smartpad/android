@@ -258,7 +258,7 @@ public abstract class SmartpadViewAdapter<T extends UIData> extends BaseAdapter 
 	public void setToViewHtml(UIData data, TextView view, String fieldId) {
 
 		String html = data.getString(fieldId);
-		if (html != null) {
+		if (html != null /*&& !"".equals(html.trim())*/) {
 			//view.setText(Html.fromHtml(source));
 			setTextViewHTML(view, html);
 			view.setVisibility(View.VISIBLE);

@@ -16,6 +16,7 @@ import com.jinnova.smartpad.android.ViewTag;
 public class StoreViewBuilder extends ViewBuilder<Store> {
 	
 	private class StoreUI extends ViewTag {
+		TextView branchName;
 		TextView storeName;
 	}
 
@@ -26,6 +27,8 @@ public class StoreViewBuilder extends ViewBuilder<Store> {
 	@Override
 	public ViewTag createTag(View view) {
 		StoreUI row  = new StoreUI();
+		row.branchName = (TextView) view.findViewById(R.id.storeBranchName);
+		row.branchName.setMovementMethod(LinkMovementMethod.getInstance());
 		row.storeName = (TextView) view.findViewById(R.id.opStoreName);
 		row.storeName.setMovementMethod(LinkMovementMethod.getInstance());
 		return row;
@@ -34,7 +37,7 @@ public class StoreViewBuilder extends ViewBuilder<Store> {
 	@Override
 	public void loadView(View view, Store store, SmartpadViewAdapter<UIData> viewAdapter) {
 		StoreUI row = (StoreUI) view.getTag();
-		row.storeName.setText(store.getName());
+		viewAdapter.setToViewHtml(store, row.branchName, FIELD_BRANCHNAME);
 		viewAdapter.setToViewHtml(store, row.storeName, FIELD_NAME);
 	}
 
