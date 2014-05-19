@@ -17,4 +17,14 @@
         android:layout_alignParentTop="true"
         android:text="branchName" />
 
+    <ImageView
+        android:id="@+id/branchImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/opBranchName"
+        android:layout_alignRight="@+id/opBranchName"
+        android:layout_below="@+id/opBranchName"
+        android:layout_marginTop="15dp"
+        android:src="@drawable/anh1" />
+
 </RelativeLayout>
