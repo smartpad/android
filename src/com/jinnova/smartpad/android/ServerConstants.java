@@ -76,4 +76,8 @@ public interface ServerConstants {
 	static String TYPENAME_COMPOUND_CAT = "cats";
 	static String TYPENAME_COMPOUND_CITEM = "citems";
 	static String TYPENAME_COMPOUND_PROMOS = "pros";
+	
+	static final String IMG_LOGO_SQUARE = "logo-square";
+	static final String IMG_LOGO_WIDERECT = "logo-widerect";
+	static final String IMG_LOGO_TALLRECT = "logo-tallrect";
 }

@@ -24,7 +24,7 @@ public class ImageLoadManager {
 	
 	private static final int THREAD_MAXCOUNT = 3;
 	
-	private static final String imageServer = "http://totallystockholm.se";
+	//private static final String imageServer = "http://totallystockholm.se";
 
 	private Bitmap imageNotFound;
 	
@@ -117,12 +117,13 @@ public class ImageLoadManager {
 					
 					File dir = new File(context.getFilesDir() + path);
 					if (dir.exists()) {
+						//TODO check if image changed
 						File file = new File(dir, "image.png");
 						bm = BitmapFactory.decodeFile(file.getAbsolutePath());
 						Log.i("image loader", "Loaded image from file");
 					} else {
 					
-						URL url = new URL(imageServer + path);
+						URL url = new URL(UIDataList.SERVER + "/images" + path);
 						bm = BitmapFactory.decodeStream(url.openConnection().getInputStream());
 						dir.mkdirs();
 						File file = new File(dir, "image.png");

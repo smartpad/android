@@ -23,6 +23,8 @@ import android.util.Log;
 
 public class UIDataList<T extends UIData> {
 	
+	static final String SERVER = "http://10.88.106.11:9090";
+	
 	@SuppressWarnings("unused")
 	private static final int DEFAULT_PAGESIZE = 10;
 	
@@ -251,7 +253,7 @@ class LoadTask<T extends UIData> extends AsyncTask<String, Void, Object> {
 			feedUrl = "/" + REST_FEEDS;
 		}*/
 		
-		String serviceUrl = "http://10.88.106.11:9090" + feedUrl;
+		String serviceUrl = UIDataList.SERVER + feedUrl;
 		//String serviceUrl = "http://192.168.1.8:9090" + feedUrl;
 		//String serviceUrl = "http://192.168.0.114:9090" + feedUrl;
 		
