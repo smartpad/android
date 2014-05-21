@@ -105,12 +105,13 @@ public abstract class UIData {
 	
 	public String getImagePath() {
 		//return "/wp-content/uploads/2014/02/kfc.jpg";
-		return "/" + TYPENAME_BRANCH + "/" + getId() + IMG_LOGO_SQUARE + "?size=50"; 
+		return "/" + TYPENAME_BRANCH + "/" + getId() + "/" + IMG_LOGO_SQUARE + "?size=50"; 
 	}
 
 	public void registerImageLoads() {
 		//ImageLoadManager.instance.registerLoad(JSONSupport.getString(json, FIELD_IMAGE));
-		ImageLoadManager.instance.registerLoad("/wp-content/uploads/2014/02/kfc.jpg");
+		//ImageLoadManager.instance.registerLoad("/wp-content/uploads/2014/02/kfc.jpg");
+		ImageLoadManager.instance.registerLoad(getImagePath());
 	}
 	
 	/*public static String getTypeName(int typeNumber) {

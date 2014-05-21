@@ -116,18 +116,18 @@ public class ImageLoadManager {
 				try {
 					
 					File dir = new File(context.getFilesDir() + path);
-					if (dir.exists()) {
+					/*if (dir.exists()) {
 						//TODO check if image changed
 						File file = new File(dir, "image.png");
 						bm = BitmapFactory.decodeFile(file.getAbsolutePath());
 						Log.i("image loader", "Loaded image from file");
-					} else {
+					} else*/ {
 					
 						URL url = new URL(UIDataList.SERVER + "/images" + path);
+						Log.i("image loader", "Loading image from: " + url);
 						bm = BitmapFactory.decodeStream(url.openConnection().getInputStream());
 						dir.mkdirs();
 						File file = new File(dir, "image.png");
-						Log.i("image loader", "Loaded image from internet");
 						
 						FileOutputStream outStream = new FileOutputStream(file);
 						bm.compress(CompressFormat.PNG, 100, outStream);
