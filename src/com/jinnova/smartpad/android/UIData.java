@@ -105,7 +105,7 @@ public abstract class UIData {
 	
 	public String getImagePath() {
 		//return "/wp-content/uploads/2014/02/kfc.jpg";
-		return "/images/" + TYPENAME_BRANCH + "/" + getId() + IMG_LOGO_SQUARE + "?size=50"; 
+		return "/" + TYPENAME_BRANCH + "/" + getId() + IMG_LOGO_SQUARE + "?size=50"; 
 	}
 
 	public void registerImageLoads() {
