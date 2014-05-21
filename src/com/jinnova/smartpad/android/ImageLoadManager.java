@@ -126,12 +126,14 @@ public class ImageLoadManager {
 						URL url = new URL(UIDataList.SERVER + "/images" + path);
 						Log.i("image loader", "Loading image from: " + url);
 						bm = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-						dir.mkdirs();
-						File file = new File(dir, "image.png");
-						
-						FileOutputStream outStream = new FileOutputStream(file);
-						bm.compress(CompressFormat.PNG, 100, outStream);
-						Log.i("image loader", "Saved image to file");
+						if (bm != null) {
+							dir.mkdirs();
+							File file = new File(dir, "image.png");
+							
+							FileOutputStream outStream = new FileOutputStream(file);
+							bm.compress(CompressFormat.PNG, 100, outStream);
+							Log.i("image loader", "Saved image to file");
+						}
 					}
 				} catch (MalformedURLException e) {
 					bm = imageNotFound;
@@ -139,6 +141,9 @@ public class ImageLoadManager {
 					bm = imageIOError;
 				}
 				
+				if (bm == null) {
+					bm = imageNotFound;
+				}
 				synchronized (lock) {
 					updateQueue.put(path, bm);
 					loadedImages.put(path, bm);
