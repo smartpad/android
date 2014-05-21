@@ -13,7 +13,7 @@ import android.widget.PopupMenu.OnMenuItemClickListener;
 
 import com.jinnova.smartpad.android.R;
 import com.jinnova.smartpad.android.fav.FavoriteActivity;
-import com.jinnova.smartpad.android.feed.FeedListFragment;
+import com.jinnova.smartpad.android.feed.FeedListActivity;
 import com.jinnova.smartpad.android.member.MemberCardActivity;
 import com.jinnova.smartpad.android.order.OrdersActivity;
 
@@ -56,7 +56,7 @@ public abstract class SmartpadActivity extends Activity {
 			public boolean onMenuItemClick(MenuItem item) {
 				switch (item.getItemId()) {
 				case R.id.feed_list_menu_item:
-					switchActivity(FeedListFragment.class);
+					switchActivity(FeedListActivity.class);
 					return true;
 				/*case R.id.store_catalog_menu_item:
 					switchActivity(ShoppingActivity.class);
