@@ -59,4 +59,9 @@ public class CompoundFeed extends Feed {
 			return null;
 		}
 	}
+
+	@Override
+	public void registerImageLoads() {
+		//prohibit super.registerImageLoads();
+	}
 }
