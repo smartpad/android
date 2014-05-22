@@ -274,7 +274,7 @@ public class ImageLoadManager {
 		HttpClient httpclient = new DefaultHttpClient();
 		HttpGet httpget = new HttpGet(url);
 		if (etag != null && etag.length > 0 && etag[0] != null) {
-			httpget.setHeader("ETag", etag[0]);
+			httpget.setHeader("If-None-Match", etag[0]);
 		}
 
 		// Execute the request
