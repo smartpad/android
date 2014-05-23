@@ -40,7 +40,7 @@ public class BranchViewBuilder extends ViewBuilder<Branch> {
 		BranchUI row = (BranchUI) view.getTag();
 		row.branchName.setText(branch.getName());
 		viewAdapter.setToViewHtml(branch, row.branchName, FIELD_NAME);
-		ImageLoadManager.instance.registerView(branch.getImagePath(), row.image);
+		ImageLoadManager.instance.registerView(branch.getImagePath(IMG_LOGO_SQUARE), row.image);
 	}
 
 }

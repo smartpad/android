@@ -13,8 +13,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map.Entry;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -35,7 +33,7 @@ import android.widget.ImageView;
 
 public class ImageLoadManager {
 	
-	private static final String SERVER_MEDIA = "http://10.88.106.11:8080/imaging/root";
+	private static final String SERVER_MEDIA = "http://10.88.106.11:8080/imaging";
 	
 	private static final int THREAD_MAXCOUNT = 3;
 	
@@ -47,7 +45,9 @@ public class ImageLoadManager {
 	
 	public static ImageLoadManager instance;
 	
-	private SortedSet<String> pathQueue = new TreeSet<String>();
+	//SortedSet sorts paths by path value, but we need sorting by adding order
+	//private SortedSet<String> pathQueue = new TreeSet<String>();
+	private LinkedList<String> pathQueue = new LinkedList<String>();
 	
 	private HashMap<ImageView, String> viewQueue = new HashMap<ImageView, String>();
 	
@@ -83,6 +83,9 @@ public class ImageLoadManager {
 			if (loadedImages.containsKey(path)) {
 				return;
 			}
+			if (pathQueue.contains(path)) {
+				return;
+			}
 			
 			pathQueue.add(path);
 			if (loadingThreads.size() < THREAD_MAXCOUNT) {
@@ -95,6 +98,11 @@ public class ImageLoadManager {
 	}
 	
 	public void registerView(String path, ImageView view) {
+		
+		if (path == null) {
+			return;
+		}
+		
 		synchronized (lock) {
 			
 			if (loadedImages.containsKey(path)) {
@@ -106,6 +114,10 @@ public class ImageLoadManager {
 				//load may be done too fast, or the load was not registered at all
 				Log.d("image loading", "fastload?");
 				registerLoad(path);
+			} else {
+				//prioritize up this image
+				pathQueue.remove(path);
+				pathQueue.addFirst(path);
 			}
 			viewQueue.put(view, path);
 		}
@@ -123,7 +135,7 @@ public class ImageLoadManager {
 						loadingThreads.remove(this);
 						return;
 					}
-					path = pathQueue.first();
+					path = pathQueue.getFirst();
 					pathQueue.remove(path);
 				}
 				

@@ -2,6 +2,9 @@ package com.jinnova.smartpad.android;
 
 import static com.jinnova.smartpad.android.ServerConstants.*;
 
+import java.util.Iterator;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import android.util.Log;
@@ -103,16 +106,73 @@ public abstract class UIData {
 		}
 	}
 	
-	public String getImagePath() {
-		//return "/wp-content/uploads/2014/02/kfc.jpg";
-		//return "/" + TYPENAME_BRANCH + "/" + getId() + "/" + IMG_LOGO_SQUARE + "?size=50"; 
-		return "/" + TYPENAME_BRANCH + "/" + getId() + "/sizes/" + IMG_LOGO_SQUARE + "_50.png";
+	public String getImagePath(String imageId) {
+		String[] paths = getImagePaths(imageId);
+		if (paths == null || paths.length == 0) {
+			return null;
+		}
+		return paths[0];
+	}
+	
+	public String[] getImagePaths(String imageId) {
+		if (!json.has(FIELD_IMAGE)) {
+			return null;
+		}
+		
+		try {
+			JSONObject imageJson = json.getJSONObject(FIELD_IMAGE);
+			if (imageJson == null) {
+				return null;
+			}
+			
+			if (!imageJson.has(imageId)) {
+				return null;
+			}
+			Object o = imageJson.get(imageId);
+			if (o instanceof String) {
+				return new String[] {(String) o};
+			} else if (o instanceof JSONArray) {
+				JSONArray ja = (JSONArray) o;
+				String[] paths = new String[ja.length()];
+				for (int i = 0; i < paths.length; i++) {
+					paths[i] = ja.getString(i);
+				}
+				return paths;
+			}
+			return null;
+		} catch (JSONException e) {
+			Log.i("UIData", "unexpected json exception", e);
+			return null;
+		}
 	}
 
 	public void registerImageLoads() {
-		//ImageLoadManager.instance.registerLoad(JSONSupport.getString(json, FIELD_IMAGE));
-		//ImageLoadManager.instance.registerLoad("/wp-content/uploads/2014/02/kfc.jpg");
-		ImageLoadManager.instance.registerLoad(getImagePath());
+		
+		if (!json.has(FIELD_IMAGE)) {
+			return;
+		}
+		
+		try {
+			
+			JSONObject imageJson = json.getJSONObject(FIELD_IMAGE);
+			@SuppressWarnings("unchecked")
+			Iterator<String> it = imageJson.keys();
+			while (it.hasNext()) {
+				String one = it.next();
+				Object o = imageJson.get(one);
+				if (o instanceof String) {
+					ImageLoadManager.instance.registerLoad((String) o);
+				} else if (o instanceof JSONArray) {
+					JSONArray ja = (JSONArray) o;
+					for (int i = 0; i < ja.length(); i++) {
+						ImageLoadManager.instance.registerLoad((String) ja.getString(i));
+					}
+				}
+			}
+		} catch (JSONException e) {
+			Log.i("UIData", "unexpected json exception", e);
+		}
+		
 	}
 	
 	/*public static String getTypeName(int typeNumber) {
