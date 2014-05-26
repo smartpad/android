@@ -33,7 +33,7 @@ import android.widget.ImageView;
 
 public class ImageLoadManager {
 	
-	private static final String SERVER_MEDIA = "http://10.88.106.11:8080/imaging";
+	private static final String SERVER_MEDIA = "http://" + UIDataList.SERVER_IP + ":8080/imaging";
 	
 	private static final int THREAD_MAXCOUNT = 3;
 	

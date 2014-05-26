@@ -22,8 +22,9 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 public class UIDataList<T extends UIData> {
-	
-	static final String SERVER = "http://10.88.106.11:9090";
+
+	static final String SERVER_IP = "10.88.106.11";
+	static final String SERVER = "http://" + SERVER_IP + ":9090";
 	
 	@SuppressWarnings("unused")
 	private static final int DEFAULT_PAGESIZE = 10;
