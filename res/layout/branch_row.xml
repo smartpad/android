@@ -8,24 +8,22 @@
     android:orientation="horizontal"
     android:padding="5dp" >
 
-    <TextView
-        android:id="@+id/opBranchName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:text="branchName" />
-
     <ImageView
-        android:id="@+id/branchImage"
+        android:id="@+id/branchLogo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/opBranchName"
-        android:layout_alignRight="@+id/opBranchName"
-        android:layout_below="@+id/opBranchName"
-        android:layout_marginTop="15dp"
-        android:contentDescription="branchImage" 
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:contentDescription="@string/branchImage"
         android:src="@drawable/image_loading" />
+
+    <TextView
+        android:id="@+id/branchName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/branchLogo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="38dp"
+        android:text="@string/branchName" />
 
 </RelativeLayout>

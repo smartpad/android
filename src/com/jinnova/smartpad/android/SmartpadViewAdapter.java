@@ -8,6 +8,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.text.Html;
 import android.text.SpannableStringBuilder;
+import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.URLSpan;
 import android.util.Log;
@@ -19,11 +20,6 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 public abstract class SmartpadViewAdapter<T extends UIData> extends BaseAdapter {
-	
-	public static final int LAYOUTOPT_UNINITIALIZED = -1;
-	public static final int LAYOUTOPT_DEFAULT = 0;
-	public static final int LAYOUTOPT_DETAIL = 1;
-	public static final int LAYOUTOPT_COUNT = 2;
 	
 	//builder map is long/exhausted, because there are multiple layouts / custom layouts for each feed type. 
 	private ViewBuilder<?>[][] builderMap;
@@ -55,9 +51,12 @@ public abstract class SmartpadViewAdapter<T extends UIData> extends BaseAdapter 
 			if (builders != null) {
 				viewTypeNumbers[i] = new int[builders.length];
 				for (int j = 0; j < builders.length; j++) {
-					viewTypeNumbers[i][j] = builderCount + j;
+					if (builders[j] == null) {
+						continue;
+					}
+					viewTypeNumbers[i][j] = builderCount;
+					builderCount++;
 				}
-				builderCount += builders.length;
 			}
 		}
 	}
@@ -212,19 +211,30 @@ public abstract class SmartpadViewAdapter<T extends UIData> extends BaseAdapter 
 		
 	}
 	
-	public void setOnClickListener(TextView view, final String servicePath) {
+	public void setOnClickListener(View view, final String servicePath) {
 		
-		view.setTextColor(Color.BLUE);
+		if (servicePath == null) {
+			return;
+		}
+		if (view instanceof TextView) {
+			((TextView) view).setTextColor(Color.BLUE);
+		}
 		view.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				
-				setServicePath(servicePath);
+				String p;
+				if (servicePath.startsWith(ServerConstants.REST_SCHEME)) {
+					p = servicePath.substring(ServerConstants.REST_SCHEME.length());
+				} else {
+					p = servicePath;
+				}
+				setServicePath(p);
 			}
 		});
 	}
 	
-	public void setOnClickListener(TextView view, Feed feed, final String typeName, final String fieldId) {
+	/*public void setOnClickListener(TextView view, Feed feed, final String typeName, final String fieldId) {
 		
 		view.setTextColor(Color.BLUE);
 		final String fieldValue = feed.getString(FIELD_UP_ID);
@@ -240,7 +250,7 @@ public abstract class SmartpadViewAdapter<T extends UIData> extends BaseAdapter 
 				setServicePath(servicePath);
 			}
 		});
-	}
+	}*/
 
 	public void setToView(UIData data, TextView view, String fieldId) {
 
@@ -256,6 +266,10 @@ public abstract class SmartpadViewAdapter<T extends UIData> extends BaseAdapter 
 	}
 
 	public void setToViewHtml(UIData data, TextView view, String fieldId) {
+		
+		if (view.getMovementMethod() == null) {
+			view.setMovementMethod(LinkMovementMethod.getInstance());
+		}
 
 		String html = data.getString(fieldId);
 		if (html != null /*&& !"".equals(html.trim())*/) {

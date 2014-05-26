@@ -8,7 +8,8 @@ import com.jinnova.smartpad.android.SmartpadViewAdapter;
 import com.jinnova.smartpad.android.UIDataList;
 import com.jinnova.smartpad.android.ViewBuilder;
 import com.jinnova.smartpad.android.cat.BranchViewBuilder;
-import com.jinnova.smartpad.android.cat.BranchViewDetailBuilder;
+import com.jinnova.smartpad.android.cat.BranchViewBuilderDetailSquare;
+import com.jinnova.smartpad.android.cat.BranchViewBuilderDetailWide;
 import com.jinnova.smartpad.android.cat.CatalogItemViewBuilder;
 import com.jinnova.smartpad.android.cat.CatalogItemViewDetailBuilder;
 import com.jinnova.smartpad.android.cat.CatalogViewBuilder;
@@ -36,7 +37,8 @@ public class FeedViewAdapter extends SmartpadViewAdapter<Feed> {
 
 		builderMap[TYPE_BRANCH] = new ViewBuilder<?>[LAYOUTOPT_COUNT];
 		builderMap[TYPE_BRANCH][LAYOUTOPT_DEFAULT] = new BranchViewBuilder();
-		builderMap[TYPE_BRANCH][LAYOUTOPT_DETAIL] = new BranchViewDetailBuilder();
+		builderMap[TYPE_BRANCH][LAYOUTOPT_DETAIL_SQUARE] = new BranchViewBuilderDetailSquare();
+		builderMap[TYPE_BRANCH][LAYOUTOPT_DETAIL_WIDE] = new BranchViewBuilderDetailWide();
 
 		builderMap[TYPE_PROMO] = new ViewBuilder<?>[LAYOUTOPT_COUNT];
 		builderMap[TYPE_PROMO][LAYOUTOPT_DEFAULT] = new PromoViewBuilder();

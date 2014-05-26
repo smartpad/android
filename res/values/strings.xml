@@ -18,5 +18,9 @@
     <string name="title_activity_feed_list">FeedListActivity</string>
     <string name="title_activity_feed_detail">Feed Detail</string>
     <string name="feed_data">feed data</string>
+    <string name="branchName">branch name</string>
+    <string name="branchImage">branch image</string>
+    <string name="syscat">syscat</string>
+    <string name="branchWideLogo">branch wide logo</string>
 
 </resources>

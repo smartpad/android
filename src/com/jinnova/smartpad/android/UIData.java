@@ -26,7 +26,7 @@ public abstract class UIData {
 	
 	protected JSONObject json;
 	
-	private int overridenLayoutOpt = SmartpadViewAdapter.LAYOUTOPT_UNINITIALIZED;
+	private int overridenLayoutOpt = LAYOUTOPT_UNINITIALIZED;
 	
 	public void setJson(JSONObject json) {
 		this.json = json;
@@ -69,17 +69,17 @@ public abstract class UIData {
 	}
 	
 	public int getLayoutOption() {
-		if (overridenLayoutOpt !=  SmartpadViewAdapter.LAYOUTOPT_UNINITIALIZED) {
+		if (overridenLayoutOpt !=  LAYOUTOPT_UNINITIALIZED) {
 			return overridenLayoutOpt;
 		}
-		if (!json.has("layOpt")) {
-			return SmartpadViewAdapter.LAYOUTOPT_DEFAULT;
+		if (!json.has(FIELD_LAYOUTOPT)) {
+			return LAYOUTOPT_DEFAULT;
 		}
 		try {
-			return json.getInt("layOpt");
+			return json.getInt(FIELD_LAYOUTOPT);
 		} catch (JSONException e) {
 			Log.w("smartpad.json", e);
-			return SmartpadViewAdapter.LAYOUTOPT_DEFAULT;
+			return LAYOUTOPT_DEFAULT;
 		}
 		
 	}

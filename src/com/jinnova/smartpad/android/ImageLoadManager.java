@@ -29,6 +29,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Bitmap.CompressFormat;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 
 public class ImageLoadManager {
@@ -49,7 +50,7 @@ public class ImageLoadManager {
 	//private SortedSet<String> pathQueue = new TreeSet<String>();
 	private LinkedList<String> pathQueue = new LinkedList<String>();
 	
-	private HashMap<ImageView, String> viewQueue = new HashMap<ImageView, String>();
+	private HashMap<ViewDest, String> viewQueue = new HashMap<ViewDest, String>();
 	
 	private HashMap<String, Bitmap> updateQueue = new HashMap<String, Bitmap>();
 	
@@ -97,9 +98,16 @@ public class ImageLoadManager {
 		}
 	}
 	
-	public void registerView(String path, ImageView view) {
+	public void registerView(String path, ImageView view, View alternative) {
 		
+		if (alternative != null) {
+			alternative.setVisibility(View.GONE);
+		}
 		if (path == null) {
+			if (alternative != null) {
+				alternative.setVisibility(View.VISIBLE);
+			}
+			view.setVisibility(View.GONE);
 			return;
 		}
 		
@@ -119,7 +127,10 @@ public class ImageLoadManager {
 				pathQueue.remove(path);
 				pathQueue.addFirst(path);
 			}
-			viewQueue.put(view, path);
+			ViewDest vd = new ViewDest();
+			vd.image = view;
+			vd.alternative = alternative;
+			viewQueue.put(vd, path);
 		}
 	}
 	
@@ -329,6 +340,11 @@ public class ImageLoadManager {
 		}
 		
 	}
+	
+	private class ViewDest {
+		ImageView image;
+		View alternative;
+	}
 
 	private class ImageUpdateViewTask extends AsyncTask<String, Void, Object> {
 
@@ -346,18 +362,21 @@ public class ImageLoadManager {
 					
 					String path = oneLoaded.getKey();
 					Bitmap bm = oneLoaded.getValue();
-					for (Entry<ImageView, String> viewEntry : viewQueue.entrySet()) {
+					for (Entry<ViewDest, String> viewEntry : viewQueue.entrySet()) {
 						if (!path.equals(viewEntry.getValue())) {
 							continue;
 						}
 						//check if view is unlaid out?
 						//if (view.isLaidOut())
-						ImageView view = viewEntry.getKey();
+						ViewDest vd = viewEntry.getKey();
 						/*Bitmap bm = inUsedImages.get(view);
 						if (bm != null) {
 							bm.recycle();
 						}*/
-						view.setImageBitmap(bm);
+						vd.image.setImageBitmap(bm);
+						if (bm == imageNotFound || bm == imageIOError) {
+							vd.alternative.setVisibility(View.VISIBLE);
+						}
 					}
 				}
 				viewQueue.clear();
